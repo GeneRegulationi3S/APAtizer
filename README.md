@@ -47,9 +47,11 @@ All done! Now you are ready to use APAtizer!
 <img src="https://github.com/brss12/APAtizer/assets/121204829/4f76e1e6-ff5a-4c8c-8688-f3e9c1e386f9" alt="DGE_Heatmap">
 
 ## GO TERMS interface
-
+<img src="https://github.com/brss12/APAtizer/assets/121204829/9c48d65a-e3d9-4c5d-8b4f-c4d9a6f2fdee" alt="GO_BP">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/45e43e24-c6c1-48a1-8244-ffb25a837756" alt="GO_MF">
 
 ## VENN DIAGRAMS interface
-
+<img src="https://github.com/brss12/APAtizer/assets/121204829/0faebdf0-1baa-4be4-9d0b-75aab8cf99d3" alt="Venn_2">
 
 ## SURVIVAL ANALYSIS interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/e661e322-0d8a-4914-8222-404d7d7f7e30" alt="Survival">
