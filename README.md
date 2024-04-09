@@ -18,7 +18,7 @@ nohup bash -c "./index_script.sh [number_of_threads]" &
 ## 2. Creating the DaPars2 txt files
 Alternative polyadenylation analysis in APAtizer can be done by using one of two algorithms, APAlyzer and DaPars2. To use the APAlyzer algorithm, the de-duplicated bam files obtained in the previous step are used as input. On the other hand, for the DaPars2 algorithm, the user needs to run the first part of the DaPars2 analysis in the terminal and APAtizer only deals with the final manipulations and calculations to obtain the final gene lists.
 
-
+The script [dapars2.smk](dapars2_files/dapars2.smk)
 
 ## 2. Creating htseq files for DGE analysis
 The htseq files are used in the differential gene expression (DGE) analysis in APAtizer. These files are obtained via htseq-count by running the script [htseq_script.sh](htseq_script.sh) using the following command.
