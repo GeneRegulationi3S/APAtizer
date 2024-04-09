@@ -1,4 +1,4 @@
-# APAtizer
+# Description
 A web app for gene expression and alternative polyadenylation analysis of TCGA RNA-Seq data.
 
 # Workflow
@@ -31,3 +31,25 @@ The htseq files are used in the differential gene expression (DGE) analysis in A
 ```shell
 ./htseq_script.sh && mkdir --parents TRIMMED_htseq/FILTERED && mv TRIMMED_READS/*htseq* TRIMMED_htseq/ && mv filter_folder/ TRIMMED_htseq/ && Rscript protein_coding_filter.R
 ```
+All done! Now you are ready to use APAtizer!
+# APAtizer walkthrough
+## DaPars interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/de5fe1fe-6f0c-4167-a109-55dac866f430" alt="DAPARS_data"> 
+
+## APAlyzer interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/f96b5fde-b5c6-4827-9a4d-542281aeca4f" alt="APA_List" width=500>
+<img src="https://github.com/brss12/APAtizer/assets/121204829/a9ed2b83-dc63-462a-9bd2-43a32168f60f" alt="APA_Volcano" width=500>
+
+## DGE interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/d69edb1f-7d95-4e78-9da4-9fecd09b7c44" alt="DGE_List" width=500>
+<img src="https://github.com/brss12/APAtizer/assets/121204829/3ae16b84-87f0-494d-9c08-31b9c048f346" alt="DGE_Pca" width=500>
+<img src="https://github.com/brss12/APAtizer/assets/121204829/2dd18423-06f7-4285-a528-8dc7b24b1ce2" alt="DGE_Volcano" width=500>
+<img src="https://github.com/brss12/APAtizer/assets/121204829/4f76e1e6-ff5a-4c8c-8688-f3e9c1e386f9" alt="DGE_Heatmap" width=500>
+
+## GO TERMS interface
+
+
+## VENN DIAGRAMS interface
+
+
+## SURVIVAL ANALYSIS interface
