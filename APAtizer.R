@@ -893,8 +893,7 @@ server <- function(input, output,session) {
     #Analysis of APA in 3’UTRs
     refUTRraw=refUTRraw
     UTRdbraw=REF3UTR(refUTRraw)
-    DFUTRraw <- read_csv("/home/bruno/I3S/BRCA/Non-Smoking/TRIMMED_APALYZER/DFUTRraw.csv")
-    #DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="forward")
+    DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="forward")
     
     x=nrow(df_pacientes3())/2
     sampleTable1 = data.frame(samplename = c(names(flsall)),
