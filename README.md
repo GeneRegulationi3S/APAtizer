@@ -25,6 +25,13 @@ nohup bash -c "snakemake -s APAtizer_inputs.smk --cores 1 --jobs 1 --wait-for-fi
 # APAtizer walkthrough
 In the walkthrough of the APAtizer tool, a case study using 46 samples (23 Normal Tissue samples and 23 Primary Tumor samples) from colorectal cancer from TCGA was performed to showcase the interface and the capabilities of the tool all while retrieving useful insights from the data.
 
+To run the tool, the user must run the R script [APAtizer.R](APAtizer.R) using the following command.
+```shell
+Rscript APAtizer.R
+```
+
+Upon running the command, all the R packages needed for APAtizer will be installed automatically and a link to the tool will appear in the end. Click said link to open APAtizer in your default web browser!
+
 ## DaPars2 interface
 ### 3'UTR APA lengthening genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/4d32cb27-7bfb-4add-894a-a64b9b2a148d" alt="DAPARS_LEN">
