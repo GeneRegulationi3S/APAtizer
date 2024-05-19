@@ -67,14 +67,31 @@ Here, in the input space the user may paste the full path of the folder **TRIMME
 In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
 ## IPA APALYZER interface
+### IPA upregulated events
 <img src="https://github.com/brss12/APAtizer/assets/121204829/cc32470c-97f6-41ab-b98f-56098dc17a87" alt="APA_List">
+
+### IPA non-significant events
 <img src="https://github.com/brss12/APAtizer/assets/121204829/b96a6383-a894-4216-84f4-dc333420d806" alt="APA_List">
+
+### IPA downregulated events
 <img src="https://github.com/brss12/APAtizer/assets/121204829/2c84e83c-8d76-42ac-9a92-0a81ba4f4383" alt="APA_List">
+
+### IPA upregulated genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/382adc6e-2b15-49a3-a41c-3a54f6947833" alt="APA_List">
+
+### IPA non-significant genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/fd2026f3-493b-4039-925c-397ac2edcf2e" alt="APA_List">
+
+### IPA downregulated genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/1c164835-eb12-41e2-a382-9bcaec2aa992" alt="APA_List">
+
+### IPA top-40 Volcano plot
 <img src="https://github.com/brss12/APAtizer/assets/121204829/77235954-264f-48a0-9818-76e529e531c5" alt="APA_List">
+
+### IPA Volcano plot
 <img src="https://github.com/brss12/APAtizer/assets/121204829/62c236c0-499c-43ef-b980-224a720f50af" alt="APA_List">
+
+### IPA Box plot
 <img src="https://github.com/brss12/APAtizer/assets/121204829/9dec095b-0927-48d9-90fc-eee29456b0f6" alt="APA_List">
 
 ## DGE interface
