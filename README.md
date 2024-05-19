@@ -43,38 +43,55 @@ In this section, in the input space the user can select the 24 output files orig
 
 In the output space, we can observe the lists of genes that go through 3'UTR APA lengthening events (*Len genes*) and 3'UTR APA shortening events (*Short genes*). The user can also search the lists for a specific gene of interest and download the lists using the download button below the search box.
 
-## APAlyzer interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/f96b5fde-b5c6-4827-9a4d-542281aeca4f" alt="APA_List">
-<img src="https://github.com/brss12/APAtizer/assets/121204829/a9ed2b83-dc63-462a-9bd2-43a32168f60f" alt="APA_Volcano">
+## APA_APALYZER interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/9f48a0a1-d5d6-497b-a841-b4165536a1ff" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/ff179f5e-22ac-4bed-97d6-5d7dbfce2aa6" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/702be557-57b8-4adb-8b5f-ba2b251d6c34" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/418a9875-556e-4222-adcf-e043665ec355" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/45510c74-f9e9-4a39-a182-044f836d3a84" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/aba89b3d-a60f-4fb3-ae20-583cf9de528b" alt="APA_List">
 
 Here, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files and select the TCGA sample sheet. The user may also select the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between 3'UTR APA lengthening (*NvsT_APA_UP*), 3'UTR APA shortening (*NvsT_APA_DN*) and non-significant (*NvsT_APA_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*APA Volcano Plot (top40)*), the same plot but with no highlights (*APA Volcano Plot*) and a box plot (APA Box).
 
 In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
+## IPA APALYZER interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/cc32470c-97f6-41ab-b98f-56098dc17a87" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/b96a6383-a894-4216-84f4-dc333420d806" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/2c84e83c-8d76-42ac-9a92-0a81ba4f4383" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/382adc6e-2b15-49a3-a41c-3a54f6947833" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/fd2026f3-493b-4039-925c-397ac2edcf2e" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/1c164835-eb12-41e2-a382-9bcaec2aa992" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/77235954-264f-48a0-9818-76e529e531c5" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/62c236c0-499c-43ef-b980-224a720f50af" alt="APA_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/9dec095b-0927-48d9-90fc-eee29456b0f6" alt="APA_List">
+
 ## DGE interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/d69edb1f-7d95-4e78-9da4-9fecd09b7c44" alt="DGE_List">
-<img src="https://github.com/brss12/APAtizer/assets/121204829/3ae16b84-87f0-494d-9c08-31b9c048f346" alt="DGE_Pca">
-<img src="https://github.com/brss12/APAtizer/assets/121204829/2dd18423-06f7-4285-a528-8dc7b24b1ce2" alt="DGE_Volcano">
-<img src="https://github.com/brss12/APAtizer/assets/121204829/4f76e1e6-ff5a-4c8c-8688-f3e9c1e386f9" alt="DGE_Heatmap">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/cc59faa6-3ce2-45f8-b89c-7515a2339f5e" alt="DGE_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/1ea5a5b8-6fd0-42fd-9ebd-72815daeebc4" alt="DGE_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/fae6ce61-6d3a-4829-9f62-7361f297b7ec" alt="DGE_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/91d89676-9c49-4c98-8131-7b9ea4b92aa0" alt="DGE_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/78fe38b1-1cf9-4e0d-a368-fc45d2f1f435" alt="DGE_List">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/27bec740-51a8-4604-bbe9-6920129ca7d9" alt="DGE_List">
 
 For the differential gene expression analysis, in the input space the user may paste the full path for the folder **FILTERED** that has all of the htseq files and select the TCGA sample sheet. Once again, the user can also select the lists and the plots that will be displayed in the outputs. For the lists, the user can choose between DGE upregulated (*DGE_Genes_UP*), DGE downregulated (*DGE_Genes_DN*) and non-significant (*DGE_Genes_NC*). For the plots, the user can select a PCA plot (*PCA Plot*), a Volcano plot (*DGE Volcano Plot*) and a heatmap to evaluate the pattern of gene expression between conditions(*DGE Heatmap*).
 
 In the output space, in the tab named *Number of DGE genes* the user can see a table showing the total number of upregulated, downregulated and non-significant genes. In *DGE_Genes* is where the full lists chosen before in the input space are displayed and the user can search those lists for a gene of interest and download them. In *Plots*, the same as in APAlyzer, is where one can visualize the selected plots and download them.
 
-## GO TERMS interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/9c48d65a-e3d9-4c5d-8b4f-c4d9a6f2fdee" alt="GO_BP">
-<img src="https://github.com/brss12/APAtizer/assets/121204829/45e43e24-c6c1-48a1-8244-ffb25a837756" alt="GO_MF">
+## GO_TERMS interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/92c7946b-add8-4b7a-aae4-3b18e71d4cf9" alt="GO_BP">
+<img src="https://github.com/brss12/APAtizer/assets/121204829/716fa7b8-3ffd-4a0e-a5d0-0dffbc1d795c" alt="GO_MF">
 
 In this section, the user only needs to select the list of genes in which he wants to perform gene ontology exploration and the type of analysis to be performed, *Biological Process (BP)* and *Molecular Function (MF)*. The provided list should be one of the gene lists obtained in the previous steps (DaPars, APAlyzer or DGE analysis).
 
 The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
 
-## VENN DIAGRAMS interface
+## VENN DIAGRAMS interface   TO DO
 <img src="https://github.com/brss12/APAtizer/assets/121204829/0faebdf0-1baa-4be4-9d0b-75aab8cf99d3" alt="Venn_2">
 
 For the Venn diagram intersections, the user can provide up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
-## SURVIVAL ANALYSIS interface
+## SURVIVAL ANALYSIS interface TO DO
 <img src="https://github.com/brss12/APAtizer/assets/121204829/e661e322-0d8a-4914-8222-404d7d7f7e30" alt="Survival">
 
 For the final section, a TCGA sample sheet should be provided along with the correspondent TCGA clinical data. Also, the full path for the folder **FILTERED** that contains all the htseq files must be provided along with a specific gene of interest to run the survival analysis. In the output side, in the tab *Plot* is where the resulting plot is displayed and can be downloaded.
