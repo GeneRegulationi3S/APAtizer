@@ -29,8 +29,8 @@ To run the tool, the user must run the R script [APAtizer.R](APAtizer.R) using t
 ```shell
 Rscript APAtizer.R
 ```
-
 Upon running the command, all the R packages needed for APAtizer will be installed automatically and a link to the tool will appear in the end. Click said link to open APAtizer in your default web browser!
+The user can also open the R script in Rstudio and then click on the ***Run App*** button to launch the tool in a separate window.
 
 ## DaPars2 interface
 ### 3'UTR APA lengthening genes
