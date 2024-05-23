@@ -133,7 +133,15 @@ The output space only has one tab called *GO Plots* in which the resulting plots
 
 For the Venn diagram intersections, the user can provide up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
-## SURVIVAL ANALYSIS interface TO DO
-<img src="https://github.com/brss12/APAtizer/assets/121204829/e661e322-0d8a-4914-8222-404d7d7f7e30" alt="Survival">
+## APA CORRELATION ANALYSIS interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/66f1f08b-3795-454b-855a-652ce2080572" alt="APA_CORR">
 
-For the final section, a TCGA sample sheet should be provided along with the correspondent TCGA clinical data. Also, the full path for the folder **FILTERED** that contains all the htseq files must be provided along with a specific gene of interest to run the survival analysis. In the output side, in the tab *Plot* is where the resulting plot is displayed and can be downloaded.
+In this section we can see the pearson correlation analysis scatter plot between the 3'UTR APA and DGE events. In this case study for colon cancer we can see that genes that undergo 3'UTR APA shortening events are being upregulated and the genes that undergo 3'UTR APA lengthening events are being downregulated.
+
+## IPA CORRELATION ANALYSIS interface
+<img src="https://github.com/brss12/APAtizer/assets/121204829/dc65aaae-8635-4438-a228-0af8bf70a613" alt="IPA_CORR">
+
+Now, in this section we have the pearson correlation analysis scatter plot between IPA and DGE events. For colon cancer, we can also see that we have a significant negative correlation between IPA and DGE events. Genes that undergo IPA downregulation are being more expressed, whereas genes that undergo IPA upregulation are being less expressed.
+
+# Final remarks
+In this README, a case study for colon cancer (COAD) from the TCGA repository was used to demonstrate and explain the features and capabilities of the APAtizer tool. With this tool, the user can analyze RNA-Seq data from TCGA and retrieve many plots and useful information regarding 3'UTR APA & IPA events via DaPars2 and APAlyzer analysis, the function of those genes via gene ontology analysis, the common genes between cancers using venn diagram intersections and the correlation between 3'UTR APA & IPA events and DGE via pearson correlation analysis scatter plots.
