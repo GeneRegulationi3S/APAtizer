@@ -1,5 +1,5 @@
 # Description
-APAtizer is a tool designed to analyse alternative polyadenylation of TCGA RNA-Seq data. Additionally, it is capable of performing differential gene expression, gene ontology analysis, visualizing Venn diagram intersections and survival analysis. APAtizer is equipped to handle TCGA files, such as BAM files, sample sheets, clinical data from patients and downstream analysis files such as htseq and DaPars txt files. It is a user-friendly interface, that allows users with limited knowledge on bioinformatics to generate informative visualizations, including Volcano plots, heatmaps and gene lists. The APAtizer tool also provides the functionality to download the aforementioned plots and gene lists for further analysis and exploration. 
+APAtizer is a tool designed to analyse alternative polyadenylation of TCGA RNA-Seq data. Additionally, it is capable of performing differential gene expression, gene ontology analysis, visualizing Venn diagram intersections and pearson correlation analysis. APAtizer is equipped to handle TCGA files, such as BAM files, sample sheets, clinical data from patients and downstream analysis files such as htseq and DaPars txt files. It is a user-friendly interface, that allows users with limited knowledge on bioinformatics to generate informative visualizations, including Volcano plots, heatmaps and gene lists. The APAtizer tool also provides the functionality to download the aforementioned plots and gene lists for further analysis and exploration. 
 
 # Workflow
 ![image](https://github.com/brss12/APAtizer/assets/121204829/ea7c789d-907a-42bc-b331-94387a9b4325)
@@ -132,7 +132,7 @@ In this section, the user only needs to select the list of genes in which he wan
 
 The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
 
-## VENN DIAGRAMS interface   TO DO
+## VENN DIAGRAMS interface
 <img src="https://github.com/brss12/APAtizer/assets/121204829/0faebdf0-1baa-4be4-9d0b-75aab8cf99d3" alt="Venn_2">
 
 For the Venn diagram intersections, the user can provide up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
