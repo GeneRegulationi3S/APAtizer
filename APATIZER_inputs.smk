@@ -27,7 +27,7 @@ rule samtools_sort:
     output:
         "SORTED_BAM/{name}.sorted.bam",
     shell:
-        "samtools sort -o {output} {input} -T SORTED_BAM/"
+        "samtools sort -@ 4 -o {output} {input} -T SORTED_BAM/"
 
 rule fastqc:
     priority: 19
