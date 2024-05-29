@@ -57,7 +57,7 @@ rule trimmed_fastqc:
     params:
         path = "TRIMMED_QC/",
     shell:
-        "fastqc {input} -o {params.path}"
+        "fastqc -t 4 {input} -o {params.path}"
 
 rule index_bam:
     priority: 16
