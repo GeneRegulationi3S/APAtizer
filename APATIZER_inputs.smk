@@ -38,7 +38,7 @@ rule fastqc:
     params:
         path = "SORTED_QC/",
     shell:
-        "fastqc {input} -o {params.path}"
+        "fastqc -t 4 {input} -o {params.path}"
 
 rule picard:
     priority: 18
