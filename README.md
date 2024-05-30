@@ -16,7 +16,7 @@ To start, clone the repository in the same directory where your raw BAM files ar
 
 The script requires the raw BAM files to be placed in a folder called **RAW_BAM** and, upon running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
 
-Depending on the size and ammount of BAM files, we recommend running the script in a HPC environment. With the following command, run the first script on the same directory of the **RAW_BAM** folder to create the sorted and de-duplicated BAM files and the htseq files.
+Depending on the size and ammount of BAM files, we recommend running both scripts in a HPC environment. With the following command, run the first script on the same directory of the **RAW_BAM** folder to create the sorted and de-duplicated BAM files and the htseq files.
 ```shell
 nohup bash -c "snakemake -s APAtizer_inputs_1.smk --cores <n_cores> --wait-for-files" & #The first script can be run using parallelization
 ```
