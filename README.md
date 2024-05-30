@@ -12,7 +12,7 @@ To install the required dependencies for the creation of the input files for APA
 ```
 
 # Creating the input files
-To start, clone the repository in the same directory where your raw BAM files are located. The script [APAtizer_inputs.smk](APAtizer_inputs.smk) employs the snakemake workflow to create fastqc reports, sort and remove the duplicates from the raw TCGA BAM files required for the APA analysis step using the APAlyzer algorithm and creates the Dapars files required for APA analysis employing the DaPars2 algorithm. In addition, it also creates the htseq files required for differential gene expression analysis using the DESeq2 package.
+To start, clone the repository in the same directory where your raw BAM files are located. The scripts [APAtizer_inputs_1.smk](APAtizer_inputs_1.smk) and [APAtizer_inputs_2.smk](APAtizer_inputs_2.smk) employ the snakemake workflow to create fastqc reports, sort and remove the duplicates from the raw TCGA BAM files required for the APA analysis step using the APAlyzer algorithm and creates the Dapars2 files required for APA analysis employing the DaPars2 algorithm. In addition, it also creates the htseq files required for the differential gene expression analysis feature of the APAtizer tool.
 
 The script requires the raw BAM files to be placed in a folder called **RAW_BAM** and, upon running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
 
