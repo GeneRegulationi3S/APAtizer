@@ -6,9 +6,12 @@ APAtizer is a tool designed to analyse alternative polyadenylation of TCGA RNA-S
 
 
 # Installing dependencies
-To install the required dependencies for the creation of the input files for APAtizer, the user must run the [install_dependencies.sh](install_dependencies.sh) script.
+To install the required dependencies for the creation of the input files for APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
 ```shell
-./install_dependencies.sh
+./install_dependencies_linux.sh #Linux
+```
+```shell
+./install_dependencies_macos.sh #MacOS
 ```
 
 # Creating the input files
