@@ -49,7 +49,7 @@ rule htseq_count:
     params:
         path = "TRIMMED_QC/"
     shell:
-        "fastqc {input} -o {params.path} && samtools index {input} && htseq-count -f bam -r name -s no {input} src/annotations/hg38.ncbiRefSeq.gtf > {output[1]}"
+        "fastqc {input} -o {params.path} && samtools index {input} && htseq-count -f bam -r name -s no {input} src/annotations/hg38.ncbiRefSeq.gtf.gz > {output[1]}"
 
 rule bam_to_wig:
     priority: 12
