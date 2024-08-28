@@ -1,0 +1,25 @@
+#The following file is the result of step 1.
+
+Annotated_3UTR=src/annotations/mm9_refseq_3UTR.bed
+
+#A comma-separated list of Wiggle files of all samples
+##x='ls WIG/*.wig | tr "\n" ","'
+Aligned_Wig_files=
+#$(ls WIG/*.wig | tr '\n' ',' | sed 's/,$//')
+#echo -e $(ls WIG/*.wig | tr '\n' ',')
+
+Output_directory=DaPars_data/
+
+Output_result_file=DaPars_data
+
+# Specify the Coverage_threshold
+
+Coverage_threshold=10
+
+# Specify the number of threads used to process the data
+
+Num_Threads=8
+
+# Provide Sequencing_depth file for normalization
+
+sequencing_depth_file=DaPars2/mapping_wig_location_with_depth.txt

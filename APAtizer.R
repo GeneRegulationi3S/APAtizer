@@ -3,14 +3,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 required_packages_R <- c(
   "survminer", "survival", "tidyverse", "base", "data.table", "stats", "shinyalert",
-  "shiny", "purrr", "dplyr", "splitstackshape", "shinythemes",
-  "readr", "ggplot2", "repmis", "pheatmap", "RColorBrewer",
-  "EnhancedVolcano", "ggvenn", "ggpubr"
+  "shiny", "purrr", "dplyr", "splitstackshape", "shinythemes", "readr", "ggplot2", 
+  "repmis", "pheatmap", "RColorBrewer", "EnhancedVolcano", "ggvenn", "ggpubr"
 )
 
 required_packages_Bioc <- c(
   "TCGAbiolinks", "SummarizedExperiment", "DESeq2", "APAlyzer", "Rsamtools", "apeglm",
-  "clusterProfiler", "enrichplot", "org.Hs.eg.db", "VennDiagram", "EnhancedVolcano"
+  "clusterProfiler", "enrichplot", "org.Hs.eg.db", "org.Mm.eg.db", "VennDiagram", "EnhancedVolcano"
 )
 
 install_missing_packages_R <- function(packages) {
@@ -102,8 +101,14 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            titlePanel("Use Apalyzer to analyse 3'UTR-APA from RNA-Seq data"),
                            sidebarLayout(
                              sidebarPanel(
-                               textInput("path2", "BAM files directory path:"),
+                               textInput("path2", "TRIMMED BAM files directory path:"),
                                fileInput("txt_file3", "Select sample sheet"),
+                               selectInput(inputId = "ref_PAS1", label = "Select reference PAS",
+                                           choices = c("hg19", "hg38", "mm9", "mm10")),
+                               selectInput(inputId = "seq_method1", label = "Select sequencing method",
+                                           choices = c("Paired-end", "Single-end")),
+                               selectInput(inputId = "seq_strand1", label = "Select strandedness",
+                                           choices = c("Forward stranded", "Reverse stranded", "Non-stranded")),
                                actionButton("run3", "APA Analysis"),
                                br(),
                                br(),
@@ -170,14 +175,21 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            titlePanel("Use Apalyzer to analyse IPA from RNA-Seq data"),
                            sidebarLayout(
                              sidebarPanel(
-                               textInput("path", "BAM files directory path:"),
+                               textInput("path", "TRIMMED BAM files directory path:"),
                                fileInput("txt_file", "Select sample sheet"),
+                               selectInput(inputId = "ref_PAS2", label = "Select reference PAS",
+                                           choices = c("hg19", "hg38", "mm9", "mm10")),
+                               selectInput(inputId = "seq_method2", label = "Select sequencing method",
+                                           choices = c("Paired-end", "Single-end")),
+                               selectInput(inputId = "seq_strand2", label = "Select strandedness",
+                                           choices = c("Forward stranded", "Reverse stranded", "Non-stranded")),
+                               sliderInput("n_threads", "Number of threads:", min = 1, max = 16, value = 1, step = 1),
                                actionButton("run", "IPA Analysis"),
                                br(),
                                br(),
                                br(),
                                selectInput(inputId = "output_type", label = "Select Output Type",
-                                           choices = c("NvsT_IPA_events_UP", "NvsT_IPA_events_DN","NvsT_IPA_events_NC" )),
+                                           choices = c("NvsT_IPA_events_UP", "NvsT_IPA_events_DN", "NvsT_IPA_events_NC")),
                                br(),
                                selectInput(inputId = "output_type2", label = "Select Output Type",
                                            choices = c("NvsT_IPA_genes_UP", "NvsT_IPA_genes_DN", "NvsT_IPA_genes_NC")),
@@ -274,7 +286,13 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                            choices = c("DGE_Genes_UP", "DGE_Genes_DN", "DGE_Genes_NC")),
                                br(),
                                selectInput(inputId = "output_type2_dge", label = "Select Output Type",
-                                           choices = c("PCA Plot", "DGE Volcano Plot", "DGE Heatmap"))
+                                           choices = c("PCA Plot", "DGE Volcano Plot", "DGE Heatmap")),
+                               # ConditionalPanel to show sliders only when "DGE Heatmap" is selected
+                               conditionalPanel(
+                                 condition = "input.output_type2_dge == 'DGE Heatmap'",
+                                 sliderInput("cellwidth", "Heatmap Width:", min = 5, max = 50, value = 5, step = 1),
+                                 sliderInput("cellheight", "Heatmap Height:", min = 0.01, max = 1, value = 0.01, step = 0.01)
+                               )
                              ),
                              mainPanel(
                                tabsetPanel(
@@ -333,6 +351,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            sidebarLayout(
                              sidebarPanel(
                                fileInput("txt_file_go", "Select Gene List"),
+                               selectInput(inputId = "database_go", label = "Select Organism Database",
+                                           choices = c("Human", "Mouse")),
                                actionButton("run_go", "GO Analysis"),
                                br(),
                                br(),
@@ -383,27 +403,6 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                     )
                                 )
                             )
-                  ),
-                  tabPanel("SURVIVAL ANALYSIS",
-                           titlePanel("Perform Survival analysis on DGE genes"),
-                           sidebarLayout(
-                             sidebarPanel(
-                               fileInput("surv_sample_sheet", "Select sample sheet"),
-                               fileInput("surv_clinical_data", "Select clinical data"),
-                               textInput(inputId = "path_surv", "HTSeq files directory path:"),
-                               textInput(inputId = "surv_gene", label = "Gene of interest"),
-                               br(),
-                               actionButton("run_surv", "Survival Analysis")
-                             ),
-                             mainPanel(
-                               tabsetPanel(
-                                 tabPanel("Plot",
-                                          br(),
-                                          downloadButton(outputId = "download_plot_surv", label = "Download Survival Analysis Plot"),
-                                          plotOutput(outputId = "plot_surv"))
-                               )
-                             )
-                           )
                   ),
                   tabPanel("APA CORRELATION ANALYSIS",
                            titlePanel("Perform pearson correlation analysis between APA and DGE"),
@@ -458,20 +457,22 @@ server <- function(input, output,session) {
   
   df_pacientes <- eventReactive(input$run,{
     file <- input$txt_file
-    if (is.null(file)) {
+    datapath <- input$path
+    if (is.null(file) || datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
-    df_pacientes <- read.table(file$datapath, sep = "\t", header = TRUE)
-    df_pacientes <- dplyr::select(df_pacientes, File.Name,Case.ID,Sample.Type)
-    df_pacientes$File.Name<- str_replace(df_pacientes$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
     
-    case_order <- unique(df_pacientes$Case.ID)
-    df_pacientes <- df_pacientes %>% arrange(df_pacientes$Sample.Type, match(df_pacientes$Case.ID, case_order))
+    df_pacientes <- read.table(file$datapath, sep = "\t", header = TRUE)
+    df_pacientes <- dplyr::select(df_pacientes, File.Name,Sample.Type)
+    #df_pacientes$File.Name<- str_replace(df_pacientes$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
+    
+    #case_order <- unique(df_pacientes$Case.ID)
+    #df_pacientes <- df_pacientes %>% arrange(df_pacientes$Sample.Type, match(df_pacientes$Case.ID, case_order))
     
     #normal <- c("Solid Tissue Normal")
-    df_pacientes$category <- ifelse(df_pacientes$Sample.Type %in% c("Solid Tissue Normal"), "Normal", "Tumor")
-    df_pacientes$category = paste(df_pacientes$Case.ID, df_pacientes$category, sep="_")
+    #df_pacientes$category <- ifelse(df_pacientes$Sample.Type %in% c("Solid Tissue Normal"), "Normal", "Tumor")
+    #df_pacientes$category = paste(df_pacientes$Case.ID, df_pacientes$category, sep="_")
     
     return(df_pacientes)
     
@@ -480,25 +481,48 @@ server <- function(input, output,session) {
   
   
   NvsT_IPA <- eventReactive(input$run, {
+    file <- input$txt_file
     datapath <- input$path
-    if (is.null(datapath)) {
+    if (is.null(file) || datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
+    shinyalert("Processing", "IPA Analysis has started. Please wait...", type = "info")
+    
     datapath <- str_replace_all(datapath, "\\\\", "/")
-    flsall <- dir(datapath,".bam")
-    flsall <- paste0(datapath, '/', df_pacientes()$File.Name)
-    names(flsall) <- df_pacientes()$category
+    flsall <- dir(datapath, pattern = ".*\\.bam$")
+    flsall <- paste0(datapath, flsall)
+    names(flsall) <- gsub('.bam','',dir(datapath, pattern = ".*\\.bam$"))
+    
+    #flsall <- paste0(datapath, df_pacientes()$File.Name) #D:/TRIMMED_READS is where the bam files are
+    #names(flsall) <- df_pacientes()$category
+    #flsall
+    
     #Genomic reference
     library("repmis")
     URL="https://github.com/RJWANGbioinfo/PAS_reference_RData/blob/master/"
-    file="hg38_REF.RData"
+    file=paste0(input$ref_PAS2, "_REF.RData")
     source_data(paste0(URL,file,"?raw=True"))
     
-    refUTRraw=refUTRraw_hg38
-    dfIPAraw=dfIPA_hg38
-    dfLEraw=dfLE_hg38
+    if (input$ref_PAS2 == "hg19") {
+      refUTRraw=refUTRraw_hg19
+      dfIPAraw=dfIPA_hg19
+      dfLEraw=dfLE_hg19
+    } else if (input$ref_PAS2 == "hg38") {
+      refUTRraw=refUTRraw_hg38
+      dfIPAraw=dfIPA_hg38
+      dfLEraw=dfLE_hg38
+    } else if (input$ref_PAS2 == "mm9") {
+      refUTRraw=refUTRraw
+      dfIPAraw=dfIPA
+      dfLEraw=dfLE
+    } else if (input$ref_PAS2 == "mm10") {
+      refUTRraw=refUTRraw
+      dfIPAraw=dfIPA
+      dfLEraw=dfLE
+    }
+    
     PASREF=REF4PAS(refUTRraw,dfIPAraw,dfLEraw)
     UTRdbraw=PASREF$UTRdbraw
     dfIPA=PASREF$dfIPA
@@ -506,22 +530,42 @@ server <- function(input, output,session) {
     dfIPA=dfIPA
     dfLE=dfLE
     
-    IPA_OUTraw <- read_csv("/home/bruno/I3S/COAD/Non-Smoking/TRIMMED_APALYZER/IPA_OUTraw.csv")
+    #IPA_OUTraw <- read_csv("/home/bruno/I3S/COAD/Non-Smoking/TRIMMED_APALYZER/IPA_OUTraw.csv")
     #IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="forward", SeqType="ThreeMostPairEnd")
     
-    x=nrow(df_pacientes())/2
-    sampleTable2 = data.frame(samplename = c(names(flsall)),
-                              condition = c(rep("KD",x),rep("NT",x)))
+    if (input$seq_strand2=="Forward stranded" & input$seq_method2=="Paired-end") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="forward", SeqType="ThreeMostPairEnd", nts=input$n_threads)
+    } else if (input$seq_strand2 == "Reverse stranded" & input$seq_method2=="Paired-end") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="invert", SeqType="ThreeMostPairEnd", nts=input$n_threads)
+    } else if (input$seq_strand2 == "Non-stranded" & input$seq_method2=="Paired-ends") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="NONE", SeqType="ThreeMostPairEnd", nts=input$n_threads)
+    } else if (input$seq_strand2 == "Forward stranded" & input$seq_method2=="Single-end") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="forward", nts=input$n_threads)
+    } else if (input$seq_strand2 == "Reverse stranded" & input$seq_method2=="Single-end") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="invert", nts=input$n_threads)
+    } else if (input$seq_strand2 == "Non-stranded" & input$seq_method2=="Single-end") {
+      IPA_OUTraw=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="NONE", nts=input$n_threads)
+    }
     
-    NvsT_IPA=APAdiff(sampleTable2,
-                     IPA_OUTraw, 
-                     conKET='NT',
-                     trtKEY='KD',
+    x=nrow(df_pacientes())/2
+    sampleTable2 = data.frame(samplename = gsub(".bam", "", df_pacientes()$File.Name),
+                              condition = c(rep(unique(df_pacientes()$Sample.Type)[1],x),rep(unique(df_pacientes()$Sample.Type)[2],x)))
+    sampleTable2$samplename <- paste0(sampleTable2$samplename, ".trim")
+    
+    #x=nrow(df_pacientes())/2
+    #sampleTable2 = data.frame(samplename = c(names(flsall)),
+    #                          condition = c(rep("KD",x),rep("NT",x))) #OTIMIZAR, se são 2 amostras, 1 pro KD e 1 pro NT
+    
+    NvsT_IPA=APAdiff(sampleTable2, IPA_OUTraw, 
+                     conKET=unique(df_pacientes()$Sample.Type)[2],
+                     trtKEY=unique(df_pacientes()$Sample.Type)[1],
                      PAS='IPA',
                      CUTreads=5,
                      p_adjust_methods="fdr")
     
     NvsT_IPA <- as.data.frame(NvsT_IPA)
+    
+    shinyalert("Success", "IPA Analysis has been completed successfully.", type = "success")
     
     return(NvsT_IPA)
   })
@@ -558,6 +602,7 @@ server <- function(input, output,session) {
     NvsT_IPA <- NvsT_IPA()
     NvsT_IPA_events_UP <- NvsT_IPA_events_UP()
     NvsT_IPA_genes_UP <- distinct(NvsT_IPA_events_UP,select=c(gene_symbol))
+    NvsT_IPA_genes_UP <- NvsT_IPA_genes_UP %>% rename(gene_symbol = select)
     
     return(NvsT_IPA_genes_UP)
   })
@@ -567,6 +612,7 @@ server <- function(input, output,session) {
     NvsT_IPA <- NvsT_IPA()
     NvsT_IPA_events_DN <- NvsT_IPA_events_DN()
     NvsT_IPA_genes_DN <- distinct(NvsT_IPA_events_DN,select=c(gene_symbol))
+    NvsT_IPA_genes_DN <- NvsT_IPA_genes_DN %>% rename(gene_symbol = select)
     
     return(NvsT_IPA_genes_DN)
   })
@@ -576,6 +622,7 @@ server <- function(input, output,session) {
     NvsT_IPA <- NvsT_IPA()
     NvsT_IPA_events_NC <- NvsT_IPA_events_NC()
     NvsT_IPA_genes_NC <- distinct(NvsT_IPA_events_NC,select=c(gene_symbol))
+    NvsT_IPA_genes_NC <- NvsT_IPA_genes_NC %>% rename(gene_symbol = select)
     
     return(NvsT_IPA_genes_NC)
   })
@@ -720,7 +767,7 @@ server <- function(input, output,session) {
   )
   output$download_plot4 <- downloadHandler(
     filename = function() {
-      paste("plot4", ".png")
+      paste("plot4", ".png", sep = "")
     },
     content = function(file) {
       ggsave(file, e(), width = 6000, height = 4000,units = c("px"),dpi = 300)
@@ -728,18 +775,18 @@ server <- function(input, output,session) {
   )
   output$download_plot5 <- downloadHandler(
     filename = function() {
-      paste("plot5", ".png")
+      paste("plot5", ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file, f(),width = 800, height = 700,units = c("px"),dpi = 300)
+      ggsave(file, f(), width = 6000, height = 4000,units = c("px"),dpi = 300)
     }
   )
   output$download_plot6 <- downloadHandler(
     filename = function() {
-      paste("plot6", ".png")
+      paste("plot6", ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file, g(), dpi = 300)
+      ggsave(file, g(), width = 6000, height = 4000,units = c("px"),dpi = 300)
       
     }
   )
@@ -748,20 +795,26 @@ server <- function(input, output,session) {
   ##### DAPARS #####
   
   df_pacientes2 <- eventReactive(input$run2,{
+    files <- input$txt_files
     file <- input$txt_file2
-    if (is.null(file)) {
+    if (is.null(file) || is.null(files)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
+    
     df_pacientes2 <- read.table(file$datapath, sep = "\t", header = TRUE)
-    df_pacientes2 <- dplyr::select(df_pacientes2, File.Name,Case.ID,Sample.Type)
+    df_pacientes2 <- dplyr::select(df_pacientes2, File.Name,Sample.Type)
+    
+    #df_pacientes2 <- read.table(file$datapath, sep = "\t", header = TRUE)
+    #df_pacientes2 <- dplyr::select(df_pacientes2, File.Name,Case.ID,Sample.Type)
     df_pacientes2$File.Name <- paste("WIG/", df_pacientes2$File.Name, sep = "")
-    case_order <- unique(df_pacientes2$Case.ID)
-    df_pacientes2 <- df_pacientes2 %>% arrange(df_pacientes2$Sample.Type, match(df_pacientes2$Case.ID, case_order))
-    normal <- c("Solid Tissue Normal")
-    df_pacientes2$category <- ifelse(df_pacientes2$Sample.Type %in% normal, "Normal", "Tumor")
-    df_pacientes2$category = paste(df_pacientes2$Case.ID, df_pacientes2$category, sep="_")
+    #case_order <- unique(df_pacientes2$Case.ID)
+    #df_pacientes2 <- df_pacientes2 %>% arrange(df_pacientes2$Sample.Type, match(df_pacientes2$Case.ID, case_order))
+    #normal <- c("Solid Tissue Normal")
+    #df_pacientes2$category <- ifelse(df_pacientes2$Sample.Type %in% normal, "Normal", "Tumor")
+    #df_pacientes2$category = paste(df_pacientes2$Case.ID, df_pacientes2$category, sep="_")
     df_pacientes2$File.Name<- str_replace(df_pacientes2$File.Name, ".bam", "_PDUI")
+    
     return(df_pacientes2)
     
     
@@ -770,14 +823,14 @@ server <- function(input, output,session) {
   # DPDUI
   dpdui <- eventReactive(input$run2,{
     files <- input$txt_files
-    if (is.null(files)) {
+    file <- input$txt_file2
+    if (is.null(files) || is.null(file)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
     df <- rbindlist(sapply(files$datapath, fread, simplify = FALSE), use.names = TRUE)
     df <- subset(df, select = -c(fit_value,Loci,Predicted_Proximal_APA))
-    
     
     idx <- match(df_pacientes2()$File.Name, colnames(df))
     idx <- append(1, idx)
@@ -786,7 +839,7 @@ server <- function(input, output,session) {
     
     num_cols = ncol(df)
     
-    colnames(df)[2:num_cols]<-df_pacientes2()$category
+    colnames(df)[2:num_cols] <- df_pacientes2()$Sample.Type
     
     num_cols2 = ((ncol(df)-1)/2)+1
     num_cols3 = ((ncol(df)-1)/2)+2
@@ -800,13 +853,13 @@ server <- function(input, output,session) {
       df[[i]][is.na(df[[i]])] <- rowMeans(df[,num_cols3:num_cols], na.rm = TRUE)[is.na(df[[i]])]
     }
     
-    df <- data.frame(df)  
-    res <- df[, grepl("_Tumor", colnames(df))] - df[, grepl("_Normal", colnames(df))]
+    df <- data.frame(df)
+    res <- df[, grepl(unique(df_pacientes2()$Sample.Type)[1], colnames(df))] - df[, grepl(unique(df_pacientes2()$Sample.Type)[2], colnames(df))]
     
-    colnames(res) <- paste(colnames(df[, grepl("_Tumor", colnames(df))]),
-                           colnames(df[, grepl("_Normal", colnames(df))]), sep = "-")
+    colnames(res) <- paste(colnames(df[, grepl(unique(df_pacientes2()$Sample.Type)[1], colnames(df))]),
+                           colnames(df[, grepl(unique(df_pacientes2()$Sample.Type)[2], colnames(df))]), sep = "-")
     
-    df <-cbind(df, res)
+    df <- cbind(df, res)
     
     num_cols5 = ncol(df)
     
@@ -886,20 +939,22 @@ server <- function(input, output,session) {
   
   df_pacientes3 <- eventReactive(input$run3,{
     file <- input$txt_file3
-    if (is.null(file)) {
+    datapath <- input$path2
+    
+    if (is.null(file) || datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     df_pacientes3 <- read.table(file$datapath, sep = "\t", header = TRUE)
-    df_pacientes3 <- dplyr::select(df_pacientes3, File.Name,Case.ID,Sample.Type)
-    df_pacientes3$File.Name<- str_replace(df_pacientes3$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
+    df_pacientes3 <- dplyr::select(df_pacientes3, File.Name,Sample.Type)
+    #df_pacientes3$File.Name<- str_replace(df_pacientes3$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
     
-    case_order <- unique(df_pacientes3$Case.ID)
-    df_pacientes3 <- df_pacientes3 %>% arrange(df_pacientes3$Sample.Type, match(df_pacientes3$Case.ID, case_order))
+    #case_order <- unique(df_pacientes3$Case.ID)
+    #df_pacientes3 <- df_pacientes3 %>% arrange(df_pacientes3$Sample.Type, match(df_pacientes3$Case.ID, case_order))
     
     #normal <- c("Solid Tissue Normal")
-    df_pacientes3$category <- ifelse(df_pacientes3$Sample.Type %in% c("Solid Tissue Normal"), "Normal", "Tumor")
-    df_pacientes3$category = paste(df_pacientes3$Case.ID, df_pacientes3$category, sep="_")
+    #df_pacientes3$category <- ifelse(df_pacientes3$Sample.Type %in% c("Solid Tissue Normal"), "Normal", "Tumor")
+    #df_pacientes3$category = paste(df_pacientes3$Case.ID, df_pacientes3$category, sep="_")
     
     return(df_pacientes3)
     
@@ -907,46 +962,89 @@ server <- function(input, output,session) {
   })
   
   NvsT_APA <- eventReactive(input$run3,{
+    file <- input$txt_file3
     datapath <- input$path2
-    if (is.null(datapath)) {
+    if (is.null(file) || datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
+    shinyalert("Processing", "APA Analysis has started. Please wait...", type = "info",
+               closeOnEsc = FALSE, closeOnClickOutside = FALSE, showConfirmButton = TRUE)
+    
     datapath <- str_replace_all(datapath, "\\\\", "/")
-    flsall <- dir(datapath,".bam")
-    flsall <- paste0(datapath, df_pacientes3()$File.Name)
-    names(flsall) <- df_pacientes3()$category
+    flsall <- dir(datapath, pattern = ".*\\.bam$")
+    flsall <- paste0(datapath, flsall)
+    names(flsall) <- gsub('.bam','',dir(datapath, pattern = ".*\\.bam$"))
+    
+    #flsall <- paste0(datapath, df_pacientes3()$File.Name) #D:/TRIMMED_READS is where the bam files are
+    #names(flsall) <- df_pacientes3()$category
+    #flsall
+    
     #Genomic reference
     URL="https://github.com/RJWANGbioinfo/PAS_reference_RData/blob/master/"
-    file="hg38_REF.RData"
+    file=paste0(input$ref_PAS1, "_REF.RData")
     source_data(paste0(URL,file,"?raw=True"))
     
-    refUTRraw=refUTRraw_hg38
-    dfIPAraw=dfIPA_hg38
-    dfLEraw=dfLE_hg38
+    if (input$ref_PAS1 == "hg19") {
+      refUTRraw=refUTRraw_hg19
+      dfIPAraw=dfIPA_hg19
+      dfLEraw=dfLE_hg19
+    } else if (input$ref_PAS1 == "hg38") {
+      refUTRraw=refUTRraw_hg38
+      dfIPAraw=dfIPA_hg38
+      dfLEraw=dfLE_hg38
+    } else if (input$ref_PAS1 == "mm9") {
+      refUTRraw=refUTRraw
+      dfIPAraw=dfIPA
+      dfLEraw=dfLE
+    } else if (input$ref_PAS1 == "mm10") {
+      refUTRraw=refUTRraw
+      dfIPAraw=dfIPA
+      dfLEraw=dfLE
+    }
+    
+    refUTRraw=refUTRraw
+    dfIPAraw=dfIPAraw
+    dfLEraw=dfLEraw
     PASREF=REF4PAS(refUTRraw,dfIPAraw,dfLEraw)
     UTRdbraw=PASREF$UTRdbraw
     dfIPA=PASREF$dfIPA
-    dfLE=PASREF$dfLE   
+    dfLE=PASREF$dfLE
     
     #Analysis of APA in 3’UTRs
     refUTRraw=refUTRraw
     UTRdbraw=REF3UTR(refUTRraw)
-    DFUTRraw <- read_csv("/home/bruno/I3S/COAD/Non-Smoking/TRIMMED_APALYZER/DFUTRraw.csv")
-    #DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="forward")
+    #DFUTRraw <- read_csv("/home/bruno/I3S/COAD/Non-Smoking/TRIMMED_APALYZER/DFUTRraw.csv")
+    
+    if (input$seq_strand1=="Forward stranded") {
+      DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="forward")
+    } else if (input$seq_strand1 == "Reverse stranded") {
+      DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="invert")
+    } else if (input$seq_strand1 == "Non-stranded") {
+      DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="NONE")
+    }
     
     x=nrow(df_pacientes3())/2
-    sampleTable1 = data.frame(samplename = c(names(flsall)),
-                              condition = c(rep("KD",x),rep("NT",x)))
+    sampleTable1 = data.frame(samplename = gsub(".bam", "", df_pacientes3()$File.Name),
+                              condition = c(rep(unique(df_pacientes3()$Sample.Type)[1],x),rep(unique(df_pacientes3()$Sample.Type)[2],x)))
+    sampleTable1$samplename <- paste0(sampleTable1$samplename, ".trim")
+    
+    #x=nrow(df_pacientes3())/2
+    #sampleTable1 = data.frame(samplename = c(names(flsall)),
+    #                          condition = c(rep("KD",x),rep("NT",x))) #OTIMIZAR, se são 2 amostras, 1 pro KD e 1 pro NT
+    
+    
     NvsT_APA=APAdiff(sampleTable1,DFUTRraw, 
-                     conKET='NT',
-                     trtKEY='KD',
+                     conKET=unique(df_pacientes3()$Sample.Type)[2],
+                     trtKEY=unique(df_pacientes3()$Sample.Type)[1],
                      PAS='3UTR',
                      CUTreads=5,
                      p_adjust_methods="fdr")
     
     NvsT_APA <- as.data.frame(NvsT_APA)
+    
+    shinyalert("Success", "APA Analysis has been completed successfully.", type = "success")
     
     return(NvsT_APA)
   })
@@ -1074,7 +1172,7 @@ server <- function(input, output,session) {
   )
   output$download_plot1 <- downloadHandler(
     filename = function() {
-      paste("plot1", ".png")
+      paste("plot1", ".png", sep = "")
     },
     content = function(file) {
       ggsave(file, a(), width = 6000, height = 4000,units = c("px"),dpi = 300)
@@ -1082,18 +1180,18 @@ server <- function(input, output,session) {
   )
   output$download_plot2 <- downloadHandler(
     filename = function() {
-      paste("plot2", ".png")
+      paste("plot2", ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file, b(),width = 800, height = 700,units = c("px"),dpi = 300)
+      ggsave(file, b(), width = 6000, height = 4000,units = c("px"),dpi = 300)
     }
   )
   output$download_plot3 <- downloadHandler(
     filename = function() {
-      paste("plot2", ".png")
+      paste("plot3", ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file, d(), dpi = 300)
+      ggsave(file, d(), width = 6000, height = 4000,units = c("px") ,dpi = 300)
       
     }
   )
@@ -1110,17 +1208,22 @@ server <- function(input, output,session) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
+    
     df_pacientes_dge <- read.table(file$datapath, sep = "\t", header = TRUE)
-    df_pacientes_dge <- dplyr::select(df_pacientes_dge, File.Name, Case.ID, Sample.Type)
-    df_pacientes_dge$File.Name<- str_replace(df_pacientes_dge$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.htseq.txt")
+    df_pacientes_dge <- dplyr::select(df_pacientes_dge, File.Name,Sample.Type)
     
-    df_pacientes_dge$Sample.Type <- str_replace(df_pacientes_dge$Sample.Type, "Primary Tumor", "PrimaryTumor")
-    df_pacientes_dge$Sample.Type <- str_replace(df_pacientes_dge$Sample.Type, "Solid Tissue Normal", "NormalTissue")
+    #df_pacientes_dge <- read.table(file$datapath, sep = "\t", header = TRUE)
+    #df_pacientes_dge <- dplyr::select(df_pacientes_dge, File.Name, Case.ID, Sample.Type)
+    df_pacientes_dge$File.Name<- str_replace(df_pacientes_dge$File.Name, ".bam", ".trim.htseq.txt")
+    
+    #df_pacientes_dge$Sample.Type <- str_replace(df_pacientes_dge$Sample.Type, "Primary Tumor", "PrimaryTumor")
+    #df_pacientes_dge$Sample.Type <- str_replace(df_pacientes_dge$Sample.Type, "Solid Tissue Normal", "NormalTissue")
     #normal <- c("NormalTissue")
-    df_pacientes_dge$category <- ifelse(df_pacientes_dge$Sample.Type %in% c("NormalTissue"), "NormalTissue", "PrimaryTumor")
-    df_pacientes_dge$category2 = paste(df_pacientes_dge$Case.ID, df_pacientes_dge$category, sep="_")
-    df_pacientes_dge$category3 = paste(df_pacientes_dge$File.Name, df_pacientes_dge$category, sep="_")
-    
+    #df_pacientes_dge$category <- ifelse(df_pacientes_dge$Sample.Type %in% c("NormalTissue"), "NormalTissue", "PrimaryTumor")
+    #df_pacientes_dge$category2 = paste(df_pacientes_dge$Case.ID, df_pacientes_dge$category, sep="_")
+    #df_pacientes_dge$category3 = paste(df_pacientes_dge$File.Name, df_pacientes_dge$Sample.Type, sep="_")
+    df_pacientes_dge$Sample.Type <- gsub(" ", "_", df_pacientes_dge$Sample.Type)
+      
     return(df_pacientes_dge)
   })
   
@@ -1130,18 +1233,27 @@ server <- function(input, output,session) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
+    
+    shinyalert("Processing", "DGE Analysis has started. Please wait...", type = "info",
+               closeOnEsc = FALSE, closeOnClickOutside = FALSE, showConfirmButton = TRUE)
+    
     dir <- str_replace_all(dir, "\\\\", "/")
     setwd(dir)
     getwd()
     sampleFiles=grep('.htseq.txt', list.files(dir), value=TRUE)
-    sampleNames=names(sampleFiles) <- df_pacientes_dge()$category3
-    sampleCondition=gsub("[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*.rna_seq.genomic.gdc_realn.trim.htseq.txt_",'',sampleNames)
+    sampleNames=names(sampleFiles) <- df_pacientes_dge()$Sample.Type
+    sampleCondition=gsub("[a-zA-Z0-9]*.trim.htseq.txt_",'',sampleNames)
     #sampleCondition=gsub("\\d[A-Za-z].sorted.htseq.txt_",'',sampleNames)
     
     sampleTable=data.frame(sampleName = df_pacientes_dge()$File.Name, fileName = sampleFiles, condition = sampleCondition)
-    reorder_idx <- match(sampleTable$sampleName, sampleTable$fileName) 
+    
+    reorder_idx <- match(sampleTable$sampleName,sampleTable$fileName) 
     sampleTable$fileName <- sampleTable$fileName[reorder_idx]
-    sampleTable <- sampleTable[order(sampleTable$condition), ]
+    
+    sampleTable <- sampleTable[order(sampleTable$condition),]
+    #reorder_idx <- match(sampleTable$sampleName, sampleTable$fileName) 
+    #sampleTable$fileName <- sampleTable$fileName[reorder_idx]
+    #sampleTable <- sampleTable[order(sampleTable$condition), ]
     
     dds <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
                                       directory = dir,
@@ -1150,7 +1262,7 @@ server <- function(input, output,session) {
     
     keep <- rowSums(counts(dds)) >= 5
     dds2 <- dds[keep, ]
-    dds2$condition <- factor(dds2$condition, levels = c("NormalTissue","PrimaryTumor"))
+    dds2$condition <- factor(dds2$condition, levels = c(unique(df_pacientes_dge()$Sample.Type)[2],unique(df_pacientes_dge()$Sample.Type)[1]))
     
     return(dds2)
   })
@@ -1178,16 +1290,16 @@ server <- function(input, output,session) {
     return(ddx)
   })
   
-  res <- eventReactive(input$run_dge,{
+  res <- reactive({
     ddx <- ddx()
     
-    res <- results(ddx, contrast=c("condition","NormalTissue","PrimaryTumor"))
+    res <- results(ddx, contrast=c("condition",unique(df_pacientes_dge()$Sample.Type)[2],unique(df_pacientes_dge()$Sample.Type)[1]))
     res <- as.data.frame(res)
     
     return(res)
   })
   
-  normalized_counts <- eventReactive(input$run_dge,{
+  normalized_counts <- reactive({
     ddx <- ddx()
     
     normalized_counts <- counts(ddx, normalized=TRUE)
@@ -1198,7 +1310,9 @@ server <- function(input, output,session) {
   resLFC <- eventReactive(input$run_dge,{
     ddx <- ddx()
     
-    resLFC <- lfcShrink(ddx, coef="condition_PrimaryTumor_vs_NormalTissue", type="apeglm")
+    cond <- paste0("condition_", unique(df_pacientes_dge()$Sample.Type)[1], "_vs_", unique(df_pacientes_dge()$Sample.Type)[2])  
+    
+    resLFC <- lfcShrink(ddx, coef=cond, type="apeglm")
     
     return(resLFC)
   })
@@ -1212,7 +1326,12 @@ server <- function(input, output,session) {
     return(vst)
   })
   
-  htmap <- eventReactive(input$run_dge,{
+  debounced_cellwidth <- debounce(reactive(input$cellwidth), 1000)  # 500 ms delay
+  debounced_cellheight <- debounce(reactive(input$cellheight), 1000)  # 500 ms delay
+  
+  htmap <- reactive({
+    req(input$run_dge)
+    
     res <- res()
     normalized_counts <- normalized_counts()
     
@@ -1221,9 +1340,9 @@ server <- function(input, output,session) {
     sigCounts <- allSig[, 2:(ncol(allSig) - 6)]
     row.names(sigCounts) <- allSig$Row.names
     
-    htmap <- pheatmap(log2(sigCounts+1), scale = "row", cluster_rows=TRUE, show_rownames=FALSE, show_colnames=FALSE,
+    htmap <- pheatmap(log2(sigCounts+1), scale = "row", cluster_rows=TRUE, show_rownames=FALSE, show_colnames=TRUE,
              cluster_cols=TRUE, treeheight_row = 0, treeheight_col = 50,  display_numbers=FALSE,
-             color = colorRampPalette(c("blue", "white", "red"))(100), cellwidth = 12, cellheight = 0.05)
+             color = colorRampPalette(c("blue", "white", "red"))(100), cellwidth = debounced_cellwidth(), cellheight = debounced_cellheight())
     
     return(htmap)
   })
@@ -1263,6 +1382,8 @@ server <- function(input, output,session) {
     res05 <- cbind(gene_symbol = rownames(res05), res05)
     
     res05 <- as.data.frame(res05)
+    
+    shinyalert("Success", "DGE Analysis has been completed successfully.", type = "success")
     
     return(res05)
   })
@@ -1373,7 +1494,7 @@ server <- function(input, output,session) {
       paste("plot_heatmap", ".png", sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = htmap(), width = 6000, height = 6000, units = c("px"), bg = "white", dpi = 600)
+      ggsave(file, plot = htmap(), width = 8000, height = 6000, units = c("px"), bg = "white", dpi = 600)
     }
   )
   
@@ -1418,7 +1539,8 @@ server <- function(input, output,session) {
     }
     
     gene_list <- read.csv(file$datapath, header = TRUE)
-    gene_list <- gene_list[, 2]
+    #gene_list <- gene_list[, 2]
+    gene_list <- gene_list$gene_symbol
     
     return(gene_list)
   })
@@ -1427,14 +1549,22 @@ server <- function(input, output,session) {
   ego_BP <- eventReactive(input$run_go,{
     de <- de()
     #pvalue_cutoff <- as.numeric(input$output_type2_go)
+    shinyalert("Processing", "GO Analysis has started. Please wait...", type = "info",
+               closeOnEsc = FALSE, closeOnClickOutside = FALSE, showConfirmButton = TRUE)
     
-    ego <- enrichGO(gene = de, OrgDb = "org.Hs.eg.db", ont = "BP", keyType = "SYMBOL", pvalueCutoff = Inf)
+    if (input$database_go == "Human") {
+      ego <- enrichGO(gene = de, OrgDb = "org.Hs.eg.db", ont = "BP", keyType = "SYMBOL", pvalueCutoff = Inf)
+    } else if (input$database_go == "Mouse") {
+      ego <- enrichGO(gene = de, OrgDb = "org.Mm.eg.db", ont = "BP", keyType = "SYMBOL", pvalueCutoff = Inf)
+    }
     
     ego@result$GeneRatio_num <- sapply(strsplit(as.character(ego@result$GeneRatio), "/"), function(x) as.numeric(x[1]))
     ego@result$GeneRatio_den <- sapply(strsplit(as.character(ego@result$GeneRatio), "/"), function(x) as.numeric(x[2]))
     ego@result$BgRatio_num <- sapply(strsplit(as.character(ego@result$BgRatio), "/"), function(x) as.numeric(x[1]))
     ego@result$BgRatio_den <- sapply(strsplit(as.character(ego@result$BgRatio), "/"), function(x) as.numeric(x[2]))
     ego@result$fe <- ego@result$GeneRatio_num/ego@result$GeneRatio_den / (ego@result$BgRatio_num/ego@result$BgRatio_den)
+    
+    shinyalert("Success", "GO Analysis has been completed successfully.", type = "success")
     
     return(ego)
   })
@@ -1443,7 +1573,11 @@ server <- function(input, output,session) {
     de <- de()
     #pvalue_cutoff <- as.numeric(input$output_type2_go)
     
-    ego <- enrichGO(gene = de, OrgDb = "org.Hs.eg.db", ont = "MF", keyType = "SYMBOL", pvalueCutoff = Inf)
+    if (input$database_go == "Human") {
+      ego <- enrichGO(gene = de, OrgDb = "org.Hs.eg.db", ont = "MF", keyType = "SYMBOL", pvalueCutoff = Inf)
+    } else if (input$database_go == "Mouse") {
+      ego <- enrichGO(gene = de, OrgDb = "org.Mm.eg.db", ont = "MF", keyType = "SYMBOL", pvalueCutoff = Inf)
+    }
     
     ego@result$GeneRatio_num <- sapply(strsplit(as.character(ego@result$GeneRatio), "/"), function(x) as.numeric(x[1]))
     ego@result$GeneRatio_den <- sapply(strsplit(as.character(ego@result$GeneRatio), "/"), function(x) as.numeric(x[2]))
@@ -1523,19 +1657,22 @@ server <- function(input, output,session) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     } else if (nrow(files) == 1) {
-      shinyalert("Warning", "Please input more than one file for intersection", type = "warning")
+      shinyalert("Error", "Please input more than one file for intersection", type = "error")
       return(NULL)
     } else if (nrow(files) == 2) {
-      df1 <- read.csv(files[4][1, ], header = TRUE)
-      df2 <- read.csv(files[4][2, ], header = TRUE)
+      #df1 <- read.csv(files[4][1, ], header = TRUE)
+      #df2 <- read.csv(files[4][2, ], header = TRUE)
+      
+      df1 <- read.csv(files$datapath[1], header = TRUE)
+      df2 <- read.csv(files$datapath[2], header = TRUE)
       
       x <- list(
-        dataset1 = df1[, 2],
-        dataset2 = df2[, 2]
+        dataset1 = df1$gene_symbol,
+        dataset2 = df2$gene_symbol
       )
       
-      selected_df1 <- df1[, 2, drop = FALSE]
-      selected_df2 <- df2[, 2, drop = FALSE]
+      selected_df1 <- df1[, 1, drop = FALSE]
+      selected_df2 <- df2[, 1, drop = FALSE]
       
       common_genes <- merge(selected_df1, selected_df2, by.x = 1, by.y = 1)
       common_genes <- unique(common_genes)
@@ -1544,19 +1681,23 @@ server <- function(input, output,session) {
       
       return(list(plot = plot, common_genes = common_genes))
     } else if (nrow(files) == 3) {
-      df1 <- read.csv(files[4][1, ], header = TRUE)
-      df2 <- read.csv(files[4][2, ], header = TRUE)
-      df3 <- read.csv(files[4][3, ], header = TRUE)
+      #df1 <- read.csv(files[4][1, ], header = TRUE)
+      #df2 <- read.csv(files[4][2, ], header = TRUE)
+      #df3 <- read.csv(files[4][3, ], header = TRUE)
+      
+      df1 <- read.csv(files$datapath[1], header = TRUE)
+      df2 <- read.csv(files$datapath[2], header = TRUE)
+      df3 <- read.csv(files$datapath[3], header = TRUE)
       
       x <- list(
-        dataset1 = df1[, 2],
-        dataset2 = df2[, 2],
-        dataset3 = df3[, 2]
+        dataset1 = df1$gene_symbol,
+        dataset2 = df2$gene_symbol,
+        dataset3 = df3$gene_symbol
       )
       
-      selected_df1 <- df1[, 2, drop = FALSE]
-      selected_df2 <- df2[, 2, drop = FALSE]
-      selected_df3 <- df3[, 2, drop = FALSE]
+      selected_df1 <- df1[, 1, drop = FALSE]
+      selected_df2 <- df2[, 1, drop = FALSE]
+      selected_df3 <- df3[, 1, drop = FALSE]
       
       common_genes <- merge(selected_df1, selected_df2, by.x = 1, by.y = 1)
       common_genes <- merge(common_genes, selected_df3, by.x = 1, by.y = 1)
@@ -1566,22 +1707,27 @@ server <- function(input, output,session) {
       
       return(list(plot = plot, common_genes = common_genes))
     } else if (nrow(files) == 4) {
-      df1 <- read.csv(files[4][1, ], header = TRUE)
-      df2 <- read.csv(files[4][2, ], header = TRUE)
-      df3 <- read.csv(files[4][3, ], header = TRUE)
-      df4 <- read.csv(files[4][4, ], header = TRUE)
+      #df1 <- read.csv(files[4][1, ], header = TRUE)
+      #df2 <- read.csv(files[4][2, ], header = TRUE)
+      #df3 <- read.csv(files[4][3, ], header = TRUE)
+      #df4 <- read.csv(files[4][4, ], header = TRUE)
+      
+      df1 <- read.csv(files$datapath[1], header = TRUE)
+      df2 <- read.csv(files$datapath[2], header = TRUE)
+      df3 <- read.csv(files$datapath[3], header = TRUE)
+      df4 <- read.csv(files$datapath[4], header = TRUE) 
       
       x <- list(
-        dataset1 = df1[, 2],
-        dataset2 = df2[, 2],
-        dataset3 = df3[, 2],
-        dataset4 = df4[, 2]
+        dataset1 = df1$gene_symbol,
+        dataset2 = df2$gene_symbol,
+        dataset3 = df3$gene_symbol,
+        dataset4 = df4$gene_symbol
       )
       
-      selected_df1 <- df1[, 2, drop = FALSE]
-      selected_df2 <- df2[, 2, drop = FALSE]
-      selected_df3 <- df3[, 2, drop = FALSE]
-      selected_df4 <- df4[, 2, drop = FALSE]
+      selected_df1 <- df1[, 1, drop = FALSE]
+      selected_df2 <- df2[, 1, drop = FALSE]
+      selected_df3 <- df3[, 1, drop = FALSE]
+      selected_df4 <- df4[, 1, drop = FALSE]
       
       common_genes <- merge(selected_df1, selected_df2, by.x = 1, by.y = 1)
       common_genes <- merge(common_genes, selected_df3, by.x = 1, by.y = 1)
@@ -1599,25 +1745,31 @@ server <- function(input, output,session) {
         grid.draw(venn_object)
       }
       
-      df1 <- read.csv(files[4][1, ], header = TRUE)
-      df2 <- read.csv(files[4][2, ], header = TRUE)
-      df3 <- read.csv(files[4][3, ], header = TRUE)
-      df4 <- read.csv(files[4][4, ], header = TRUE)
-      df5 <- read.csv(files[4][5, ], header = TRUE)
+      #df1 <- read.csv(files[4][1, ], header = TRUE)
+      #df2 <- read.csv(files[4][2, ], header = TRUE)
+      #df3 <- read.csv(files[4][3, ], header = TRUE)
+      #df4 <- read.csv(files[4][4, ], header = TRUE)
+      #df5 <- read.csv(files[4][5, ], header = TRUE)
+      
+      df1 <- read.csv(files$datapath[1], header = TRUE)
+      df2 <- read.csv(files$datapath[2], header = TRUE)
+      df3 <- read.csv(files$datapath[3], header = TRUE)
+      df4 <- read.csv(files$datapath[4], header = TRUE)
+      df5 <- read.csv(files$datapath[5], header = TRUE)
       
       x <- list(
-        dataset1 = df1[, 2],
-        dataset2 = df2[, 2],
-        dataset3 = df3[, 2],
-        dataset4 = df4[, 2],
-        dataset5 = df5[, 2]
+        dataset1 = df1$gene_symbol,
+        dataset2 = df2$gene_symbol,
+        dataset3 = df3$gene_symbol,
+        dataset4 = df4$gene_symbol,
+        dataset5 = df5$gene_symbol
       )
       
-      selected_df1 <- df1[, 2, drop = FALSE]
-      selected_df2 <- df2[, 2, drop = FALSE]
-      selected_df3 <- df3[, 2, drop = FALSE]
-      selected_df4 <- df4[, 2, drop = FALSE]
-      selected_df5 <- df5[, 2, drop = FALSE]
+      selected_df1 <- df1[, 1, drop = FALSE]
+      selected_df2 <- df2[, 1, drop = FALSE]
+      selected_df3 <- df3[, 1, drop = FALSE]
+      selected_df4 <- df4[, 1, drop = FALSE]
+      selected_df5 <- df5[, 1, drop = FALSE]
       
       common_genes <- merge(selected_df1, selected_df2, by.x = 1, by.y = 1)
       common_genes <- merge(common_genes, selected_df3, by.x = 1, by.y = 1)
@@ -1664,152 +1816,19 @@ server <- function(input, output,session) {
     }
   )
   
-  ##### SURVIVAL ANALYSIS #####
-  
-  test_df <- eventReactive(input$run_surv,{
-    
-    rm(list = ls(all.names = TRUE), envir = .GlobalEnv)
-    
-    file <- input$surv_sample_sheet
-    if (is.null(file)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
-    df_pacientes <- read.table(file$datapath, sep = "\t", header = TRUE)
-    df_pacientes <- dplyr::select(df_pacientes, File.Name, Case.ID, Sample.Type)
-    df_pacientes$File.Name<- str_replace(df_pacientes$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.htseq.txt")
-    
-    df_pacientes$Sample.Type <- str_replace(df_pacientes$Sample.Type, "Primary Tumor", "PrimaryTumor")
-    df_pacientes$Sample.Type <- str_replace(df_pacientes$Sample.Type, "Solid Tissue Normal", "NormalTissue")
-    #normal <- c("NormalTissue")
-    df_pacientes$category <- ifelse(df_pacientes$Sample.Type %in% c("NormalTissue"), "NormalTissue", "PrimaryTumor")
-    df_pacientes$category2 <- paste(df_pacientes$Case.ID, df_pacientes$category, sep="_")
-    df_pacientes$category3 <- paste(df_pacientes$File.Name, df_pacientes$category, sep="_")
-    
-    file2 <- input$surv_clinical_data
-    if (is.null(file2)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
-    clinical <- read.csv(file2$datapath, sep = "\t", header = TRUE)
-    
-    clinical$days_to_last_follow_up <- as.numeric(clinical$days_to_last_follow_up)
-    clinical$days_to_death <- as.numeric(clinical$days_to_death)
-    
-    clinical$deceased <- ifelse(clinical$vital_status == "Alive", FALSE, TRUE)
-    clinical$overall_survival <- ifelse(clinical$vital_status == "Alive",
-                                        clinical$days_to_last_follow_up,
-                                        clinical$days_to_death)
-    
-    dir <- input$path_surv
-    if (is.null(dir)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
-    setwd(dir)
-    getwd()
-    
-    sampleFiles=grep('.htseq.txt',list.files(dir), value=TRUE)
-    sampleFiles
-    sampleNames=names(sampleFiles)<-df_pacientes$category3
-    sampleNames
-    sampleCondition=gsub("[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*-[a-zA-Z0-9]*.rna_seq.genomic.gdc_realn.trim.htseq.txt_",'',sampleNames)
-    #sampleCondition=gsub("\\d[A-Za-z].sorted.htseq.txt_",'',sampleNames)
-    sampleCondition
-    sampleTable=data.frame(sampleName=df_pacientes$File.Name, fileName=sampleFiles, condition=sampleCondition)
-    sampleTable
-    
-    reorder_idx <- match(sampleTable$sampleName,sampleTable$fileName) 
-    sampleTable$fileName <- sampleTable$fileName[reorder_idx]
-    
-    sampleTable <- sampleTable[order(sampleTable$condition),]
-    sampleTable
-    # Import sanmples data and counts into DESeqDataSet object
-    # "dds" stands for Deseq-Data-Set
-    dds <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
-                                      directory = dir,
-                                      design = ~ 1)
-    
-    keep <- rowSums(counts(dds)) >= 5
-    dds2 <- dds[keep,]
-    
-    vsd <- vst(dds2, blind = FALSE)
-    hn_matrix_vst <- assay(vsd)
-    
-    test <- hn_matrix_vst %>%
-      as.data.frame() %>%
-      rownames_to_column(var = "gene_id") %>%
-      gather(key = "File.Name", value = "counts", -gene_id)
-    
-    merged_df <- merge(test, df_pacientes, by = 'File.Name', all.x = TRUE)
-    
-    # Replace the 'filename' column with the corresponding 'submitter_id'
-    test['File.Name'] <- merged_df['Case.ID']
-    test['Condition'] <- merged_df['Sample.Type']
-    
-    goi <- input$surv_gene
-    if (is.null(goi)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
-    
-    test_final <- test %>%
-      filter(gene_id == goi) %>%
-      filter(Condition == "PrimaryTumor")
-
-    # Get median value
-    median_value <- median(test_final$counts)
-    
-    # Denote which cases have higher or lower expression than the median
-    test_final$strata <- ifelse(test_final$counts >= median_value, "HIGH", "LOW")
-    
-    # Add clinical data to test dataset
-    test_final <- merge(test_final, clinical, by.x = "File.Name", by.y = "case_submitter_id")
-    #test_final <- test_final[!duplicated(test_final$counts), ]
-    test_final <- test_final[!duplicated(test_final$File.Name), ]
-    
-    assign("test_final", test_final, envir = .GlobalEnv)
-    
-    return(test_final)
-  })
-  
-  plot_final <- eventReactive(input$run_surv,{
-    test_final <- req(test_df())
-    
-    fit <- survfit(Surv(overall_survival, deceased) ~ strata, data = test_final)
-    plot <- ggsurvplot(fit, pval = TRUE, conf.int = FALSE, risk.table = FALSE)
-    
-    return(plot$plot)
-  })
-  
-  # Use test_df() in the renderPlot
-  output$plot_surv <- renderPlot({
-    req(plot_final())
-  }, width = 1200, height = 750)
-  
-  output$download_plot_surv <- downloadHandler(
-    filename = function() {
-      paste("plot_surv_", input$surv_gene, ".png", sep = "")
-    },
-    content = function(file) {
-      ggsave(file, plot_final(), dpi = 300)
-      
-    }
-  )
   
   ##### APA CORR #####
   plot_corr_apa <- eventReactive(input$run_corr,{
     files1 <- input$corr_apa
-    if (is.null(files1)) {
+    files2 <- input$corr_dge
+    if (is.null(files1) || is.null(files2)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
-    files2 <- input$corr_dge
-    if (is.null(files2)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
+    shinyalert("Processing", "APA & DGE correlation analysis has started. Please wait...", type = "info",
+               closeOnEsc = FALSE, closeOnClickOutside = FALSE, showConfirmButton = TRUE)
+    
     df_APA_len <- read.csv(files1$datapath[1])
     df_APA_short <- read.csv(files1$datapath[2])
     
@@ -1842,6 +1861,8 @@ server <- function(input, output,session) {
       ) +
       scale_color_manual(values = c("UP" = "red", "DN" = "blue"))
     
+    shinyalert("Success", "APA & DGE correlation analysis has been completed successfully.", type = "success")
+    
     return(plot)
   })
   
@@ -1858,19 +1879,19 @@ server <- function(input, output,session) {
     }
   )
   
+  
   ##### IPA CORR #####
   plot_corr_ipa <- eventReactive(input$run_corr2,{
     files1 <- input$corr_ipa
-    if (is.null(files1)) {
+    files2 <- input$corr_dge2
+    if (is.null(files1) || is.null(files2)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
-    files2 <- input$corr_dge2
-    if (is.null(files2)) {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
+    shinyalert("Processing", "IPA & DGE correlation analysis has started. Please wait...", type = "info",
+               closeOnEsc = FALSE, closeOnClickOutside = FALSE, showConfirmButton = TRUE)
+    
     df_IPA_up <- read.csv(files1$datapath[1])
     df_IPA_up <- df_IPA_up %>% distinct(gene_symbol, .keep_all = TRUE)
     df_IPA_dn <- read.csv(files1$datapath[2])
@@ -1904,6 +1925,8 @@ server <- function(input, output,session) {
         y = "log2FC DGE"
       ) +
       scale_color_manual(values = c("UP" = "red", "DN" = "blue"))
+    
+    shinyalert("Success", "IPA & DGE correlation analysis has been completed successfully.", type = "success")
     
     return(plot)
   })
