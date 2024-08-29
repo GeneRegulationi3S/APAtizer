@@ -1,4 +1,4 @@
-FILES = glob_wildcards('RAW_BAM/{name}.bam')
+FILES = glob_wildcards('../RAW_BAM/{name}.bam')
 
 # extract the {name} values into a list
 NAMES = FILES.name
@@ -6,16 +6,16 @@ NAMES = FILES.name
 rule all:
     input:
         # use the extracted name values to build new filenames
-        "DaPars2/mapping_wig_location_with_depth.txt",
-        "DaPars_data/",
-        "TRIMMED_htseq/FILTERED/"
+        "../DaPars2/mapping_wig_location_with_depth.txt",
+        "../DaPars_data/",
+        "../TRIMMED_htseq/FILTERED/"
 
 rule mapping_wig_location_with_depth:
     priority: 100
     input:
-        expand("DaPars2/{name}.mapping_wig_location_with_depth.txt", name=NAMES),
+        expand("../DaPars2/{name}.mapping_wig_location_with_depth.txt", name=NAMES),
     output:
-        "DaPars2/mapping_wig_location_with_depth.txt",
+        "../DaPars2/mapping_wig_location_with_depth.txt",
     shell:
         "cat {input} >> {output}"
 
@@ -25,20 +25,20 @@ rule DaPars2:
         expand("src/dapars_configs/Dapars2_configure_file_mm10"),
         expand("src/dapars_configs/chr_mm10.txt"),
     output:
-        directory("DaPars_data")
+        directory("../DaPars_data")
     shell:
         """
-        sed -i "7s#Aligned_Wig_files=.*#&$(ls WIG/*.wig | tr '\n' ',' | sed 's/,$//')#" {input[0]} && \
-        mkdir DaPars_data && \
+        sed -i "7s#Aligned_Wig_files=.*#&$(ls ../WIG/*.wig | tr '\n' ',' | sed 's/,$//')#" {input[0]} && \
+        mkdir ../DaPars_data && \
         python3 src/dapars_configs/DaPars2_Multi_Sample_Multi_Chr.py {input[0]} {input[1]} && \
-        mv DaPars_data_chr*/*temp* DaPars_data/ && \
-        rm -r DaPars_data_chr* && \
+        mv ../DaPars_data_chr*/*temp* ../DaPars_data/ && \
+        rm -r ../DaPars_data_chr* && \
         sed -i '7s/.*/Aligned_Wig_files=/' {input[0]}
         """
 
 rule protein_coding_filter:
     priority: 10
     output:
-        directory("TRIMMED_htseq/FILTERED")
+        directory("../TRIMMED_htseq/FILTERED")
     shell:
         "Rscript src/filter_files/protein_coding_filter_mm10.R"

@@ -1,0 +1,32 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                count    min threads    max threads
+-------------------------------  -------  -------------  -------------
+DaPars2                                1              1              1
+all                                    1              1              1
+mapping_wig_location_with_depth        1              1              1
+protein_coding_filter                  1              1              1
+total                                  4              1              1
+
+Select jobs to execute...
+
+[Wed Aug 28 21:05:12 2024]
+rule mapping_wig_location_with_depth:
+    output: DaPars2/mapping_wig_location_with_depth.txt
+    jobid: 1
+    priority: 100
+    resources: tmpdir=/tmp
+
+Terminating processes on user request, this might take some time.
+[Wed Aug 28 21:08:52 2024]
+Error in rule mapping_wig_location_with_depth:
+    jobid: 1
+    output: DaPars2/mapping_wig_location_with_depth.txt
+    shell:
+        cat  >> DaPars2/mapping_wig_location_with_depth.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: /media/bruno/Seagate Basic/TEST_ION/APAtizer/.snakemake/log/2024-08-28T210511.515512.snakemake.log

@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                count    min threads    max threads
+-------------------------------  -------  -------------  -------------
+DaPars2                                1              1              1
+all                                    1              1              1
+mapping_wig_location_with_depth        1              1              1
+total                                  3              1              1
+
+Select jobs to execute...
+
+[Wed Aug 28 23:33:35 2024]
+rule mapping_wig_location_with_depth:
+    input: ../DaPars2/WT_CTRL_1.mapping_wig_location_with_depth.txt, ../DaPars2/WT_CTRL_2.mapping_wig_location_with_depth.txt, ../DaPars2/WT_DEN_1.mapping_wig_location_with_depth.txt, ../DaPars2/WT_DEN_2.mapping_wig_location_with_depth.txt
+    output: ../DaPars2/mapping_wig_location_with_depth.txt
+    jobid: 1
+    priority: 100
+    resources: tmpdir=/tmp
+
+[Wed Aug 28 23:33:35 2024]
+Finished job 1.
+1 of 3 steps (33%) done
+Select jobs to execute...
+
+[Wed Aug 28 23:33:35 2024]
+rule DaPars2:
+    input: src/dapars_configs/Dapars2_configure_file_mm9, src/dapars_configs/chr_mm9.txt
+    output: ../DaPars_data
+    jobid: 2
+    priority: 20
+    resources: tmpdir=/tmp
+
+[Wed Aug 28 23:33:37 2024]
+Finished job 2.
+2 of 3 steps (67%) done
+Select jobs to execute...
+
+[Wed Aug 28 23:33:37 2024]
+localrule all:
+    input: ../DaPars2/mapping_wig_location_with_depth.txt, ../DaPars_data, ../TRIMMED_htseq/FILTERED
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Wed Aug 28 23:33:37 2024]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: /media/bruno/Seagate Basic/TEST_ION/APAtizer/.snakemake/log/2024-08-28T233334.588994.snakemake.log
