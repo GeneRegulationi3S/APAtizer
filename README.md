@@ -1,12 +1,12 @@
 # Description
-APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq data. Additionally, it is capable of performing differential gene expression, gene ontology analysis, visualizing Venn diagram intersections and pearson correlation analysis. APAtizer is equipped to handle BAM files, bed-graph files and htseq files. It is a user-friendly interface, that allows users to generate informative visualizations, including volcano plots, heatmaps, Venn intersections and gene lists. The APAtizer tool also provides the functionality to download the aforementioned plots and gene lists for further analysis and exploration. 
+APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq data. Additionally, it is capable of performing differential gene expression, gene ontology analysis, visualizing Venn diagram intersections and Pearson correlation analysis. APAtizer is equipped to handle BAM files, DaPars txt files and htseq files. It is a user-friendly interface, that allows users to generate informative visualizations, including volcano plots, heatmaps, Venn intersections and gene lists. The APAtizer tool also provides the functionality to download the aforementioned plots and gene lists for further analysis and exploration. 
 
 # Workflow
 ![image](https://github.com/brss12/APAtizer/assets/121204829/02d6eb3a-6bd1-47f1-9c40-b0a9ec19af1d)
 
 
 # Installing dependencies
-To install the required dependencies for the creation of the input files for APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
+To install the required command line tools for the creation of the input files necessary to use APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
 ```shell
 ./install_dependencies_linux.sh #Linux
 ```
@@ -15,7 +15,16 @@ To install the required dependencies for the creation of the input files for APA
 ```
 
 # Creating the input files
-To start, clone the repository in the same directory where your raw BAM files are located. The scripts [APAtizer_inputs_1.smk](APAtizer_inputs_1.smk) and [APAtizer_inputs_2.smk](APAtizer_inputs_2.smk) employ the snakemake workflow to create fastqc reports, sort and remove the duplicates from the raw TCGA BAM files required for the APA analysis step using the APAlyzer algorithm and creates the Dapars2 files required for APA analysis employing the DaPars2 algorithm. In addition, it also creates the htseq files required for the differential gene expression analysis feature of the APAtizer tool.
+The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** and enter the folder with the following commands.
+
+```shell
+git clone
+```
+
+
+
+
+The scripts [APAtizer_inputs_1.smk](APAtizer_inputs_1.smk) and [APAtizer_inputs_2.smk](APAtizer_inputs_2.smk) employ the snakemake workflow to create fastqc reports, sort and remove the duplicates from the raw TCGA BAM files required for the APA analysis step using the APAlyzer algorithm and creates the Dapars2 files required for APA analysis employing the DaPars2 algorithm. In addition, it also creates the htseq files required for the differential gene expression analysis feature of the APAtizer tool.
 
 The script requires the raw BAM files to be placed in a folder called **RAW_BAM** and, upon running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
 
