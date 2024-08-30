@@ -33,6 +33,7 @@ rule DaPars2:
         python3 src/dapars_configs/DaPars2_Multi_Sample_Multi_Chr.py {input[0]} {input[1]} && \
         mv ../DaPars_data_chr*/*temp* ../DaPars_data/ && \
         rm -r ../DaPars_data_chr* && \
+        rm -r ../SORTED_BAM ../SORTED_QC ../WIG ../DaPars2 ../TRIMMED_QC && \
         sed -i '7s/.*/Aligned_Wig_files=/' {input[0]}
         """
 
