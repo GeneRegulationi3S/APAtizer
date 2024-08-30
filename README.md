@@ -18,15 +18,22 @@ To install the required command line tools for the creation of the input files n
 The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** and enter the folder with the following commands.
 
 ```shell
-git clone
+git clone https://github.com/brss12/APAtizer.git && cd APAtizer
 ```
 
+After this, you will find a file called [create_inputs.sh](create_inputs.sh). Run it using the following command.
 
+```shell
+chmod +x create_inputs.sh && ./create_inputs.sh
+```
 
+This script will prompt the user to select the number (1-4) corresponding to the genome version using in the alignment of the FASTQ files to create the BAM files. This will be essencial for the creation of the input files necessary for APAtizer.
 
-The scripts [APAtizer_inputs_1.smk](APAtizer_inputs_1.smk) and [APAtizer_inputs_2.smk](APAtizer_inputs_2.smk) employ the snakemake workflow to create fastqc reports, sort and remove the duplicates from the raw TCGA BAM files required for the APA analysis step using the APAlyzer algorithm and creates the Dapars2 files required for APA analysis employing the DaPars2 algorithm. In addition, it also creates the htseq files required for the differential gene expression analysis feature of the APAtizer tool.
+![image](https://github.com/user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
 
-The script requires the raw BAM files to be placed in a folder called **RAW_BAM** and, upon running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
+Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user, will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically creates fastqc reports, sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, creates the DaPars txt files required for APA analysis employing the DaPars algorithm and it also created the htseq files required for the differential gene expression analysis feature of the tool. All of these downstream analysis take place in the APAtizer's user interface.
+
+After finishing running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
 
 Depending on the size and ammount of BAM files, we recommend running both scripts in a HPC environment. With the following command, run the first script on the same directory of the **RAW_BAM** folder to create the sorted and de-duplicated BAM files and the htseq files.
 ```shell
