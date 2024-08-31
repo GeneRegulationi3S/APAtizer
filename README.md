@@ -33,39 +33,36 @@ This script will prompt the user to select the number (1-4) corresponding to the
 
 Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, creates the DaPars txt files required for APA analysis employing the DaPars algorithm and it also creates the htseq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface.
 
-After finishing running, the folders **TRIMMED_READS**, **TRIMMED_QC**, **TRIMMED_htseq** and **DaPars_data** are created. In the **TRIMMED_READS** folder, is where the de-duplicated BAM files along with the corresponding BAI index files are located. In the **TRIMMED_QC** folder, is where the fastqc reports of the de-duplicated BAM files are located for the user to obtain information about the number of reads, length of reads and many more parameters about the BAM files. In the **TRIMMED_htseq** folder is where the htseq files for the DGE analysis are located. These files are obtained using the RefSeq GTF files from NCBI for the genome version specified by the user upon running the [create_inputs.sh](create_inputs.sh) script. Finally, in the **DaPars_data** folder, is where the txt files necessary for the DaPars analysis are located.
+After finishing running, the folders **TRIMMED_READS**, **TRIMMED_QC**, **TRIMMED_htseq** and **DaPars_data** are created. In the **TRIMMED_READS** folder, is where the de-duplicated BAM files along with the corresponding BAI index files are located. In the **TRIMMED_QC** folder, is where the fastqc reports of the de-duplicated BAM files are located for the user to obtain information about the number of reads, length of reads and many more parameters about the BAM files. In the **TRIMMED_htseq** folder is where the htseq files for the DGE analysis are located. Finally, in the **DaPars_data** folder, is where the txt files necessary for the DaPars analysis are located.
 
 Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a HPC environment.
 
 ***All done! Now you are ready to use APAtizer!***
 
-To run the tool, the user must run the R script [APAtizer.R](APAtizer.R) using the following command.
+To run the tool, the user can run the R script [APAtizer.R](APAtizer.R) using the following command or open the file on RStudio and press "Run App".
 
 ```shell
 Rscript APAtizer.R
 ```
 
-Now, to showcase the capabilities of APAtizer, we performed three case studies using out tool. The first one was done on 3'mRNA-Seq data from 8 samples (4 Tumour samples and 4 Normal samples) that were retrieved from patients of IPO-Porto (Instituto Português Oncologia do Porto). The FASTQ files were obtained employing Illumina sequencing technologies and were aligned in-house to the hg38 reference genome. Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data. The latter is a type of sequencing more suitable for APA event quantification.
+Now, to showcase the capabilities of APAtizer, we performed three case studies using our tool. 
 
-The first one was done on standard RNA-Seq data from 8 samples (4 samples from Heart and 4 samples from Testis) of Mouse retrieved from GEO (GSM900199 and GSM900193). The FASTQ files were retrieved and aligned to the mm9 reference genome to obtain BAM raw BAM files. These BAM files were processed via the snakemake workflow to create the inputs necessary for APAtizer. The second case 
+The first one was done on 3'mRNA-Seq data from 8 samples (4 Tumour samples and 4 Normal samples) that were retrieved from patients of IPO-Porto (Instituto Português Oncologia do Porto). The FASTQ files were obtained via Illumina sequencing technologies and were aligned to the hg38 reference genome to obtain raw BAM files that were put through our snakemake workflow with [create_inputs.sh](create_inputs.sh). Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data. The latter is a type of sequencing more suitable for APA event quantification.
+
+The second one was done on standard RNA-Seq data from 8 samples (4 samples from Heart and 4 samples from Testis) of Mouse retrieved from GEO (GSM900199 and GSM900193 accession numbers). The FASTQ files were obtained via Illumina sequencing technologies and were aligned to the mm9 reference genome to obtain raw BAM files that were processed via our snakemake workflow to create the inputs necessary for APAtizer. Our aim with this case study was to show to the users that, in addition to Human RNA-Seq data, APAtizer can also work with RNA-Seq data derived from Mouse.
+
+The third case study was done on standard RNA-Seq data from 4 samples (2 samples from DEN WT and 2 samples from WT) of Mouse also retrieved from NCBI (PRJNA214241 BioProject). The FASTQ files were obtained via Ion Torrent sequencing technologies and were once again aligned to the mm9 reference genome to obtain raw BAM files that were processed using our snakemake workflow script to create the inputs necessary for APAtizer. Our aim with this final case study was to showcase that the APAtizer tool, while working with Illumina sequencing technologies, can also work with Ion Torrent sequencing technologies which is a more recent approach compared to Illumina and also produces sequencing reads with different lengths.
+
+Below, we showcase a walkthrough of the APAtizer tool showing the different tabs, inputs and outputs that can be obtained by the user.
 
 
-
-
-
-# APAtizer walkthrough
-In the walkthrough of the APAtizer tool, a case study using 46 samples (23 Normal Tissue samples and 23 Primary Tumor samples) from colorectal cancer from TCGA was performed to showcase the interface and the capabilities of the tool all while retrieving useful insights from the data.
-
-To run the tool, the user must run the R script [APAtizer.R](APAtizer.R) using the following command.
-```shell
-Rscript APAtizer.R
-```
-Upon running the command, all the R packages needed for APAtizer will be installed automatically and a link to the tool will appear in the end. Click said link to open APAtizer in your default web browser!
-The user can also open the R script in Rstudio and then click on the ***Run App*** button to launch the tool in a separate window.
+# APAtizer walkthrough case study 1 (Illumina 3'mRNA-Seq samples from IPO-Porto)
 
 ## DaPars2 interface
 ### 3'UTR APA lengthening genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/4d32cb27-7bfb-4add-894a-a64b9b2a148d" alt="DAPARS_LEN">
+
+
 
 ### 3'UTR APA shortening genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/7c57fff7-d9f0-4f80-afe6-cb03c3dd9081" alt="DAPARS_SHORT">
@@ -178,5 +175,13 @@ In this section we can see the pearson correlation analysis scatter plot between
 
 Now, in this section we have the pearson correlation analysis scatter plot between IPA and DGE events. For colon cancer, we can also see that we have a significant negative correlation between IPA and DGE events. Genes that undergo IPA downregulation are being more expressed, whereas genes that undergo IPA upregulation are being less expressed.
 
+# APAtizer walkthrough case study 2 (Illumina standard RNA-Seq samples from Mouse (Heart vs Testis))
+
+
+
+
+# APAtizer walkthrough case study 3 (Ion Torrent standard RNA-Seq samples from Mouse (DEN WT vs WT))
+
+
 # Final remarks
-In this README, a case study for colon cancer (COAD) from the TCGA repository was used to demonstrate and explain the features and capabilities of the APAtizer tool. With this tool, the user can analyze RNA-Seq data from TCGA and retrieve many plots and useful information regarding 3'UTR APA & IPA events via DaPars2 and APAlyzer analysis, the function of those genes via gene ontology analysis, the common genes between cancers using venn diagram intersections and the correlation between 3'UTR APA & IPA events and DGE via pearson correlation analysis scatter plots.
+In this README, three case studies were used to demonstrate and explain the features and capabilities of the APAtizer tool. With this tool, the user can analyze RNA-Seq data from various sources and retrieve many plots and useful information regarding 3'UTR APA & IPA events via DaPars2 and APAlyzer analysis, DGE via DESeq2, the function of those genes via GO analysis, the common genes between cancers using Venn diagram intersections and the correlation between 3'UTR APA & IPA events and DGE via Pearson correlation analysis scatter plots.
