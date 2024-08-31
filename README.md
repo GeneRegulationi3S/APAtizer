@@ -58,6 +58,11 @@ Below, we showcase a walkthrough of the APAtizer tool showing the different tabs
 
 # APAtizer walkthrough case study 1 (Illumina 3'mRNA-Seq samples from IPO-Porto)
 
+## Sample Sheet interface
+### Creating the sample sheet
+In this section, the user may start by creating the sample sheet 
+
+
 ## DaPars2 interface
 ### 3'UTR APA lengthening genes
 <img src="https://github.com/brss12/APAtizer/assets/121204829/4d32cb27-7bfb-4add-894a-a64b9b2a148d" alt="DAPARS_LEN">
