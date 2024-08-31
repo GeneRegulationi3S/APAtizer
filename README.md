@@ -27,24 +27,31 @@ After this, you will find a file called [create_inputs.sh](create_inputs.sh). Ru
 chmod +x create_inputs.sh && ./create_inputs.sh
 ```
 
-This script will prompt the user to select the number (1-4) corresponding to the genome version using in the alignment of the FASTQ files to create the BAM files. This will be essencial for the creation of the input files necessary for APAtizer.
+This script will prompt the user to select the number (1-4) corresponding to the genome version used in the creation of the BAM files. This will be essencial for the creation of the input files necessary for APAtizer.
 
 ![image](https://github.com/user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
 
-Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user, will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, creates the DaPars txt files required for APA analysis employing the DaPars algorithm and it also created the htseq files required for the differential gene expression analysis feature of the tool. All of these downstream analysis take place in the APAtizer's user interface.
+Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, creates the DaPars txt files required for APA analysis employing the DaPars algorithm and it also creates the htseq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface.
 
-After finishing running, creates two new folders called **SORTED_BAM** and **TRIMMED_READS**. In the **SORTED_BAM** folder, is where the sorted bam files along with fastqc reports are placed and in the **TRIMMED_READS** is where the de-duplicated bam files along with fastqc reports are placed. After this, a folder called **DaPars_data** is created with the final DaPars txt files.
+After finishing running, the folders **TRIMMED_READS**, **TRIMMED_QC**, **TRIMMED_htseq** and **DaPars_data** are created. In the **TRIMMED_READS** folder, is where the de-duplicated BAM files along with the corresponding BAI index files are located. In the **TRIMMED_QC** folder, is where the fastqc reports of the de-duplicated BAM files are located for the user to obtain information about the number of reads, length of reads and many more parameters about the BAM files. In the **TRIMMED_htseq** folder is where the htseq files for the DGE analysis are located. These files are obtained using the RefSeq GTF files from NCBI for the genome version specified by the user upon running the [create_inputs.sh](create_inputs.sh) script. Finally, in the **DaPars_data** folder, is where the txt files necessary for the DaPars analysis are located.
 
-Depending on the size and ammount of BAM files, we recommend running both scripts in a HPC environment. With the following command, run the first script on the same directory of the **RAW_BAM** folder to create the sorted and de-duplicated BAM files and the htseq files.
-```shell
-nohup bash -c "snakemake -s APAtizer_inputs_1.smk --cores <n_cores> --wait-for-files" & #The first script can be run using parallelization
-```
-After this, to create the required DaPars2 files, run the second script on the same directory of the **RAW_BAM** folder using the following command.
-```shell
-nohup bash -c "snakemake -s APAtizer_inputs_2.smk --cores 1 --wait-for-files" & #The second script must be run sequentially
-```
+Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a HPC environment.
 
 ***All done! Now you are ready to use APAtizer!***
+
+To run the tool, the user must run the R script [APAtizer.R](APAtizer.R) using the following command.
+
+```shell
+Rscript APAtizer.R
+```
+
+Now, to showcase the capabilities of APAtizer, we performed three case studies using out tool. The first one was done on 3'mRNA-Seq data from 8 samples (4 Tumour samples and 4 Normal samples) that were retrieved from patients of IPO-Porto (Instituto Português Oncologia do Porto). The FASTQ files were obtained employing Illumina sequencing technologies and were aligned in-house to the hg38 reference genome. Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data. The latter is a type of sequencing more suitable for APA event quantification.
+
+The first one was done on standard RNA-Seq data from 8 samples (4 samples from Heart and 4 samples from Testis) of Mouse retrieved from GEO (GSM900199 and GSM900193). The FASTQ files were retrieved and aligned to the mm9 reference genome to obtain BAM raw BAM files. These BAM files were processed via the snakemake workflow to create the inputs necessary for APAtizer. The second case 
+
+
+
+
 
 # APAtizer walkthrough
 In the walkthrough of the APAtizer tool, a case study using 46 samples (23 Normal Tissue samples and 23 Primary Tumor samples) from colorectal cancer from TCGA was performed to showcase the interface and the capabilities of the tool all while retrieving useful insights from the data.
