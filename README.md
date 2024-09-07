@@ -60,17 +60,19 @@ Below, we showcase a walkthrough of the APAtizer tool showing the different tabs
 
 ## Sample Sheet interface
 ### Creating the sample sheet
-In this section, the user may start by creating the sample sheet 
+In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below.
+
+<img src="https://github.com/user-attachments/assets/3ab2e3ae-3763-4e1a-8877-a40c915819fc" alt="sample_sheet_case1">
 
 
 ## DaPars2 interface
 ### 3'UTR APA lengthening genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/4d32cb27-7bfb-4add-894a-a64b9b2a148d" alt="DAPARS_LEN">
-
+<img src="https://github.com/user-attachments/assets/154b2753-5615-49da-9584-56af4687ce34" alt="dapars_len_case1">
 
 
 ### 3'UTR APA shortening genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/7c57fff7-d9f0-4f80-afe6-cb03c3dd9081" alt="DAPARS_SHORT">
+<img src="https://github.com/user-attachments/assets/40527f40-a069-4685-ba62-0331bb2a47ca" alt="dapars_short_case1">
+
 
 In this section, in the input space the user can select the 24 output files originated by the DaPars2 analysis that are located in the folder **DaPars_data** and the TCGA sample sheet.
 
@@ -78,22 +80,24 @@ In the output space, we can observe the lists of genes that go through 3'UTR APA
 
 ## APA_APALYZER interface
 ### 3'UTR APA lengthening genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/9f48a0a1-d5d6-497b-a841-b4165536a1ff" alt="APA_UP">
+<img src="https://github.com/user-attachments/assets/571ec921-3c43-472c-92fd-4a852e0ea6fb" alt="apa_up_case1">
 
-### 3'UTR APA non-significant genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/ff179f5e-22ac-4bed-97d6-5d7dbfce2aa6" alt="APA_NC">
 
 ### 3'UTR APA shortening genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/702be557-57b8-4adb-8b5f-ba2b251d6c34" alt="APA_DN">
+<img src="https://github.com/user-attachments/assets/ad885d95-489c-420e-9bb1-c3253580b5cf" alt="apa_dn_case1">
+
 
 ### 3'UTR APA top-40 Volcano plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/418a9875-556e-4222-adcf-e043665ec355" alt="APA_top40_Volcano">
+<img src="https://github.com/user-attachments/assets/53439fa7-7166-40f1-995e-eff1c60f1638" alt="apa_top40_volcano_case1">
+
 
 ### 3'UTR APA Volcano plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/45510c74-f9e9-4a39-a182-044f836d3a84" alt="APA_Volcano">
+<img src="https://github.com/user-attachments/assets/ffec13fb-c458-4475-be15-39312593866c" alt="apa_volcano_case1">
+
 
 ### 3'UTR APA Box plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/aba89b3d-a60f-4fb3-ae20-583cf9de528b" alt="APA_Box">
+<img src="https://github.com/user-attachments/assets/38283e82-e4c5-42df-824a-b84f606a1567" alt="apa_box_case1">
+
 
 In APA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files and select the TCGA sample sheet. The user may also select the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between 3'UTR APA lengthening (*NvsT_APA_UP*), 3'UTR APA shortening (*NvsT_APA_DN*) and non-significant (*NvsT_APA_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*APA Volcano Plot (top40)*), the same plot but with no highlights (*APA Volcano Plot*) and a box plot (*APA Box*).
 
@@ -101,31 +105,25 @@ In the output space, in the tab called *Number of APA events* one can see a smal
 
 ## IPA APALYZER interface
 ### IPA upregulated events
-<img src="https://github.com/brss12/APAtizer/assets/121204829/cc32470c-97f6-41ab-b98f-56098dc17a87" alt="IPA_events_UP">
-
-### IPA non-significant events
-<img src="https://github.com/brss12/APAtizer/assets/121204829/b96a6383-a894-4216-84f4-dc333420d806" alt="IPA_events_NC">
+<img src="https://github.com/user-attachments/assets/359efb4a-8130-4fd6-98f3-a57d57c03ffb" alt="ipa_events_up_case1">
 
 ### IPA downregulated events
-<img src="https://github.com/brss12/APAtizer/assets/121204829/2c84e83c-8d76-42ac-9a92-0a81ba4f4383" alt="IPA_events_DN">
+<img src="https://github.com/user-attachments/assets/78d2507d-d498-4aa2-90d3-40d6afe9e8d2" alt="ipa_events_dn_case1">
 
 ### IPA upregulated genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/382adc6e-2b15-49a3-a41c-3a54f6947833" alt="IPA_genes_UP">
-
-### IPA non-significant genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/fd2026f3-493b-4039-925c-397ac2edcf2e" alt="IPA_genes_NC">
+<img src="https://github.com/user-attachments/assets/5953359a-d721-4691-89ab-c7a988a82cbe" alt="ipa_genes_up_case1">
 
 ### IPA downregulated genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/1c164835-eb12-41e2-a382-9bcaec2aa992" alt="IPA_genes_DN">
+<img src="https://github.com/user-attachments/assets/4b077a0c-f791-47fd-b9db-715cecfccf54" alt="ipa_genes_dn_case1">
 
 ### IPA top-40 Volcano plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/77235954-264f-48a0-9818-76e529e531c5" alt="IPA_top40_Volcano">
+<img src="https://github.com/user-attachments/assets/6ae65cb9-41e7-4a23-880f-86ffb4193720" alt="ipa_top40_volcano_case1">
 
 ### IPA Volcano plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/62c236c0-499c-43ef-b980-224a720f50af" alt="IPA_Volcano">
+<img src="https://github.com/user-attachments/assets/6c18a5cf-b35c-4673-8769-048989e46e9a" alt="ipa_volcano_case1">
 
 ### IPA Box plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/9dec095b-0927-48d9-90fc-eee29456b0f6" alt="IPA_Box">
+<img src="https://github.com/user-attachments/assets/65e7d8db-08c0-4b21-b9eb-308af32f5e43" alt="ipa_box_case1">
 
 In IPA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files and select the TCGA sample sheet. The user then selects the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between IPA upregulated events (*NvsT_IPA_events_UP*), IPA downregulated events (*NvsT_IPA_events_DN*) and non-significant events (*NvsT_IPA_events_NC*). Another output type is the gene lists with the unique genes such as IPA upregulated genes (*NvsT_IPA_genes_UP*), IPA downregulated genes (*NvsT_IPA_genes_DN*) and non-significant genes (*NvsT_IPA_genes_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*IPA Volcano Plot (top40)*), the same plot but with no highlights (*IPA Volcano Plot*) and a box plot (*IPA Box*).
 
@@ -133,22 +131,20 @@ In the output space, in the tab called *Number of IPA events* one can see a smal
 
 ## DGE interface
 ### DGE upregulated genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/cc59faa6-3ce2-45f8-b89c-7515a2339f5e" alt="DGE_UP">
-
-### DGE non-significant genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/1ea5a5b8-6fd0-42fd-9ebd-72815daeebc4" alt="DGE_NC">
+<img src="https://github.com/user-attachments/assets/787e3538-3d39-45eb-bbbd-d1a0bcbfe860" alt="dge_up_case1">
 
 ### DGE downregulated genes
-<img src="https://github.com/brss12/APAtizer/assets/121204829/fae6ce61-6d3a-4829-9f62-7361f297b7ec" alt="DGE_DN">
+<img src="https://github.com/user-attachments/assets/47b21e32-f68f-40cf-a1e4-c25466663137" alt="dge_dn_case1">
 
 ### DGE PCA plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/91d89676-9c49-4c98-8131-7b9ea4b92aa0" alt="DGE_PCA">
+<img src="https://github.com/user-attachments/assets/004b6d4f-0efe-4b7a-a2ea-714f95664515" alt="dge_pca_case1">
 
 ### DGE Volcano plot
-<img src="https://github.com/brss12/APAtizer/assets/121204829/78fe38b1-1cf9-4e0d-a368-fc45d2f1f435" alt="DGE_Volcano">
+<img src="https://github.com/user-attachments/assets/c185aea6-e452-4094-a522-ca853fc3acff" alt="dge_volcano_case1">
 
 ### DGE Heatmap
-<img src="https://github.com/brss12/APAtizer/assets/121204829/27bec740-51a8-4604-bbe9-6920129ca7d9" alt="DGE_Heatmap">
+<img src="https://github.com/user-attachments/assets/994f00c1-3d01-450b-836c-0573e6e129ba" alt="">
+
 
 For the differential gene expression analysis, in the input space the user may paste the full path for the folder **FILTERED** that has all of the htseq files and select the TCGA sample sheet. Once again, the user can also select the lists and the plots that will be displayed in the outputs. For the lists, the user can choose between DGE upregulated (*DGE_Genes_UP*), DGE downregulated (*DGE_Genes_DN*) and non-significant (*DGE_Genes_NC*). For the plots, the user can select a PCA plot (*PCA Plot*), a Volcano plot (*DGE Volcano Plot*) and a heatmap to evaluate the pattern of gene expression between conditions(*DGE Heatmap*).
 
@@ -156,36 +152,44 @@ In the output space, in the tab named *Number of DGE genes* the user can see a t
 
 ## GO_TERMS interface
 ### Biological Process (BP)
-<img src="https://github.com/brss12/APAtizer/assets/121204829/92c7946b-add8-4b7a-aae4-3b18e71d4cf9" alt="GO_BP">
+<img src="https://github.com/user-attachments/assets/b9720f9f-2678-4718-8147-e26aac83e833" alt="go_bp_case1">
+
 
 ### Molecular Function (MF)
-<img src="https://github.com/brss12/APAtizer/assets/121204829/716fa7b8-3ffd-4a0e-a5d0-0dffbc1d795c" alt="GO_MF">
+<img src="https://github.com/user-attachments/assets/ad2c00c5-bfd2-4932-8ab2-83c3bcf2a635" alt="go_mf_case1">
+
 
 In this section, the user only needs to select the list of genes in which he wants to perform gene ontology exploration and the type of analysis to be performed, *Biological Process (BP)* and *Molecular Function (MF)*. The provided list should be one of the gene lists obtained in the previous steps (DaPars, APAlyzer or DGE analysis).
 
 The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
 
 ## VENN DIAGRAMS interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/0faebdf0-1baa-4be4-9d0b-75aab8cf99d3" alt="Venn_2">
+<img src="https://github.com/user-attachments/assets/fb456ca4-df65-4447-ab7f-90d3d75e3038" alt="venn_case1">
+
 
 For the Venn diagram intersections, the user can provide up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
 ## APA CORRELATION ANALYSIS interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/66f1f08b-3795-454b-855a-652ce2080572" alt="APA_CORR">
+<img src="https://github.com/user-attachments/assets/a0fb1bc1-0d66-44ff-8ae5-4435d9b037ce" alt="apa_corr_case1">
+
 
 In this section we can see the pearson correlation analysis scatter plot between the 3'UTR APA and DGE events. In this case study for colon cancer we can see that genes that undergo 3'UTR APA shortening events are being upregulated and the genes that undergo 3'UTR APA lengthening events are being downregulated.
 
 ## IPA CORRELATION ANALYSIS interface
-<img src="https://github.com/brss12/APAtizer/assets/121204829/dc65aaae-8635-4438-a228-0af8bf70a613" alt="IPA_CORR">
+<img src="https://github.com/user-attachments/assets/4c4ae79a-6a69-4a3b-8202-0d2a93cdc1a5" alt="ipa_corr_case1">
+
 
 Now, in this section we have the pearson correlation analysis scatter plot between IPA and DGE events. For colon cancer, we can also see that we have a significant negative correlation between IPA and DGE events. Genes that undergo IPA downregulation are being more expressed, whereas genes that undergo IPA upregulation are being less expressed.
 
 # APAtizer walkthrough case study 2 (Illumina standard RNA-Seq samples from Mouse (Heart vs Testis))
 
+<img src="https://github.com/user-attachments/assets/d6b55dac-320f-4906-b572-d39cc4c426eb" alt="sample_sheet_case2">
 
 
 
 # APAtizer walkthrough case study 3 (Ion Torrent standard RNA-Seq samples from Mouse (DEN WT vs WT))
+
+
 
 
 # Final remarks
