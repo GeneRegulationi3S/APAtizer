@@ -274,7 +274,87 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 
 
 # APAtizer walkthrough case study 3 (Ion Torrent standard RNA-Seq samples from Mouse (DEN WT vs WT))
+## Sample Sheet interface
 
+## DaPars2 interface
+### 3'UTR-APA lengthening genes
+<img src="https://github.com/user-attachments/assets/af43271a-bba6-4c4f-aed3-441099dd285c" alt="dapars_len_case3">
+
+### 3'UTR-APA shortening genes
+<img src="https://github.com/user-attachments/assets/20a436b4-aef4-4980-b63e-735ccf2bef68" alt="dapars_short_case3">
+
+## APA_APALYZER interface
+### 3'UTR-APA lengthening genes
+<img src="https://github.com/user-attachments/assets/7f089759-3f9e-458e-acec-0ddbf91799c0" alt="apa_len_case3">
+
+### 3'UTR-APA shortening genes
+<img src="https://github.com/user-attachments/assets/4bc5b1fa-0424-4198-b0e2-496b6a69641b" alt="apa_short_case3">
+
+### 3'UTR-APA top-40 Volcano plot
+<img src="https://github.com/user-attachments/assets/7a61a69f-fcea-4e87-b55a-a25b2224d9fa" alt="apa_top40_volcano_case3">
+
+### 3'UTR-APA Volcano plot
+<img src="https://github.com/user-attachments/assets/5d62bd73-d62c-475e-a26b-5697acc033ce" alt="apa_volcano_case3">
+
+### 3'UTR-APA Box plot
+<img src="https://github.com/user-attachments/assets/da60baba-2839-4e01-92e3-ba16a4b3fe0f" alt="apa_box_case3">
+
+## IPA APALYZER interface
+### IPA upregulated events
+<img src="https://github.com/user-attachments/assets/045d10e9-d918-4be0-b36e-c573eb6e3cbc" alt="ipa_events_up_case3">
+
+### IPA downregulated events
+<img src="https://github.com/user-attachments/assets/03a36cf4-82c6-425e-9885-1ff1af09af3c" alt="ipa_events_dn_case3">
+
+### IPA upregulated genes
+<img src="https://github.com/user-attachments/assets/41cb6796-1703-4488-a02d-339c11e276bb" alt="ipa_genes_up_case3">
+
+### IPA downregulated genes
+<img src="https://github.com/user-attachments/assets/24a492f9-1337-4ccc-901a-31aaafb145f4" alt="ipa_genes_dn_case3">
+
+### IPA top-40 Volcano plot
+<img src="https://github.com/user-attachments/assets/c432a5c2-bf0f-4767-b43a-a85a794c8517" alt="ipa_top40_volcano_case3">
+
+### IPA Volcano plot
+<img src="https://github.com/user-attachments/assets/82cc573a-a906-4fd7-a7bb-a5fc460ef080" alt="ipa_volcano_case3">
+
+### IPA Box plot
+<img src="https://github.com/user-attachments/assets/b7b56e53-563a-42f8-a612-c0c035973bbb" alt="ipa_box">
+
+## DGE interface
+### DGE upregulated genes
+<img src="https://github.com/user-attachments/assets/15aab539-0de4-4fd4-8c91-78c55690e106" alt="dge_up_case3">
+
+### DGE downregulated genes
+<img src="https://github.com/user-attachments/assets/253b898f-d305-471c-b677-09eafb8b3e29" alt="dge_dn_case3">
+
+### DGE PCA plot
+<img src="https://github.com/user-attachments/assets/bdc89652-3a2d-49f9-8cc7-1a8e5eb41776" alt="dge_pca_case3">
+
+### DGE Volcano plot
+<img src="https://github.com/user-attachments/assets/20ce018c-2019-4693-9d99-9cf3f91b81b3" alt="dge_volcano_case3">
+
+### DGE Heatmap
+<img src="https://github.com/user-attachments/assets/2630dbc6-004f-45a0-a3a3-eb515e68b8d9" alt="dge_heatmap">
+
+
+## GO_TERMS interface
+### Biological Process (BP)
+<img src="https://github.com/user-attachments/assets/3addeea2-01ff-47ec-9fdd-19ea97071381" alt="go_bp_case3">
+
+### Molecular Function (MF)
+<img src="https://github.com/user-attachments/assets/a71d73c8-898b-4e5a-8213-8dedc16800b6" alt="go_mf_case3">
+
+
+## VENN DIAGRAMS interface
+<img src="https://github.com/user-attachments/assets/972a9399-9f2a-42e4-a482-a3924e720cb3" alt="venn_case3">
+
+
+## APA CORRELATION ANALYSIS interface
+<img src="https://github.com/user-attachments/assets/50dd1ae4-60e1-465c-b9b6-6d0baa7d1ce1" alt="apa_corr_case3">
+
+## IPA CORRELATION ANALYSIS interface
+<img src="https://github.com/user-attachments/assets/09089399-a252-46b8-940c-5a74a6a899b8" alt="ipa_corr_case3">
 
 
 
