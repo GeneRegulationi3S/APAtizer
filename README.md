@@ -47,7 +47,7 @@ Rscript APAtizer.R
 
 Now, to showcase the capabilities of APAtizer, we performed three case studies using our tool. 
 
-The first one was done on 3'mRNA-Seq data from 8 samples (4 Tumour samples and 4 Normal samples) that were retrieved from patients of IPO-Porto (Instituto Português Oncologia do Porto). The FASTQ files were obtained via Illumina sequencing technologies and were aligned to the hg38 reference genome to obtain raw BAM files that were put through our snakemake workflow with [create_inputs.sh](create_inputs.sh). Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data. The latter is a type of sequencing more suitable for APA event quantification.
+The first one was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525. The FASTQ files were obtained via Illumina sequencing technologies and were previously aligned to the hg38 reference genome to obtain raw BAM files that were put through our snakemake workflow with [create_inputs.sh](create_inputs.sh). Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data. The latter is a type of sequencing more suitable for APA event quantification.
 
 The second one was done on standard RNA-Seq data from 8 samples (4 samples from Heart and 4 samples from Testis) of Mouse retrieved from GEO (GSM900199 and GSM900193 accession numbers). The FASTQ files were obtained via Illumina sequencing technologies and were aligned to the mm9 reference genome to obtain raw BAM files that were processed via our snakemake workflow to create the inputs necessary for APAtizer. Our aim with this case study was to show to the users that, in addition to Human RNA-Seq data, APAtizer can also work with RNA-Seq data derived from Mouse.
 
@@ -56,22 +56,22 @@ The third case study was done on standard RNA-Seq data from 4 samples (2 samples
 Below, we showcase a walkthrough of the APAtizer tool showing the different tabs, inputs and outputs that can be obtained by the user.
 
 
-# APAtizer walkthrough case study 1 (Illumina 3'mRNA-Seq samples from IPO-Porto)
+# APAtizer walkthrough case study 1 (Illumina 3'mRNA-Seq samples from M1 Macrophages)
 
 ## Sample Sheet interface
 ### Creating the sample sheet
 In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below.
 
-<img src="https://github.com/user-attachments/assets/3ab2e3ae-3763-4e1a-8877-a40c915819fc" alt="sample_sheet_case1">
+<img src="https://github.com/user-attachments/assets/ec0553a0-fa0a-4b07-8b8c-9d4cbfe7487a" alt="sample_sheet_case1">
 
 
 ## DaPars2 interface
 ### 3'UTR-APA lengthening genes
-<img src="https://github.com/user-attachments/assets/154b2753-5615-49da-9584-56af4687ce34" alt="dapars_len_case1">
+<img src="https://github.com/user-attachments/assets/5daaca60-d5a4-47d5-9394-7c99ae9d1c88" alt="dapars_len_case1">
 
 
 ### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/40527f40-a069-4685-ba62-0331bb2a47ca" alt="dapars_short_case1">
+<img src="https://github.com/user-attachments/assets/b1f7271d-221e-427e-b65b-1917d1f20538" alt="dapars_short_case1">
 
 
 In this section, in the input space the user can select all the output files originated by the DaPars2 analysis that are located in the folder **DaPars_data**.
@@ -80,23 +80,23 @@ In the output space, we can observe the lists of genes that go through 3'UTR APA
 
 ## APA_APALYZER interface
 ### 3'UTR-APA lengthening genes
-<img src="https://github.com/user-attachments/assets/571ec921-3c43-472c-92fd-4a852e0ea6fb" alt="apa_up_case1">
+<img src="https://github.com/user-attachments/assets/fb9d43ee-1303-486e-acc0-494821155e78" alt="apa_up_case1">
 
 
 ### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/ad885d95-489c-420e-9bb1-c3253580b5cf" alt="apa_dn_case1">
+<img src="https://github.com/user-attachments/assets/c8a1652e-48e6-4bcd-ba3e-60aea74eceaf" alt="apa_dn_case1">
 
 
 ### 3'UTR-APA top-40 Volcano plot
-<img src="https://github.com/user-attachments/assets/53439fa7-7166-40f1-995e-eff1c60f1638" alt="apa_top40_volcano_case1">
+<img src="https://github.com/user-attachments/assets/4e70f8f6-4aef-47fa-afd3-d44aeebc9fa4" alt="apa_top40_volcano_case1">
 
 
 ### 3'UTR-APA Volcano plot
-<img src="https://github.com/user-attachments/assets/ffec13fb-c458-4475-be15-39312593866c" alt="apa_volcano_case1">
+<img src="https://github.com/user-attachments/assets/89b184db-648d-4a56-9989-7eb0a40e4268" alt="apa_volcano_case1">
 
 
 ### 3'UTR-APA Box plot
-<img src="https://github.com/user-attachments/assets/38283e82-e4c5-42df-824a-b84f606a1567" alt="apa_box_case1">
+<img src="https://github.com/user-attachments/assets/aa734dad-1e2e-4f01-afec-eab25ffd786a" alt="apa_box_case1">
 
 
 In APA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files. The user can also select the reference PAS for the analysis (hg19, hg38, mm9 and mm10), select the sequencing method (paired-end and single-end) and also select the strandedness of the BAM files (forward stranded, reverse stranded or non-stranded). The user may also select the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between 3'UTR APA lengthening (*NvsT_APA_UP*), 3'UTR APA shortening (*NvsT_APA_DN*) and non-significant (*NvsT_APA_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*APA Volcano Plot (top40)*), the same plot but with no highlights (*APA Volcano Plot*) and a box plot (*APA Box*).
@@ -105,25 +105,32 @@ In the output space, in the tab called *Number of APA events* one can see a smal
 
 ## IPA APALYZER interface
 ### IPA upregulated events
-<img src="https://github.com/user-attachments/assets/359efb4a-8130-4fd6-98f3-a57d57c03ffb" alt="ipa_events_up_case1">
+<img src="https://github.com/user-attachments/assets/5e97da11-0994-4ab5-ae93-c370488f1306" alt="ipa_events_up_case1">
+
 
 ### IPA downregulated events
-<img src="https://github.com/user-attachments/assets/78d2507d-d498-4aa2-90d3-40d6afe9e8d2" alt="ipa_events_dn_case1">
+<img src="https://github.com/user-attachments/assets/3421eeb8-3189-45de-94a7-f2b8807a5300" alt="ipa_events_dn_case1">
+
 
 ### IPA upregulated genes
-<img src="https://github.com/user-attachments/assets/5953359a-d721-4691-89ab-c7a988a82cbe" alt="ipa_genes_up_case1">
+<img src="https://github.com/user-attachments/assets/4895c011-32bf-46e0-a447-13cc6f1c4bff" alt="ipa_genes_up_case1">
+
 
 ### IPA downregulated genes
-<img src="https://github.com/user-attachments/assets/4b077a0c-f791-47fd-b9db-715cecfccf54" alt="ipa_genes_dn_case1">
+<img src="https://github.com/user-attachments/assets/033e8627-f77d-443b-9497-129b1dcd26a1" alt="ipa_genes_dn_case1">
+
 
 ### IPA top-40 Volcano plot
-<img src="https://github.com/user-attachments/assets/6ae65cb9-41e7-4a23-880f-86ffb4193720" alt="ipa_top40_volcano_case1">
+<img src="https://github.com/user-attachments/assets/7a9d088f-83c6-4830-9090-4cadf156a342" alt="ipa_top40_volcano_case1">
+
 
 ### IPA Volcano plot
-<img src="https://github.com/user-attachments/assets/6c18a5cf-b35c-4673-8769-048989e46e9a" alt="ipa_volcano_case1">
+<img src="https://github.com/user-attachments/assets/071f362e-987a-4ed1-8c75-5205616b0e0c" alt="ipa_volcano_case1">
+
 
 ### IPA Box plot
-<img src="https://github.com/user-attachments/assets/65e7d8db-08c0-4b21-b9eb-308af32f5e43" alt="ipa_box_case1">
+<img src="https://github.com/user-attachments/assets/decfc250-bd4b-4fdb-8535-43233f9fb22e" alt="ipa_box_case1">
+
 
 In IPA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files. The user can also select the reference PAS for the analysis (hg19, hg38, mm9 and mm10), select the sequencing method (paired-end and single-end), select the strandedness of the BAM files (forward stranded, reverse stranded or non-stranded) and also, specifically for this analysis, select the number of threads to be used in the analysis. The user then selects the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between IPA upregulated events (*NvsT_IPA_events_UP*), IPA downregulated events (*NvsT_IPA_events_DN*) and non-significant events (*NvsT_IPA_events_NC*). Another output type is the gene lists with the unique genes such as IPA upregulated genes (*NvsT_IPA_genes_UP*), IPA downregulated genes (*NvsT_IPA_genes_DN*) and non-significant genes (*NvsT_IPA_genes_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*IPA Volcano Plot (top40)*), the same plot but with no highlights (*IPA Volcano Plot*) and a box plot (*IPA Box*).
 
@@ -131,19 +138,23 @@ In the output space, in the tab called *Number of IPA events* one can see a smal
 
 ## DGE interface
 ### DGE upregulated genes
-<img src="https://github.com/user-attachments/assets/787e3538-3d39-45eb-bbbd-d1a0bcbfe860" alt="dge_up_case1">
+<img src="https://github.com/user-attachments/assets/d4fa8c84-5ba3-4c53-a10e-d3c0efbb40cf" alt="dge_up_case1">
+
 
 ### DGE downregulated genes
-<img src="https://github.com/user-attachments/assets/47b21e32-f68f-40cf-a1e4-c25466663137" alt="dge_dn_case1">
+<img src="https://github.com/user-attachments/assets/a59be1f2-d621-4212-9826-72185987b87c" alt="dge_dn_case1">
+
 
 ### DGE PCA plot
-<img src="https://github.com/user-attachments/assets/004b6d4f-0efe-4b7a-a2ea-714f95664515" alt="dge_pca_case1">
+<img src="https://github.com/user-attachments/assets/4546af7f-8efe-406a-a2af-eccc494c47ec" alt="dge_pca_case1">
+
 
 ### DGE Volcano plot
-<img src="https://github.com/user-attachments/assets/c185aea6-e452-4094-a522-ca853fc3acff" alt="dge_volcano_case1">
+<img src="https://github.com/user-attachments/assets/f8028476-114f-4688-b580-8bd2d5763f61" alt="dge_volcano_case1">
+
 
 ### DGE Heatmap
-<img src="https://github.com/user-attachments/assets/994f00c1-3d01-450b-836c-0573e6e129ba" alt="dge_heatmap_case1">
+<img src="https://github.com/user-attachments/assets/fb263765-c198-478a-b711-3c9fd9e375dc" alt="dge_heatmap_case1">
 
 
 For the differential gene expression analysis, in the input space the user may paste the full path for the folder **TRIMMED_htseq/FILTERED/** that has all of the filtered htseq files. Once again, the user can also select the lists and the plots that will be displayed in the outputs. For the lists, the user can choose between DGE upregulated (*DGE_Genes_UP*), DGE downregulated (*DGE_Genes_DN*) and non-significant (*DGE_Genes_NC*). For the plots, the user can select a PCA plot (*PCA Plot*), a Volcano plot (*DGE Volcano Plot*) and a heatmap to evaluate the pattern of gene expression between conditions(*DGE Heatmap*).
@@ -152,10 +163,11 @@ In the output space, in the tab named *Number of DGE genes* the user can see a t
 
 ## GO_TERMS interface
 ### Biological Process (BP)
-<img src="https://github.com/user-attachments/assets/b9720f9f-2678-4718-8147-e26aac83e833" alt="go_bp_case1">
+<img src="https://github.com/user-attachments/assets/8e338810-fb2d-41fe-963a-f08cde2ec5b5" alt="go_bp_case1">
+
 
 ### Molecular Function (MF)
-<img src="https://github.com/user-attachments/assets/ad2c00c5-bfd2-4932-8ab2-83c3bcf2a635" alt="go_mf_case1">
+<img src="https://github.com/user-attachments/assets/d35ecfd5-680d-4983-9c33-2555ffd273c9" alt="go_mf_case1">
 
 
 In this section, the user needs to select the list of genes in which he wants to perform gene ontology exploration, the organism database to be used (Human and Mouse) and the type of analysis to be performed, *Biological Process (BP)* and *Molecular Function (MF)*. The provided list should be one of the gene lists obtained in the previous steps (DaPars, APAlyzer or DGE analysis).
@@ -163,19 +175,19 @@ In this section, the user needs to select the list of genes in which he wants to
 The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
 
 ## VENN DIAGRAMS interface
-<img src="https://github.com/user-attachments/assets/fb456ca4-df65-4447-ab7f-90d3d75e3038" alt="venn_case1">
+<img src="https://github.com/user-attachments/assets/e06d0b77-7509-451f-b504-83377452a0ef" alt="venn_case1">
 
 
 For the Venn diagram intersections, the user can provide from 2 up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
 ## APA CORRELATION ANALYSIS interface
-<img src="https://github.com/user-attachments/assets/a0fb1bc1-0d66-44ff-8ae5-4435d9b037ce" alt="apa_corr_case1">
+<img src="https://github.com/user-attachments/assets/2fd4c20b-bd9a-4aa8-a15e-7f684dd9af09" alt="apa_corr_case1">
 
 
 In this section we can see the pearson correlation analysis scatter plot between the 3'UTR APA and DGE events. In this case study for colon cancer we can see that genes that undergo 3'UTR APA shortening events are being upregulated and the genes that undergo 3'UTR APA lengthening events are being downregulated.
 
 ## IPA CORRELATION ANALYSIS interface
-<img src="https://github.com/user-attachments/assets/4c4ae79a-6a69-4a3b-8202-0d2a93cdc1a5" alt="ipa_corr_case1">
+<img src="https://github.com/user-attachments/assets/28027bf2-de76-4398-9a38-16ac5855c82b" alt="ipa_corr_case1">
 
 
 Now, in this section we have the pearson correlation analysis scatter plot between IPA and DGE events. For colon cancer, we can also see that we have a significant negative correlation between IPA and DGE events. Genes that undergo IPA downregulation are being more expressed, whereas genes that undergo IPA upregulation are being less expressed.
