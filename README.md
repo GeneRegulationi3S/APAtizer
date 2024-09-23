@@ -39,7 +39,7 @@ Also, it is important to mention that depending on the size and ammount of BAM f
 
 ***All done! Now you are ready to use APAtizer!***
 
-To run the tool, the user can run the R script [APAtizer.R](APAtizer.R) using the following command or open the file on RStudio and press "Run App".
+To run the tool, the user can run the R script [APAtizer.R](APAtizer.R) using the following command or open the file on RStudio and press "Run App". Upon running the script, the R packages required for the utilization of the tool are all automatically installed.
 
 ```shell
 Rscript APAtizer.R
