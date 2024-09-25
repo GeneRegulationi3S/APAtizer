@@ -58,14 +58,14 @@ Below, we showcase a walkthrough of the APAtizer tool showing the different tabs
 
 # APAtizer walkthrough case study 1 (Illumina 3'mRNA-Seq samples from M1 Macrophages)
 
-## Sample Sheet interface
+## Sample Sheet
 ### Creating the sample sheet
 In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below.
 
 <img src="https://github.com/user-attachments/assets/ec0553a0-fa0a-4b07-8b8c-9d4cbfe7487a" alt="sample_sheet_case1">
 
 
-## DaPars2 interface
+## DaPars2
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/5daaca60-d5a4-47d5-9394-7c99ae9d1c88" alt="dapars_len_case1">
 
@@ -73,7 +73,7 @@ In this section, in the input space the user can select all the output files ori
 
 In the output space, we can observe the lists of genes that go through 3'UTR APA lengthening events (*Len genes*) and 3'UTR APA shortening events (*Short genes*). The user can also search the lists for a specific gene of interest and download the lists using the download button below the search box.
 
-## APA_APALYZER interface
+## APA_APALYZER
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/fb9d43ee-1303-486e-acc0-494821155e78" alt="apa_up_case1">
 
@@ -94,7 +94,7 @@ In APA_APALYZER, in the input space the user may paste the full path of the fold
 
 In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
-## IPA APALYZER interface
+## IPA APALYZER
 ### IPA events list
 <img src="https://github.com/user-attachments/assets/5e97da11-0994-4ab5-ae93-c370488f1306" alt="ipa_events_up_case1">
 
@@ -119,7 +119,7 @@ In IPA_APALYZER, in the input space the user may paste the full path of the fold
 
 In the output space, in the tab called *Number of IPA events* one can see a small table where the number of non significant, lengthening and shortening IPA events are present. In *NvsT_IPA_events* the full lists of the IPA events are presented to the user and he can search the list for a gene of interest and download it. In *NvsT_IPA_genes* the full list for the unique genes is presented to the user and he can, also, search for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
-## DGE interface
+## DGE
 ### DGE gene list
 <img src="https://github.com/user-attachments/assets/d4fa8c84-5ba3-4c53-a10e-d3c0efbb40cf" alt="dge_up_case1">
 
@@ -140,7 +140,7 @@ For the differential gene expression analysis, in the input space the user may p
 
 In the output space, in the tab named *Number of DGE genes* the user can see a table showing the total number of upregulated, downregulated and non-significant genes. In *DGE_Genes* is where the full lists chosen before in the input space are displayed and the user can search those lists for a gene of interest and download them. In *Plots*, the same as in APAlyzer, is where one can visualize the selected plots and download them.
 
-## GO_TERMS interface
+## GO_TERMS
 ### Biological Process (BP)
 <img src="https://github.com/user-attachments/assets/8e338810-fb2d-41fe-963a-f08cde2ec5b5" alt="go_bp_case1">
 
@@ -153,34 +153,34 @@ In this section, the user needs to select the list of genes in which he wants to
 
 The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
 
-## VENN DIAGRAMS interface
+## VENN DIAGRAMS
 <img src="https://github.com/user-attachments/assets/e06d0b77-7509-451f-b504-83377452a0ef" alt="venn_case1">
 
 
 For the Venn diagram intersections, the user can provide from 2 up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
-## APA CORRELATION ANALYSIS interface
+## APA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/2fd4c20b-bd9a-4aa8-a15e-7f684dd9af09" alt="apa_corr_case1">
 
 
 In this section we can see the pearson correlation analysis scatter plot between the 3'UTR APA and DGE events. In this case study for colon cancer we can see that genes that undergo 3'UTR APA shortening events are being upregulated and the genes that undergo 3'UTR APA lengthening events are being downregulated.
 
-## IPA CORRELATION ANALYSIS interface
+## IPA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/28027bf2-de76-4398-9a38-16ac5855c82b" alt="ipa_corr_case1">
 
 
 Now, in this section we have the pearson correlation analysis scatter plot between IPA and DGE events. For colon cancer, we can also see that we have a significant negative correlation between IPA and DGE events. Genes that undergo IPA downregulation are being more expressed, whereas genes that undergo IPA upregulation are being less expressed.
 
 # APAtizer walkthrough case study 2 (Illumina standard RNA-Seq samples from Mouse (Heart vs Testis))
-## Sample Sheet interface
+## Sample Sheet
 <img src="https://github.com/user-attachments/assets/d6b55dac-320f-4906-b572-d39cc4c426eb" alt="sample_sheet_case2">
 
-## DaPars2 interface
+## DaPars2
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/f9e3bf39-7807-4202-9702-27ed970a50e9" alt="dapars_len_case2">
 
 
-## APA_APALYZER interface
+## APA_APALYZER
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/cf0ff02d-9a25-4444-9964-d882b946d62b" alt="apa_len_case2">
 
@@ -196,7 +196,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/5903c056-04f2-46e8-a606-20448d6591e2" alt="apa_box_case2">
 
 
-## IPA APALYZER interface
+## IPA APALYZER
 ### IPA events list
 <img src="https://github.com/user-attachments/assets/b96da571-2025-44e1-b4b9-0a1d8a47a0a9" alt="ipa_events_up_case2">
 
@@ -217,7 +217,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/8bcde8d8-fa5a-4199-aa7e-12b811599a88" alt="ipa_box_case2">
 
 
-## DGE interface
+## DGE
 ### DGE gene list
 <img src="https://github.com/user-attachments/assets/2f20490d-c008-47cc-b147-bf399a3e584a" alt="dge_up_case2">
 
@@ -232,7 +232,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/7f01c67d-fd32-48af-a4c3-6536261f3d1d" alt="dge_heatmap_case2">
 
 
-## GO_TERMS interface
+## GO_TERMS
 ### Biological Process (BP)
 <img src="https://github.com/user-attachments/assets/f52923e8-d1d1-40d0-b8a3-d01b620cb58f" alt="go_bp_case2">
 
@@ -240,27 +240,27 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/e3fc0f60-81f4-4798-ac2d-735ab847800b" alt="go_mf_case2">
 
 
-## VENN DIAGRAMS interface
+## VENN DIAGRAMS
 <img src="https://github.com/user-attachments/assets/33128d05-1981-4e35-87d5-48604fc9930a" alt="venn_case2">
 
 
-## APA CORRELATION ANALYSIS interface
+## APA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/788e37b4-3fbe-4a82-a148-6f3e3af3e332" alt="apa_corr_case2">
 
-## IPA CORRELATION ANALYSIS interface
+## IPA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/070503d9-aa11-407c-bf60-079f15f49ad9" alt="ipa_corr_case2">
 
 
 # APAtizer walkthrough case study 3 (Ion Torrent standard RNA-Seq samples from Mouse (DEN WT vs WT))
-## Sample Sheet interface
+## Sample Sheet
 <img src="https://github.com/user-attachments/assets/1b36025d-096d-4061-9d47-9ab6b8be13bf" alt="sample_sheet_case3">
 
-## DaPars2 interface
+## DaPars2
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/af43271a-bba6-4c4f-aed3-441099dd285c" alt="dapars_len_case3">
 
 
-## APA_APALYZER interface
+## APA_APALYZER
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/7f089759-3f9e-458e-acec-0ddbf91799c0" alt="apa_len_case3">
 
@@ -273,7 +273,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 ### 3'UTR-APA Box plot
 <img src="https://github.com/user-attachments/assets/da60baba-2839-4e01-92e3-ba16a4b3fe0f" alt="apa_box_case3">
 
-## IPA APALYZER interface
+## IPA APALYZER
 ### IPA events list
 <img src="https://github.com/user-attachments/assets/045d10e9-d918-4be0-b36e-c573eb6e3cbc" alt="ipa_events_up_case3">
 
@@ -289,7 +289,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 ### IPA Box plot
 <img src="https://github.com/user-attachments/assets/b7b56e53-563a-42f8-a612-c0c035973bbb" alt="ipa_box">
 
-## DGE interface
+## DGE
 ### DGE gene list
 <img src="https://github.com/user-attachments/assets/15aab539-0de4-4fd4-8c91-78c55690e106" alt="dge_up_case3">
 
@@ -303,7 +303,7 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/2630dbc6-004f-45a0-a3a3-eb515e68b8d9" alt="dge_heatmap">
 
 
-## GO_TERMS interface
+## GO_TERMS
 ### Biological Process (BP)
 <img src="https://github.com/user-attachments/assets/3addeea2-01ff-47ec-9fdd-19ea97071381" alt="go_bp_case3">
 
@@ -311,14 +311,14 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/a71d73c8-898b-4e5a-8213-8dedc16800b6" alt="go_mf_case3">
 
 
-## VENN DIAGRAMS interface
+## VENN DIAGRAMS
 <img src="https://github.com/user-attachments/assets/972a9399-9f2a-42e4-a482-a3924e720cb3" alt="venn_case3">
 
 
-## APA CORRELATION ANALYSIS interface
+## APA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/50dd1ae4-60e1-465c-b9b6-6d0baa7d1ce1" alt="apa_corr_case3">
 
-## IPA CORRELATION ANALYSIS interface
+## IPA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/09089399-a252-46b8-940c-5a74a6a899b8" alt="ipa_corr_case3">
 
 
