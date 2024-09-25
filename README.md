@@ -66,25 +66,16 @@ In this section, the user may start by creating the sample sheet by clicking on 
 
 
 ## DaPars2 interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/5daaca60-d5a4-47d5-9394-7c99ae9d1c88" alt="dapars_len_case1">
-
-
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/b1f7271d-221e-427e-b65b-1917d1f20538" alt="dapars_short_case1">
-
 
 In this section, in the input space the user can select all the output files originated by the DaPars2 analysis that are located in the folder **DaPars_data**.
 
 In the output space, we can observe the lists of genes that go through 3'UTR APA lengthening events (*Len genes*) and 3'UTR APA shortening events (*Short genes*). The user can also search the lists for a specific gene of interest and download the lists using the download button below the search box.
 
 ## APA_APALYZER interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/fb9d43ee-1303-486e-acc0-494821155e78" alt="apa_up_case1">
-
-
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/c8a1652e-48e6-4bcd-ba3e-60aea74eceaf" alt="apa_dn_case1">
 
 
 ### 3'UTR-APA top-40 Volcano plot
@@ -104,20 +95,12 @@ In APA_APALYZER, in the input space the user may paste the full path of the fold
 In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
 ## IPA APALYZER interface
-### IPA upregulated events
+### IPA events list
 <img src="https://github.com/user-attachments/assets/5e97da11-0994-4ab5-ae93-c370488f1306" alt="ipa_events_up_case1">
 
 
-### IPA downregulated events
-<img src="https://github.com/user-attachments/assets/3421eeb8-3189-45de-94a7-f2b8807a5300" alt="ipa_events_dn_case1">
-
-
-### IPA upregulated genes
+### IPA gene list
 <img src="https://github.com/user-attachments/assets/4895c011-32bf-46e0-a447-13cc6f1c4bff" alt="ipa_genes_up_case1">
-
-
-### IPA downregulated genes
-<img src="https://github.com/user-attachments/assets/033e8627-f77d-443b-9497-129b1dcd26a1" alt="ipa_genes_dn_case1">
 
 
 ### IPA top-40 Volcano plot
@@ -137,12 +120,8 @@ In IPA_APALYZER, in the input space the user may paste the full path of the fold
 In the output space, in the tab called *Number of IPA events* one can see a small table where the number of non significant, lengthening and shortening IPA events are present. In *NvsT_IPA_events* the full lists of the IPA events are presented to the user and he can search the list for a gene of interest and download it. In *NvsT_IPA_genes* the full list for the unique genes is presented to the user and he can, also, search for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
 
 ## DGE interface
-### DGE upregulated genes
+### DGE gene list
 <img src="https://github.com/user-attachments/assets/d4fa8c84-5ba3-4c53-a10e-d3c0efbb40cf" alt="dge_up_case1">
-
-
-### DGE downregulated genes
-<img src="https://github.com/user-attachments/assets/a59be1f2-d621-4212-9826-72185987b87c" alt="dge_dn_case1">
 
 
 ### DGE PCA plot
@@ -197,21 +176,13 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/d6b55dac-320f-4906-b572-d39cc4c426eb" alt="sample_sheet_case2">
 
 ## DaPars2 interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/f9e3bf39-7807-4202-9702-27ed970a50e9" alt="dapars_len_case2">
 
 
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/32dbf6d4-6836-42d8-bc48-2fe4d7b430eb" alt="dapars_short_case2">
-
-
 ## APA_APALYZER interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/cf0ff02d-9a25-4444-9964-d882b946d62b" alt="apa_len_case2">
-
-
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/64f1404b-ea2e-47a3-8461-fedb9ad5bbd8" alt="apa_short_case2">
 
 
 ### 3'UTR-APA top-40 Volcano plot
@@ -226,34 +197,30 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 
 
 ## IPA APALYZER interface
-### IPA upregulated events
+### IPA events list
 <img src="https://github.com/user-attachments/assets/b96da571-2025-44e1-b4b9-0a1d8a47a0a9" alt="ipa_events_up_case2">
 
-### IPA downregulated events
-<img src="https://github.com/user-attachments/assets/41b5f691-5100-4795-9fa5-59070364e610" alt="ipa_events_dn_case2">
 
-### IPA upregulated genes
+### IPA gene list
 <img src="https://github.com/user-attachments/assets/41877d44-b3ad-4443-8679-3c7d3801be2e" alt="ipa_genes_up_case2">
 
-### IPA downregulated genes
-<img src="https://github.com/user-attachments/assets/82c4a867-4de0-44d4-8152-547d3e8263de" alt="ipa_genes_dn_case2">
 
 ### IPA top-40 Volcano plot
 <img src="https://github.com/user-attachments/assets/c24b3a3f-902f-4809-9561-287bdca59b88" alt="ipa_volcano_top40_case2">
 
+
 ### IPA Volcano plot
 <img src="https://github.com/user-attachments/assets/e9888b21-174e-4bef-9773-a6b2221f07a4" alt="ipa_volcano_case2">
+
 
 ### IPA Box plot
 <img src="https://github.com/user-attachments/assets/8bcde8d8-fa5a-4199-aa7e-12b811599a88" alt="ipa_box_case2">
 
 
 ## DGE interface
-### DGE upregulated genes
+### DGE gene list
 <img src="https://github.com/user-attachments/assets/2f20490d-c008-47cc-b147-bf399a3e584a" alt="dge_up_case2">
 
-### DGE downregulated genes
-<img src="https://github.com/user-attachments/assets/ebe4e8f8-afc7-48e0-b2e7-5f9ed7c4c1ee" alt="dge_dn_case2">
 
 ### DGE PCA plot
 <img src="https://github.com/user-attachments/assets/33c52b0d-4060-4c1f-b683-3d076acce655" alt="dge_pca_case2">
@@ -289,18 +256,13 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/1b36025d-096d-4061-9d47-9ab6b8be13bf" alt="sample_sheet_case3">
 
 ## DaPars2 interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/af43271a-bba6-4c4f-aed3-441099dd285c" alt="dapars_len_case3">
 
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/20a436b4-aef4-4980-b63e-735ccf2bef68" alt="dapars_short_case3">
 
 ## APA_APALYZER interface
-### 3'UTR-APA lengthening genes
+### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/7f089759-3f9e-458e-acec-0ddbf91799c0" alt="apa_len_case3">
-
-### 3'UTR-APA shortening genes
-<img src="https://github.com/user-attachments/assets/4bc5b1fa-0424-4198-b0e2-496b6a69641b" alt="apa_short_case3">
 
 ### 3'UTR-APA top-40 Volcano plot
 <img src="https://github.com/user-attachments/assets/7a61a69f-fcea-4e87-b55a-a25b2224d9fa" alt="apa_top40_volcano_case3">
@@ -312,17 +274,11 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/da60baba-2839-4e01-92e3-ba16a4b3fe0f" alt="apa_box_case3">
 
 ## IPA APALYZER interface
-### IPA upregulated events
+### IPA events list
 <img src="https://github.com/user-attachments/assets/045d10e9-d918-4be0-b36e-c573eb6e3cbc" alt="ipa_events_up_case3">
 
-### IPA downregulated events
-<img src="https://github.com/user-attachments/assets/03a36cf4-82c6-425e-9885-1ff1af09af3c" alt="ipa_events_dn_case3">
-
-### IPA upregulated genes
+### IPA gene list
 <img src="https://github.com/user-attachments/assets/41cb6796-1703-4488-a02d-339c11e276bb" alt="ipa_genes_up_case3">
-
-### IPA downregulated genes
-<img src="https://github.com/user-attachments/assets/24a492f9-1337-4ccc-901a-31aaafb145f4" alt="ipa_genes_dn_case3">
 
 ### IPA top-40 Volcano plot
 <img src="https://github.com/user-attachments/assets/c432a5c2-bf0f-4767-b43a-a85a794c8517" alt="ipa_top40_volcano_case3">
@@ -334,11 +290,8 @@ Now, in this section we have the pearson correlation analysis scatter plot betwe
 <img src="https://github.com/user-attachments/assets/b7b56e53-563a-42f8-a612-c0c035973bbb" alt="ipa_box">
 
 ## DGE interface
-### DGE upregulated genes
+### DGE gene list
 <img src="https://github.com/user-attachments/assets/15aab539-0de4-4fd4-8c91-78c55690e106" alt="dge_up_case3">
-
-### DGE downregulated genes
-<img src="https://github.com/user-attachments/assets/253b898f-d305-471c-b677-09eafb8b3e29" alt="dge_dn_case3">
 
 ### DGE PCA plot
 <img src="https://github.com/user-attachments/assets/bdc89652-3a2d-49f9-8cc7-1a8e5eb41776" alt="dge_pca_case3">
