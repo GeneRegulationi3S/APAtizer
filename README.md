@@ -92,15 +92,18 @@ In the output space, we can observe the lists of genes that go through 3'UTR APA
 
 In APA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files. The user can also select the reference PAS for the analysis (hg19, hg38, mm9 and mm10), select the sequencing method (paired-end and single-end), select the strandedness of the BAM files (forward stranded, reverse stranded or non-stranded) and also select the statistical analysis to perform (unpaired t-test, paired t-test and ANOVA). The user may also select the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between 3'UTR APA lengthening (*NvsT_APA_UP*), 3'UTR APA shortening (*NvsT_APA_DN*) and non-significant (*NvsT_APA_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*APA Volcano Plot (top40)*), the same plot but with no highlights (*APA Volcano Plot*) and a box plot (*APA Box*).
 
-In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well. Below are some examples of how the chosen statistical analysis may affect the number of 3'UTR-APA events detected by APAlyzer.
+In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well. Below are some examples of how the chosen statistical analysis may affect the number of 3'UTR-APA events detected by the APAlyzer algorithm.
 
 ## Unpaired t-test
+<img src="https://github.com/user-attachments/assets/18859a11-c48a-457f-84ce-8469b70f0d0e" alt="apa_events_unpaired_case1">
 
 
 ## Paired t-test
+<img src="https://github.com/user-attachments/assets/da1f0cb0-c2dd-4c6f-bef7-7f5d77a540b9" alt="apa_events_paired_case1">
 
 
 ## ANOVA
+<img src="https://github.com/user-attachments/assets/944f68b7-c304-4fde-9b12-0b0079aa6445" alt="apa_events_anova_case1">
 
 
 ## IPA APALYZER
