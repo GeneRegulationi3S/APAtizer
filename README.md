@@ -4,6 +4,12 @@ APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq da
 # Workflow
 <img src="https://github.com/user-attachments/assets/7ae428b3-9d76-4ea4-b0ef-3619cf3a497b" alt="workflow">
 
+# Required dependencies
+1. samtools
+2. snakemake
+3. HTSeq
+4. python3
+5. gatk
 
 # Installing dependencies
 To install the required command line tools for the creation of the input files necessary to use APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
@@ -14,7 +20,13 @@ To install the required command line tools for the creation of the input files n
 ./install_dependencies_macos.sh #MacOS
 ```
 
-# Creating the input files
+# Required input files for APAtizer
+1. Mapped reads .bam files (3'UTR-APA and IPA analysis with APAlyzer)
+2. DaPars bedgraph files (3'UTR-APA analysis with DaPars)
+3. HTSeq files (DGE analysis with DESeq2)
+
+
+# Creating input files for APAtizer
 The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** and enter the folder with the following commands.
 
 ```shell
@@ -31,9 +43,22 @@ This script will prompt the user to select the number (1-4) corresponding to the
 
 ![image](https://github.com/user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
 
-Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, creates the DaPars txt files required for APA analysis employing the DaPars algorithm and it also creates the htseq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface.
+Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface.
 
-After finishing running, the folders **TRIMMED_READS**, **TRIMMED_QC**, **TRIMMED_htseq** and **DaPars_data** are created. The **TRIMMED_READS** folder is where the de-duplicated BAM files along with the corresponding BAI index files are located. The **TRIMMED_QC** folder is where the fastqc reports of the de-duplicated BAM files are located for the user to obtain information about the number of reads, length of reads and many more parameters about the BAM files. The **TRIMMED_htseq** folder is where the htseq files for the DGE analysis are located. Finally, the **DaPars_data** folder is where the txt files necessary for the DaPars analysis are located.
+Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a High Performance Computing (HPC) environment.
+
+After finishing running, the following folder and files are created:
+
+```plaintext
+.
+├── TRIMMED_READS/                           Folder containing the de-duplicated BAM files and the index files
+│   ├── X.trim.bam                           De-duplicated BAM files
+│   ├── X.trim.bam.bai                       Index files
+├── TRIMMED_htseq/                           Folder containing the HTSeq files
+│   ├── X.htseq.txt                          HTSeq files
+├── DaPars_data/                             Folder containing the DaPars bedgraph files
+│   ├── DaPars_data_result_temp.chrX.txt     DaPars bedgraph files
+```
 
 Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a High Performance Computing (HPC) environment.
 
