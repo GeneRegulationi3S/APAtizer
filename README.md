@@ -27,7 +27,7 @@ To install the required command line tools for the creation of the input files n
 
 
 # Creating input files for APAtizer
-The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** and enter the folder with the following commands.
+The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** folder and enter the repository with the following command.
 
 ```shell
 git clone https://github.com/brss12/APAtizer.git && cd APAtizer
