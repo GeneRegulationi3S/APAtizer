@@ -2,7 +2,7 @@
 APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq data. Besides standard RNA-Seq data, APAtizer is also capable of performing analysis of 3'mRNA-Seq data and can also be used to analyse data obtained by other methods of sequencing than Illumina, for example, Ion Torrent. APAtizer has the option to analyse not only human but also mouse RNA-Seq data. Additionally, it is capable of performing differential gene expression, gene ontology analysis, visualizing Venn diagram intersections and Pearson correlation analysis. APAtizer is equipped to handle BAM files, DaPars files and htseq files. It is a user-friendly interface, that allows users to generate informative visualizations, including volcano plots, heatmaps, Venn intersections and gene lists. The APAtizer tool also provides the functionality to download the aforementioned plots and gene lists for further analysis and exploration. 
 
 # Workflow
-![image](https://github.com/brss12/APAtizer/assets/121204829/02d6eb3a-6bd1-47f1-9c40-b0a9ec19af1d)
+<img src="https://github.com/user-attachments/assets/7ae428b3-9d76-4ea4-b0ef-3619cf3a497b" alt="workflow">
 
 
 # Installing dependencies
