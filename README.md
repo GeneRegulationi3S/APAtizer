@@ -277,12 +277,21 @@ The user can also search the gene lists for a specific gene of interest and down
 
 
 ## APA CORRELATION ANALYSIS
+#### Inputs:
+```plaintext
+1. Select APA LEN and SHORT lists ---> Select both gene lists for 3'UTR-APA shortening and lengthening genes obtained in the APAlyzer analysis
+2. Select DGE UP, NC and DN lists ---> Select the three gene lists obtained in the DGE analysis
+```
+
 <img src="https://github.com/user-attachments/assets/d513b991-7b4c-4215-9fa0-de03abb87302" alt="apa_corr_case1">
 
 
-In this section we can see the pearson correlation analysis scatter plot between the 3'UTR APA and DGE events. In this case study for M1 macrophages we can see that genes that undergo 3'UTR APA shortening events are being upregulated and the genes that undergo 3'UTR APA lengthening events are being downregulated.
-
 ## IPA CORRELATION ANALYSIS
+#### Inputs:
+```plaintext
+1. Select IPA events UP and DN lists ---> Select both lists for IPA downregulated and upregulated events obtained in the APAlyzer analysis
+2. Select DGE UP, NC and DN lists ---> Select the three gene lists obtained in the DGE analysis
+```
 <img src="https://github.com/user-attachments/assets/33a13a1b-938d-45b2-81b8-4ed8178e1383" alt="ipa_corr_case1">
 
 
