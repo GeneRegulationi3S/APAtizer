@@ -158,37 +158,37 @@ The user can also search the gene lists for a specific gene of interest and down
 ```plaintext
 1. TRIMMED BAM files directory path ---> Paste the full path of the **TRIMMED_READS** folder
 2. Select reference PAS ---> Select the reference PAS to use in the 3'UTR-APA analysis with APAlyzer
-  2.1. hg19 ---> Reference PAS for hg19
-  2.2. hg38 ---> Reference PAS for hg38
-  2.3. mm9 ---> Reference PAS for mm9
-  2.4. mm10 ---> Reference PAS for mm10
+   2.1. hg19 ---> Reference PAS for hg19
+   2.2. hg38 ---> Reference PAS for hg38
+   2.3. mm9 ---> Reference PAS for mm9
+   2.4. mm10 ---> Reference PAS for mm10
 3. Select sequencing method ---> Select the sequening method used to obtain the reads
-  3.1. Paired-end ---> For BAM files with paired-end reads
-  3.2. Single-end ---> For BAM files with single-end reads
+   3.1. Paired-end ---> For BAM files with paired-end reads
+   3.2. Single-end ---> For BAM files with single-end reads
 4. Select strandedness ---> Select the strandedness for the BAM files
-  4.1. Forward stranded ---> For forward strand-specific BAM files  
-  4.2. Reverse stranded ---> For reverse strand-specific BAM files
-  4.3. Non-stranded ---> For non strand-specific BAM files
+   4.1. Forward stranded ---> For forward strand-specific BAM files  
+   4.2. Reverse stranded ---> For reverse strand-specific BAM files
+   4.3. Non-stranded ---> For non strand-specific BAM files
 5. Select statistical test ---> Select the statistical test to employ in the analysis
-  5.1. Unpaired t-test
-  5.2. Paired t-test
-  5.3. ANOVA
+   5.1. Unpaired t-test
+   5.2. Paired t-test
+   5.3. ANOVA
 6. Number of threads ---> Select the number of threads to use for parallelization (Only available in IPA analysis with APAlyzer)
 ```
 #### Outputs:
 ```plaintext
 1. Select Output Type ---> Select the events list to be shown on the output space
-  1.1. NvsT_IPA_events_UP ---> List of IPA upregulation events
-  1.2. NvsT_IPA_events_DN ---> List of IPA downregulation events
-  1.3. NvsT_IPA_events_NC ---> List of non-significant events
+   1.1. NvsT_IPA_events_UP ---> List of IPA upregulation events
+   1.2. NvsT_IPA_events_DN ---> List of IPA downregulation events
+   1.3. NvsT_IPA_events_NC ---> List of non-significant events
 2. Select Output Type ---> Select the gene list to be shown on the output space
-  2.1. NvsT_IPA_genes_UP ---> List of genes undergoing IPA upregulation
-  2.2. NvsT_IPA_genes_DN ---> List of genes undergoing IPA downregulation
-  2.3. NvsT_IPA_genes_NC ---> List of non-significant genes
+   2.1. NvsT_IPA_genes_UP ---> List of genes undergoing IPA upregulation
+   2.2. NvsT_IPA_genes_DN ---> List of genes undergoing IPA downregulation
+   2.3. NvsT_IPA_genes_NC ---> List of non-significant genes
 3. Selec Plot Type ---> Select the plot to be shown on the output space
-  3.1. IPA Volcano plot (top40) ---> Volcano plot for the IPA events with the top 40 most significant genes highlighted
-  3.2. IPA Volcano plot ---> Volcano plot for the IPA events
-  3.3. IPA Box ---> Box plot for the IPA events
+   3.1. IPA Volcano plot (top40) ---> Volcano plot for the IPA events with the top 40 most significant genes highlighted
+   3.2. IPA Volcano plot ---> Volcano plot for the IPA events
+   3.3. IPA Box ---> Box plot for the IPA events
 ```
 
 ### IPA events list
@@ -212,6 +212,21 @@ The user can also search the gene lists for a specific gene of interest and down
 
 
 ## DGE
+#### Inputs:
+```plaintext
+1. htseq files directory path ---> Paste the full path of the **TRIMMED_htseq** folder
+```
+#### Outputs:
+```plaintext
+1. Select Output Type ---> Select the gene list to be shown on the output space
+   1.1. DGE_Genes_UP ---> List of genes undergoing upregulation
+   1.2. DGE_Genes_DN ---> List of genes undergoing downregulation
+   1.3. DGE_Genes_NC ---> List of non-significant genes
+2. Select Plot Type ---> Select the plot to be shown on the output space
+   2.1. PCA Plot ---> Display a PCA plot
+   2.2. DGE Volcano Plot ---> Display a Volcano plot
+   2.3. DGE_Heatmap ---> Display a Heatmap of significant genes
+```
 
 ### DGE gene list
 <img src="https://github.com/user-attachments/assets/d73702cd-b69e-42a9-84c8-5ba7859bfd83" alt="dge_up_case1">
