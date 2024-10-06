@@ -90,29 +90,52 @@ In this section, the user may start by creating the sample sheet by clicking on 
 
 ## DaPars2
 #### Inputs:
-
-1. Select Multiple .txt files ---> Here, the user may select all of the .txt files located in the **DaPars_data** folder
-
+```plaintext
+1. Select Multiple .txt files ---> Select all of the .txt files located in the **DaPars_data** folder
+```
 #### Outputs:
-
+```plaintext
 1. Len genes ---> List of genes undergoing 3'UTR-APA lengthening
 2. Short genes ---> List of genes undergoing 3'UTR-APA shortening
-
+```
 The user can also search the gene lists for a specific gene of interest and download the said list using the download button below the search box.
 
 ### 3'UTR-APA gene list
-
 <img src="https://github.com/user-attachments/assets/78e7e96d-4d46-4bcf-a47d-7213dd022b5a" alt="dapars_len_case1">
 
 
 ## APA_APALYZER
-In the APA_APAlyzer tab, in the input space the user can specify the following parameters:
-
-
-
-In APA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files. The user can also select the reference PAS for the analysis (hg19, hg38, mm9 and mm10), select the sequencing method (paired-end and single-end), select the strandedness of the BAM files (forward stranded, reverse stranded or non-stranded) and also select the statistical analysis to perform (unpaired t-test, paired t-test and ANOVA). The user may also select the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between 3'UTR APA lengthening (*NvsT_APA_UP*), 3'UTR APA shortening (*NvsT_APA_DN*) and non-significant (*NvsT_APA_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*APA Volcano Plot (top40)*), the same plot but with no highlights (*APA Volcano Plot*) and a box plot (*APA Box*).
-
-In the output space, in the tab called *Number of APA events* one can see a small table where the number of non significant, lengthening and shortening genes is present. In *NvsT_APA* the full lists chosen in the input space are presented to the user and he can search the list for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well. Below are some examples of how the chosen statistical analysis may affect the number of 3'UTR-APA events detected by the APAlyzer algorithm.
+#### Inputs:
+```plaintext
+1. TRIMMED BAM files directory path ---> Paste the full path of the **TRIMMED_READS** folder
+2. Select reference PAS ---> Select the reference PAS to use in the 3'UTR-APA analysis with APAlyzer
+   2.1. hg19 ---> Reference PAS for hg19
+   2.2. hg38 ---> Reference PAS for hg38
+   2.3. mm9 ---> Reference PAS for mm9
+   2.4. mm10 ---> Reference PAS for mm10
+3. Select sequencing method ---> Select the sequening method used to obtain the reads
+   3.1. Paired-end ---> For BAM files with paired-end reads
+   3.2. Single-end ---> For BAM files with single-end reads
+4. Select strandedness ---> Select the strandedness for the BAM files
+   4.1. Forward stranded ---> For forward strand-specific BAM files  
+   4.2. Reverse stranded ---> For reverse strand-specific BAM files
+   4.3. Non-stranded ---> For non strand-specific BAM files
+5. Select statistical test ---> Select the statistical test to employ in the analysis
+   5.1. Unpaired t-test
+   5.2. Paired t-test
+   5.3. ANOVA
+```
+#### Outputs:
+```plaintext
+1. Select Output Type ---> Select the gene list to be shown on the output space
+   1.1. NvsT_APA_UP ---> List of genes undergoing 3'UTR-APA lengthening
+   1.2. NvsT_APA_DN ---> List of genes undergoing 3'UTR-APA shortening
+   1.3. NvsT_APA_NC ---> List of non-significant genes
+2. Selec Plot Type ---> Select the plot to be shown on the output space
+   2.1. APA Volcano plot (top40) ---> Volcano plot for the 3'UTR-APA events with the top 40 most significant genes highlighted
+   2.2. APA Volcano plot ---> Volcano plot for the 3'UTR-APA events
+   2.3. APA Box ---> Box plot for the 3'UTR-APA events  
+```
 
 ### 3'UTR-APA gene list
 <img src="https://github.com/user-attachments/assets/e1754d6a-5c5b-4d5f-ba52-9dd071b99422" alt="apa_up_case1">
@@ -130,9 +153,44 @@ In the output space, in the tab called *Number of APA events* one can see a smal
 <img src="https://github.com/user-attachments/assets/5d9b3122-5c95-48a8-8ecd-929a495e4c69" alt="apa_box_case1">
 
 
-
-
 ## IPA APALYZER
+#### Inputs:
+```plaintext
+1. TRIMMED BAM files directory path ---> Paste the full path of the **TRIMMED_READS** folder
+2. Select reference PAS ---> Select the reference PAS to use in the 3'UTR-APA analysis with APAlyzer
+  2.1. hg19 ---> Reference PAS for hg19
+  2.2. hg38 ---> Reference PAS for hg38
+  2.3. mm9 ---> Reference PAS for mm9
+  2.4. mm10 ---> Reference PAS for mm10
+3. Select sequencing method ---> Select the sequening method used to obtain the reads
+  3.1. Paired-end ---> For BAM files with paired-end reads
+  3.2. Single-end ---> For BAM files with single-end reads
+4. Select strandedness ---> Select the strandedness for the BAM files
+  4.1. Forward stranded ---> For forward strand-specific BAM files  
+  4.2. Reverse stranded ---> For reverse strand-specific BAM files
+  4.3. Non-stranded ---> For non strand-specific BAM files
+5. Select statistical test ---> Select the statistical test to employ in the analysis
+  5.1. Unpaired t-test
+  5.2. Paired t-test
+  5.3. ANOVA
+6. Number of threads ---> Select the number of threads to use for parallelization (Only available in IPA analysis with APAlyzer)
+```
+#### Outputs:
+```plaintext
+1. Select Output Type ---> Select the events list to be shown on the output space
+  1.1. NvsT_IPA_events_UP ---> List of IPA upregulation events
+  1.2. NvsT_IPA_events_DN ---> List of IPA downregulation events
+  1.3. NvsT_IPA_events_NC ---> List of non-significant events
+2. Select Output Type ---> Select the gene list to be shown on the output space
+  2.1. NvsT_IPA_genes_UP ---> List of genes undergoing IPA upregulation
+  2.2. NvsT_IPA_genes_DN ---> List of genes undergoing IPA downregulation
+  2.3. NvsT_IPA_genes_NC ---> List of non-significant genes
+3. Selec Plot Type ---> Select the plot to be shown on the output space
+  3.1. IPA Volcano plot (top40) ---> Volcano plot for the IPA events with the top 40 most significant genes highlighted
+  3.2. IPA Volcano plot ---> Volcano plot for the IPA events
+  3.3. IPA Box ---> Box plot for the IPA events
+```
+
 ### IPA events list
 <img src="https://github.com/user-attachments/assets/a7a39299-ab10-4a02-b735-5b49d8d906c9" alt="ipa_events_up_case1">
 
@@ -153,11 +211,8 @@ In the output space, in the tab called *Number of APA events* one can see a smal
 <img src="https://github.com/user-attachments/assets/61cb91af-64c4-4a72-8c1b-7a5a06c8b82b" alt="ipa_box_case1">
 
 
-In IPA_APALYZER, in the input space the user may paste the full path of the folder **TRIMMED_READS** that contains all the de-duplicated BAM files and the index files. The user can also select the reference PAS for the analysis (hg19, hg38, mm9 and mm10), select the sequencing method (paired-end and single-end), select the strandedness of the BAM files (forward stranded, reverse stranded or non-stranded) and also, specifically for this analysis, select the number of threads to be used in the analysis. The user then selects the output types of the analysis such as the lists that are displayed and the plots. For the lists, the user can choose between IPA upregulated events (*NvsT_IPA_events_UP*), IPA downregulated events (*NvsT_IPA_events_DN*) and non-significant events (*NvsT_IPA_events_NC*). Another output type is the gene lists with the unique genes such as IPA upregulated genes (*NvsT_IPA_genes_UP*), IPA downregulated genes (*NvsT_IPA_genes_DN*) and non-significant genes (*NvsT_IPA_genes_NC*). In the case of the plots, the choice is between a Volcano plot with the top 40 significant genes highlighted (*IPA Volcano Plot (top40)*), the same plot but with no highlights (*IPA Volcano Plot*) and a box plot (*IPA Box*).
-
-In the output space, in the tab called *Number of IPA events* one can see a small table where the number of non significant, lengthening and shortening IPA events are present. In *NvsT_IPA_events* the full lists of the IPA events are presented to the user and he can search the list for a gene of interest and download it. In *NvsT_IPA_genes* the full list for the unique genes is presented to the user and he can, also, search for a gene of interest and download it. Finally, in *Plots* the user can visualize the plots selected in the input space and download them as well.
-
 ## DGE
+
 ### DGE gene list
 <img src="https://github.com/user-attachments/assets/d73702cd-b69e-42a9-84c8-5ba7859bfd83" alt="dge_up_case1">
 
