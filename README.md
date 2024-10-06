@@ -244,11 +244,21 @@ The user can also search the gene lists for a specific gene of interest and down
 <img src="https://github.com/user-attachments/assets/2e80c57c-b7fd-4a0b-add7-753e51b19133" alt="dge_heatmap_case1">
 
 
-For the differential gene expression analysis, in the input space the user may paste the full path for the folder **TRIMMED_htseq/FILTERED/** that has all of the filtered htseq files. Once again, the user can also select the lists and the plots that will be displayed in the outputs. For the lists, the user can choose between DGE upregulated (*DGE_Genes_UP*), DGE downregulated (*DGE_Genes_DN*) and non-significant (*DGE_Genes_NC*). For the plots, the user can select a PCA plot (*PCA Plot*), a Volcano plot (*DGE Volcano Plot*) and a heatmap to evaluate the pattern of gene expression between conditions(*DGE Heatmap*).
-
-In the output space, in the tab named *Number of DGE genes* the user can see a table showing the total number of upregulated, downregulated and non-significant genes. In *DGE_Genes* is where the full lists chosen before in the input space are displayed and the user can search those lists for a gene of interest and download them. In *Plots*, the same as in APAlyzer, is where one can visualize the selected plots and download them.
-
 ## GO_TERMS
+#### Inputs:
+```plaintext
+1. Select gene list ---> Select a gene list obtained in the previous analysis (DaPars, APAlyzer and DGE)
+2. Select Organism Database ---> Select the database to perform GO analysis
+   2.1. Human ---> Human Database
+   2.3. Mouse ---> Mouse Database
+```
+#### Outputs:
+```plaintext
+1. Select Plot Type ---> Select the plot to be shown on the output space
+   1.1. Biological Process (BP) ---> Biological Process GO plot
+   1.2. Molecular Function (MF) ---> Molecular Function GO plot
+```
+
 ### Biological Process (BP)
 <img src="https://github.com/user-attachments/assets/3be1420e-4610-49f7-9e03-9622c06e1c0b" alt="go_bp_case1">
 
@@ -257,15 +267,14 @@ In the output space, in the tab named *Number of DGE genes* the user can see a t
 <img src="https://github.com/user-attachments/assets/40bdc6fc-7002-406f-a2d2-85f306d5f730" alt="go_mf_case1">
 
 
-In this section, the user needs to select the list of genes in which he wants to perform gene ontology exploration, the organism database to be used (Human and Mouse) and the type of analysis to be performed, *Biological Process (BP)* and *Molecular Function (MF)*. The provided list should be one of the gene lists obtained in the previous steps (DaPars, APAlyzer or DGE analysis).
-
-The output space only has one tab called *GO Plots* in which the resulting plots are displayed and can be downloaded.
-
 ## VENN DIAGRAMS
+#### Inputs:
+```plaintext
+1. Select Gene Lists ---> Select gene lists to be intersected (2 to 5)
+```
+
 <img src="https://github.com/user-attachments/assets/52579063-3498-451f-8f6f-b637099fc220" alt="venn_case1">
 
-
-For the Venn diagram intersections, the user can provide from 2 up to 5 gene lists obtained in the previous steps to execute the analysis. In the output section, the Venn diagram is displayed and can be downloaded in the tab *Venn Diagram*. Next, the user can obtain and download a list of the common genes between all the gene lists provided in the intersection.
 
 ## APA CORRELATION ANALYSIS
 <img src="https://github.com/user-attachments/assets/d513b991-7b4c-4215-9fa0-de03abb87302" alt="apa_corr_case1">
