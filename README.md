@@ -210,6 +210,8 @@ The user can also search the gene lists for a specific gene of interest and down
    5.3. ANOVA
 6. Number of threads ---> Select the number of threads to use for parallelization (Only available in IPA analysis with APAlyzer)
 ```
+In this input section, the user can choose an extra parameter called "Number of threads". Here, the user can choose how many threads to use in the IPA analysis with APAlyzer. This functionality is only available in this section of the tool because the IPA analysis is the only one that can be done using parallelization. All the other ones need to be run sequentially.
+
 #### Outputs:
 ```plaintext
 1. Select Output Type ---> Select the events list to be shown on the output space
