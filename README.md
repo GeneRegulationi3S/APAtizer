@@ -331,7 +331,7 @@ The user can also search the gene lists for a specific gene of interest and down
 
 
 # APAtizer walkthrough case study 2 (Illumina 3'mRNA-Seq samples from M1 Macrophages)
-To perform the creation of the input files for APAtizer using 3'mRNA-Seq data, the procedure is exactly the same. The user must run the [create_inputs.sh](create_inputs.sh) script the same way as described in the first section of this README. Below are some images to show that APAtizer can not only perform analysis in standard RNA-Seq data but also in 3'mRNA-Seq data.
+To perform the creation of the input files for APAtizer using 3'mRNA-Seq data, the procedure is exactly the same. The user must run the [create_inputs.sh](create_inputs.sh) script the same way as described in the first section of this README. Below are some screenshots to demonstrate that APAtizer can not only perform analysis with standard RNA-Seq data but also with 3'mRNA-Seq data.
 
 ## Sample Sheet
 ### Creating the sample sheet
