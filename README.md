@@ -43,7 +43,7 @@ This script will prompt the user to select the number (1-4) corresponding to the
 
 ![image](https://github.com/user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
 
-Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface.
+Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface. When selecting, for instance, the hg38 or hg19 genome version, the script will use hg38 or hg19 gtf and bed files to create the necessary inputs for the analysis with APAtizer. These gtf and bed files are already available in the [src/annotations](src/annotations) folder so, this way, the script is able to run the creation of the input files automatically for any of the four genome versions (hg19, hg38, mm9 and mm10).
 
 Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a High Performance Computing (HPC) environment.
 
@@ -72,18 +72,19 @@ Rscript APAtizer.R
 
 Now, to showcase the capabilities of APAtizer, we performed two case studies using our tool. 
 
-The first case was done on standard RNA-Seq data from 10 samples (5 sample pairs) from COAD (colon adenocarcinoma) from TCGA. The raw BAM files were obtained on the TCGA repository and were put in our snakemake workflow with [create_inputs.sh](create_inputs.sh). With this case study, our aim was to showcase that APAtizer is able to analyse standard RNA-Seq data.
+The first case was done on standard RNA-Seq data from 10 samples (5 sample pairs) from COAD (colon adenocarcinoma) from TCGA. The raw BAM files were obtained on the TCGA repository and were put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. With this case study, our aim was to showcase that our tool is able to analyse standard RNA-Seq data.
 
-The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh). Our aim with this case study was to showcase that APAtizer can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data.
+The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. Our aim with this case study was to showcase that our tool can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data.
 
 Below, we showcase a walkthrough of the APAtizer tool showing the different tabs, inputs and outputs that can be obtained by the user.
 
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
+For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. When selecting the genome v
 
 ## Sample Sheet
 ### Creating the sample sheet
-In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below.
+In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below where 10 samples are shown, with 5 being from "Primary Tumor" and 5 from "Solid Tissue Normal".
 
 <img src="https://github.com/user-attachments/assets/071b9413-f2b9-41b9-b838-110fc5dd872a" alt="sample_sheet_case1">
 
