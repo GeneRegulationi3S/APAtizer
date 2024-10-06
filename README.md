@@ -111,6 +111,8 @@ STAR --genomeDir $GENOMEDIR\
 --outSAMtype BAM SortedByCoordinate \
 ```
 
+With this, starting with the FASTQ files, the user can create BAM files and then run them through the [create_inputs.sh](create_inputs.sh) script to create the necessary inputs for the analysis with APAtizer.
+
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. When selecting the genome v
 
