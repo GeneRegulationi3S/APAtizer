@@ -60,7 +60,6 @@ After finishing running, the following folder and files are created:
 │   ├── DaPars_data_result_temp.chrX.txt     DaPars bedgraph files
 ```
 
-Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a High Performance Computing (HPC) environment.
 
 ***All done! Now you are ready to use APAtizer!***
 
@@ -76,8 +75,41 @@ The first case was done on standard RNA-Seq data from 10 samples (5 sample pairs
 
 The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. Our aim with this case study was to showcase that our tool can not only work with data from standard RNA-Seq but also with 3'mRNA-Seq data.
 
-Below, we showcase a walkthrough of the APAtizer tool showing the different tabs, inputs and outputs that can be obtained by the user.
+The input creation script is intended to work with BAM files from the get go. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, a section with a small explanation and some commands to guide the user through the alignemnt process to create BAM files is included below.
 
+#### Alignment to a reference genome (If the user only has FASTQ files in his posssession)
+**Creation of the genome index**
+```shell
+GENOMEDIR=/path/to/indexed/genome
+
+STAR --runThreadN n_threads \
+--runMode genomeGenerate \
+--genomeDir $GENOMEDIR \
+--genomeFastaFiles $GENOMEDIR/genome.fa \
+--sjdbGTFfile genome.annotation.gtf \
+--sjdbOverhang 99
+```
+**Aligning to the reference genome**
+**Paired-end**
+```shell
+GENOMEDIR=/path/to/indexed/genome
+
+STAR --genomeDir $GENOMEDIR \
+--runThreadN n_threads \
+--readFilesIn sample_1.fq sample_2.fq \
+--outFileNamePrefix sample \
+--outSAMtype BAM SortedByCoordinate \
+```
+**Single-end**
+```shell
+GENOMEDIR=/path/to/indexed/genome
+
+STAR --genomeDir $GENOMEDIR\
+--runThreadN n_threads \
+--readFilesIn sample.fq \
+--outFileNamePrefix sample \
+--outSAMtype BAM SortedByCoordinate \
+```
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. When selecting the genome v
