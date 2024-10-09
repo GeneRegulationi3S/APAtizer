@@ -2,9 +2,9 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
 required_packages_R <- c(
-  "survminer", "survival", "tidyverse", "base", "data.table", "stats", "shinyalert",
-  "shiny", "purrr", "dplyr", "splitstackshape", "shinythemes", "readr", "ggplot2", 
-  "repmis", "pheatmap", "RColorBrewer", "EnhancedVolcano", "ggvenn", "ggpubr"
+  "tidyverse", "base", "data.table", "stats", "shinyalert", "shiny", "purrr",
+  "dplyr", "splitstackshape", "shinythemes", "readr", "ggplot2", "repmis",
+  "pheatmap", "RColorBrewer", "EnhancedVolcano", "ggvenn", "ggpubr", "DT"
 )
 
 required_packages_Bioc <- c(
@@ -30,37 +30,33 @@ install_missing_packages_Bioc <- function(packages) {
 install_missing_packages_R(required_packages_R)
 install_missing_packages_Bioc(required_packages_Bioc)
 
+library("apeglm")
 library("TCGAbiolinks")
-library("survminer")
-library("survival")
 library("SummarizedExperiment")
-library("tidyverse")
 library("DESeq2")
 library("APAlyzer")
-library("base")
 library("data.table")
 library("Rsamtools")
 library("tidyverse")
 library("stats")
 library("shinyalert")
 library("shiny")
+library("DT")
 library("purrr")
 library("base")
-library("tidyverse")
 library("dplyr")
 library("splitstackshape")
 library("shinythemes")
 library("readr")
 library("ggplot2")
 library("repmis")
-library("DESeq2")
 library("pheatmap")
 library("RColorBrewer")
 library("EnhancedVolcano")
 library("clusterProfiler")
 library("enrichplot")
-library("readr")
 library("org.Hs.eg.db")
+library("org.Mm.eg.db")
 library("VennDiagram")
 library("ggvenn")
 library("ggpubr")
@@ -70,12 +66,57 @@ options(shiny.maxRequestSize=10000000*1024^2)
 ui <- fluidPage(theme = shinytheme("darkly"),
                 navbarPage(
                   "APAtizer",
+                  tabPanel("SAMPLE SHEET",
+                           titlePanel("Create a sample sheet with BAM file names and conditions"),
+                           sidebarLayout(
+                             sidebarPanel(
+                               actionButton("addRow", "Add row"),
+                               actionButton("removeRow", "Remove row"),
+                               br(),
+                               br(),
+                               actionButton("saveData", "Save data")
+                             ),
+                             mainPanel(
+                               tabsetPanel(
+                                 tabPanel("Edit Table", DTOutput("editableTable")),
+                                 tabPanel("View Data", tableOutput("displayData"))
+                               )
+                             )
+                           ),
+                           tags$style(HTML("
+                                .dataTables_wrapper .dataTables_scroll {
+                                  background-color: white;
+                                  border: none !important;
+                                }
+                                table.dataTable tbody tr {
+                                  background-color: white;
+                                  border: none !important;
+                                }
+                                table.dataTable {
+                                  background-color: white;
+                                  border: none !important;
+                                }
+                                table.dataTable thead th {
+                                  background-color: #f8f9fa;
+                                  color: #333;
+                                  border: none !important;
+                                }
+                                table.dataTable tbody td {
+                                  color: #333;
+                                  border: none !important;
+                                }
+                                .tab-content {
+                                  border: 1px solid #ddd;
+                                  padding: 10px;
+                                  border: none !important;
+                                }"))
+                  ),
                   tabPanel("DAPARS",
                            titlePanel("Use DaPars2 to analyse de novo 3'UTR-APA from RNA-Seq data"),
                            sidebarLayout(
                              sidebarPanel(
                                fileInput("txt_files", "Select Multiple .txt Files", multiple = TRUE),
-                               fileInput("txt_file2", "Select sample sheet"),
+                               #fileInput("txt_file2", "Select sample sheet"),
                                actionButton("run2", "DaPars Analysis")
                              ),
                              mainPanel(
@@ -102,13 +143,15 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            sidebarLayout(
                              sidebarPanel(
                                textInput("path2", "TRIMMED BAM files directory path:"),
-                               fileInput("txt_file3", "Select sample sheet"),
+                               #fileInput("txt_file3", "Select sample sheet"),
                                selectInput(inputId = "ref_PAS1", label = "Select reference PAS",
                                            choices = c("hg19", "hg38", "mm9", "mm10")),
                                selectInput(inputId = "seq_method1", label = "Select sequencing method",
                                            choices = c("Paired-end", "Single-end")),
                                selectInput(inputId = "seq_strand1", label = "Select strandedness",
                                            choices = c("Forward stranded", "Reverse stranded", "Non-stranded")),
+                               selectInput(inputId = "multi_test", label = "Select statistical test",
+                                           choices = c("Unpaired t-test", "Paired t-test", "ANOVA")),
                                actionButton("run3", "APA Analysis"),
                                br(),
                                br(),
@@ -151,19 +194,55 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           conditionalPanel(
                                             condition = "input.output_type5 == 'APA Volcano plot (top 40)'",
                                             br(),
-                                            downloadButton(outputId = "download_plot1", label = "Download APA Volcano plot (top 40)"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot1", label = "Download APA Volcano plot (top 40)")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot1")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type5 == 'APA Volcano plot'",
                                             br(),
-                                            downloadButton(outputId = "download_plot2", label = "Download APA Volcano plot"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot2", label = "Download APA Volcano plot")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot2")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type5 == 'APA Box'",
                                             br(),
-                                            downloadButton(outputId = "download_plot3", label = "Download APA Box"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot3", label = "Download APA Box")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot3")
                                           )
                                  )
@@ -176,13 +255,15 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            sidebarLayout(
                              sidebarPanel(
                                textInput("path", "TRIMMED BAM files directory path:"),
-                               fileInput("txt_file", "Select sample sheet"),
+                               #fileInput("txt_file", "Select sample sheet"),
                                selectInput(inputId = "ref_PAS2", label = "Select reference PAS",
                                            choices = c("hg19", "hg38", "mm9", "mm10")),
                                selectInput(inputId = "seq_method2", label = "Select sequencing method",
                                            choices = c("Paired-end", "Single-end")),
                                selectInput(inputId = "seq_strand2", label = "Select strandedness",
                                            choices = c("Forward stranded", "Reverse stranded", "Non-stranded")),
+                               selectInput(inputId = "multi_test2", label = "Select statistical test",
+                                           choices = c("Unpaired t-test", "Paired t-test", "ANOVA")),
                                sliderInput("n_threads", "Number of threads:", min = 1, max = 16, value = 1, step = 1),
                                actionButton("run", "IPA Analysis"),
                                br(),
@@ -252,19 +333,55 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           conditionalPanel(
                                             condition = "input.output_type3 == 'IPA Volcano plot (top 40)'",
                                             br(),
-                                            downloadButton(outputId = "download_plot4", label = "Download IPA Volcano plot (top 40)"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot4", label = "Download IPA Volcano plot (top 40)")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot4")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type3 == 'IPA Volcano plot'",
                                             br(),
-                                            downloadButton(outputId = "download_plot5", label = "Download IPA Volcano plot"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot5", label = "Download IPA Volcano plot")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot5")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type3 == 'IPA Box'",
                                             br(),
-                                            downloadButton(outputId = "download_plot6", label = "Download IPA Box"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot6", label = "Download IPA Box")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot6")
                                           )
                                  )
@@ -277,7 +394,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            sidebarLayout(
                              sidebarPanel(
                                textInput("path_dge", "htseq files directory path:"),
-                               fileInput("txt_file_dge", "Select sample sheet"),
+                               #fileInput("txt_file_dge", "Select sample sheet"),
                                actionButton("run_dge", "DGE Analysis"),
                                br(),
                                br(),
@@ -290,8 +407,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                # ConditionalPanel to show sliders only when "DGE Heatmap" is selected
                                conditionalPanel(
                                  condition = "input.output_type2_dge == 'DGE Heatmap'",
-                                 sliderInput("cellwidth", "Heatmap Width:", min = 5, max = 50, value = 5, step = 1),
-                                 sliderInput("cellheight", "Heatmap Height:", min = 0.01, max = 1, value = 0.01, step = 0.01)
+                                 sliderInput("cellwidth", "Heatmap Width:", min = 5, max = 100, value = 5, step = 1),
+                                 sliderInput("cellheight", "Heatmap Height:", min = 0.01, max = 10, value = 0.01, step = 0.01)
                                )
                              ),
                              mainPanel(
@@ -326,19 +443,55 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           conditionalPanel(
                                             condition = "input.output_type2_dge == 'PCA Plot'",
                                             br(),
-                                            downloadButton(outputId = "download_plot7", label = "Download PCA Plot"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot7", label = "Download PCA Plot")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot7")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type2_dge == 'DGE Volcano Plot'",
                                             br(),
-                                            downloadButton(outputId = "download_plot8", label = "Download DGE Volcano Plot"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot8", label = "Download DGE Volcano plot")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot8")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type2_dge == 'DGE Heatmap'",
                                             br(),
-                                            downloadButton(outputId = "download_plot9", label = "Download DGE Heatmap"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot9", label = "Download DGE Heatmap")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot9")
                                           )
                                  )
@@ -366,13 +519,37 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           conditionalPanel(
                                             condition = "input.output_type_go == 'Biological Process (BP)'",
                                             br(),
-                                            downloadButton(outputId = "download_plot_go", label = "Download GO Plot BP"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot_go", label = "Download GO Plot BP")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot_go")
                                           ),
                                           conditionalPanel(
                                             condition = "input.output_type_go == 'Molecular Function (MF)'",
                                             br(),
-                                            downloadButton(outputId = "download_plot2_go", label = "Download GO Plot MF"),
+                                            fluidRow(
+                                              column(3,
+                                                     downloadButton(outputId = "download_plot2_go", label = "Download APA GO Plot MF")
+                                              ),
+                                              column(1,
+                                                     div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                         selectInput("file_format", NULL, 
+                                                                     choices = c("PNG", "PDF"), 
+                                                                     selected = "PNG", 
+                                                                     width = "100%")
+                                                     )
+                                              )
+                                            ),
                                             plotOutput(outputId = "plot2_go")
                                           )
                                  )
@@ -390,10 +567,22 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                              mainPanel(
                                tabsetPanel(
                                  tabPanel("Venn Diagram",
-                                            br(),
-                                            downloadButton(outputId = "download_plot_venn", label = "Download Venn Diagram"),
-                                            plotOutput(outputId = "plot_venn")
-                                       ),
+                                          br(),
+                                          fluidRow(
+                                            column(3,
+                                                   downloadButton(outputId = "download_plot_venn", label = "Download Venn Diagram")
+                                            ),
+                                            column(1,
+                                                   div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                       selectInput("file_format", NULL, 
+                                                                   choices = c("PNG", "PDF"), 
+                                                                   selected = "PNG", 
+                                                                   width = "100%")
+                                                   )
+                                            )
+                                          ),
+                                          plotOutput(outputId = "plot_venn")
+                                 ),
                                  tabPanel("Common Genes",
                                           br(),
                                           textInput(inputId = "search_term_common_genes", label = "Search for a gene"),
@@ -417,7 +606,19 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                tabsetPanel(
                                  tabPanel("Plot",
                                           br(),
-                                          downloadButton(outputId = "download_plot_corr", label = "Download Correlation Analysis Plot"),
+                                          fluidRow(
+                                            column(3,
+                                                   downloadButton(outputId = "download_plot_corr", label = "Download Correlation Analysis Plot")
+                                            ),
+                                            column(1,
+                                                   div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                       selectInput("file_format", NULL, 
+                                                                   choices = c("PNG", "PDF"), 
+                                                                   selected = "PNG", 
+                                                                   width = "100%")
+                                                   )
+                                            )
+                                          ),
                                           plotOutput(outputId = "plot_corr")
                                         
                                  )
@@ -438,7 +639,19 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                tabsetPanel(
                                  tabPanel("Plot",
                                           br(),
-                                          downloadButton(outputId = "download_plot_corr2", label = "Download Correlation Analysis Plot"),
+                                          fluidRow(
+                                            column(3,
+                                                   downloadButton(outputId = "download_plot_corr2", label = "Download Correlation Analysis Plot")
+                                            ),
+                                            column(1,
+                                                   div(style = "margin-top: 5px;", # Adjusts vertical alignment
+                                                       selectInput("file_format", NULL, 
+                                                                   choices = c("PNG", "PDF"), 
+                                                                   selected = "PNG", 
+                                                                   width = "100%")
+                                                   )
+                                            )
+                                          ),
                                           plotOutput(outputId = "plot_corr2")
                                  )
                                )
@@ -452,19 +665,79 @@ ui <- fluidPage(theme = shinytheme("darkly"),
 
 server <- function(input, output,session) {
   
+  ##### SAMPLE SHEET #####
+  
+  # Initialize reactive values with data from .GlobalEnv if available
+  if (exists("savedData", envir = .GlobalEnv)) {
+    initialData <- get("savedData", envir = .GlobalEnv)
+  } else {
+    initialData <- data.frame(File.Name = character(), Sample.Type = character(), stringsAsFactors = FALSE)
+  }
+  
+  rv <- reactiveValues(data = initialData)
+  
+  # Render the editable data table
+  output$editableTable <- renderDT({
+    datatable(rv$data, editable = TRUE, rownames = FALSE,
+              options = list(dom = 't', paging = FALSE, ordering = FALSE, searching = FALSE))
+  }, server = FALSE)
+  
+  # Observe add row button
+  observeEvent(input$addRow, {
+    newRow <- data.frame(File.Name = "", Sample.Type = "", stringsAsFactors = FALSE)
+    rv$data <- rbind(rv$data, newRow)
+  })
+  
+  # Observe remove row button
+  observeEvent(input$removeRow, {
+    if (nrow(rv$data) > 0) {
+      rv$data <- rv$data[-nrow(rv$data), ]  # Remove the last row
+    }
+  })
+  
+  # Observe changes to the table
+  observeEvent(input$editableTable_cell_edit, {
+    info <- input$editableTable_cell_edit
+    rv$data[info$row, info$col + 1] <- info$value
+  })
+  
+  # Save the data to the R environment
+  observeEvent(input$saveData, {
+    assign("savedData", rv$data, envir = .GlobalEnv)  # Save data to .GlobalEnv
+    showModal(modalDialog(
+      title = "Data Saved",
+      "The data has been saved for use in the tool.",
+      easyClose = TRUE
+    ))
+  })
+  
+  # Display the data in another tab
+  output$displayData <- renderTable({
+    rv$data
+  })
+  
   
   ##### IPA #####
   
   df_pacientes <- eventReactive(input$run,{
-    file <- input$txt_file
+    #file <- input$txt_file
     datapath <- input$path
-    if (is.null(file) || datapath == "") {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
+    #if (is.null(file) || datapath == "") {
+    #  shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
+    #  return(NULL)
+    #}
+    
+    if (nrow(rv$data) == 0) {
+      shinyalert("Error", "Please make sure that the sample sheet is correct before running the analysis.", type = "error")
       return(NULL)
     }
     
-    df_pacientes <- read.table(file$datapath, sep = "\t", header = TRUE)
+    df_pacientes <- rv$data
+    
+    #df_pacientes <- read.table(file$datapath, sep = "\t", header = TRUE)
     df_pacientes <- dplyr::select(df_pacientes, File.Name,Sample.Type)
+    
+    df_pacientes$Sample.Type <- gsub(" ", "_", df_pacientes$Sample.Type)
     #df_pacientes$File.Name<- str_replace(df_pacientes$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
     
     #case_order <- unique(df_pacientes$Case.ID)
@@ -481,12 +754,12 @@ server <- function(input, output,session) {
   
   
   NvsT_IPA <- eventReactive(input$run, {
-    file <- input$txt_file
+    #file <- input$txt_file
     datapath <- input$path
-    if (is.null(file) || datapath == "") {
-      shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
-      return(NULL)
-    }
+    #if (is.null(file) || datapath == "") {
+    #  shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
+    #  return(NULL)
+    #}
     
     shinyalert("Processing", "IPA Analysis has started. Please wait...", type = "info")
     
@@ -556,12 +829,22 @@ server <- function(input, output,session) {
     #sampleTable2 = data.frame(samplename = c(names(flsall)),
     #                          condition = c(rep("KD",x),rep("NT",x))) #OTIMIZAR, se são 2 amostras, 1 pro KD e 1 pro NT
     
-    NvsT_IPA=APAdiff(sampleTable2, IPA_OUTraw, 
-                     conKET=unique(df_pacientes()$Sample.Type)[2],
-                     trtKEY=unique(df_pacientes()$Sample.Type)[1],
-                     PAS='IPA',
-                     CUTreads=5,
-                     p_adjust_methods="fdr")
+    if (input$multi_test2 == "Unpaired t-test") {
+      NvsT_IPA=APAdiff(sampleTable2, IPA_OUTraw, 
+                       conKET=unique(df_pacientes()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes()$Sample.Type)[1],
+                       PAS='IPA', CUTreads=5, p_adjust_methods="fdr", MultiTest = "unpaired t-test")
+    } else if (input$multi_test2 == "Paired t-test") {
+      NvsT_IPA=APAdiff(sampleTable2, IPA_OUTraw, 
+                       conKET=unique(df_pacientes()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes()$Sample.Type)[1],
+                       PAS='IPA', CUTreads=5, p_adjust_methods="fdr", MultiTest = "paired t-test")
+    } else if (input$multi_test2 == "ANOVA") {
+      NvsT_IPA=APAdiff(sampleTable2, IPA_OUTraw, 
+                       conKET=unique(df_pacientes()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes()$Sample.Type)[1],
+                       PAS='IPA', CUTreads=5, p_adjust_methods="fdr", MultiTest = "ANOVA")
+    }
     
     NvsT_IPA <- as.data.frame(NvsT_IPA)
     
@@ -765,29 +1048,43 @@ server <- function(input, output,session) {
       write.csv(NvsT_IPA_genes_NC(), file, row.names = FALSE)
     }
   )
+  
   output$download_plot4 <- downloadHandler(
     filename = function() {
-      paste("plot4", ".png", sep = "")
+      paste("plot4", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, e(), width = 6000, height = 4000,units = c("px"),dpi = 300)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = e(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = e(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
+  
   output$download_plot5 <- downloadHandler(
     filename = function() {
-      paste("plot5", ".png", sep = "")
+      paste("plot5", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, f(), width = 6000, height = 4000,units = c("px"),dpi = 300)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = f(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = f(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
+  
   output$download_plot6 <- downloadHandler(
     filename = function() {
-      paste("plot6", ".png", sep = "")
+      paste("plot6", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, g(), width = 6000, height = 4000,units = c("px"),dpi = 300)
-      
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = g(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = g(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
@@ -796,24 +1093,32 @@ server <- function(input, output,session) {
   
   df_pacientes2 <- eventReactive(input$run2,{
     files <- input$txt_files
-    file <- input$txt_file2
-    if (is.null(file) || is.null(files)) {
+    #file <- input$txt_file2
+    if (is.null(files)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
-    df_pacientes2 <- read.table(file$datapath, sep = "\t", header = TRUE)
+    if (nrow(rv$data) == 0) {
+      shinyalert("Error", "Please make sure that the sample sheet is correct before running the analysis.", type = "error")
+      return(NULL)
+    }
+    
+    df_pacientes2 <- rv$data
+    
+    #df_pacientes2 <- read.table(file$datapath, sep = "\t", header = TRUE)
     df_pacientes2 <- dplyr::select(df_pacientes2, File.Name,Sample.Type)
     
     #df_pacientes2 <- read.table(file$datapath, sep = "\t", header = TRUE)
     #df_pacientes2 <- dplyr::select(df_pacientes2, File.Name,Case.ID,Sample.Type)
-    df_pacientes2$File.Name <- paste("WIG/", df_pacientes2$File.Name, sep = "")
+    df_pacientes2$File.Name <- paste("../WIG/", df_pacientes2$File.Name, sep = "") #"./WIG/" or "WIG/"
     #case_order <- unique(df_pacientes2$Case.ID)
     #df_pacientes2 <- df_pacientes2 %>% arrange(df_pacientes2$Sample.Type, match(df_pacientes2$Case.ID, case_order))
     #normal <- c("Solid Tissue Normal")
     #df_pacientes2$category <- ifelse(df_pacientes2$Sample.Type %in% normal, "Normal", "Tumor")
     #df_pacientes2$category = paste(df_pacientes2$Case.ID, df_pacientes2$category, sep="_")
     df_pacientes2$File.Name<- str_replace(df_pacientes2$File.Name, ".bam", "_PDUI")
+    df_pacientes2$Sample.Type <- gsub(" ", "_", df_pacientes2$Sample.Type)
     
     return(df_pacientes2)
     
@@ -823,8 +1128,8 @@ server <- function(input, output,session) {
   # DPDUI
   dpdui <- eventReactive(input$run2,{
     files <- input$txt_files
-    file <- input$txt_file2
-    if (is.null(files) || is.null(file)) {
+    #file <- input$txt_file2
+    if (is.null(files)) {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
@@ -865,7 +1170,8 @@ server <- function(input, output,session) {
     
     dpdui <- df[,c(1,num_cols4:num_cols5)]
 
-    dpdui$Gene <- sapply(strsplit(as.character(dpdui$Gene), "\\|"), `[`, 2)    
+    dpdui$Gene <- sapply(strsplit(as.character(dpdui$Gene), "\\|"), `[`, 2)
+    dpdui <- dpdui %>% rename(gene_symbol = Gene)
 
     return(dpdui)
   })
@@ -938,15 +1244,25 @@ server <- function(input, output,session) {
   ##### APA #####
   
   df_pacientes3 <- eventReactive(input$run3,{
-    file <- input$txt_file3
+    #file <- input$txt_file3
     datapath <- input$path2
     
-    if (is.null(file) || datapath == "") {
+    if (datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
-    df_pacientes3 <- read.table(file$datapath, sep = "\t", header = TRUE)
+    
+    if (nrow(rv$data) == 0) {
+      shinyalert("Error", "Please make sure that the sample sheet is correct before running the analysis.", type = "error")
+      return(NULL)
+    }
+    
+    df_pacientes3 <- rv$data
+    
+    #df_pacientes3 <- read.table(file$datapath, sep = "\t", header = TRUE)
     df_pacientes3 <- dplyr::select(df_pacientes3, File.Name,Sample.Type)
+    
+    df_pacientes3$Sample.Type <- gsub(" ", "_", df_pacientes3$Sample.Type)
     #df_pacientes3$File.Name<- str_replace(df_pacientes3$File.Name, "rna_seq.genomic.gdc_realn.bam", "rna_seq.genomic.gdc_realn.trim.bam")
     
     #case_order <- unique(df_pacientes3$Case.ID)
@@ -962,9 +1278,10 @@ server <- function(input, output,session) {
   })
   
   NvsT_APA <- eventReactive(input$run3,{
-    file <- input$txt_file3
+    #file <- input$txt_file3
     datapath <- input$path2
-    if (is.null(file) || datapath == "") {
+    
+    if (datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
@@ -1015,9 +1332,9 @@ server <- function(input, output,session) {
     #Analysis of APA in 3’UTRs
     refUTRraw=refUTRraw
     UTRdbraw=REF3UTR(refUTRraw)
-    #DFUTRraw <- read_csv("/home/bruno/I3S/COAD/Non-Smoking/TRIMMED_APALYZER/DFUTRraw.csv")
+    #DFUTRraw <- read_csv("/home/bruno/I3S/IPO/Lexogen_IPO_no6/No_6_APALYZER/DFUTRraw.csv")
     
-    if (input$seq_strand1=="Forward stranded") {
+    if (input$seq_strand1 == "Forward stranded") {
       DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="forward")
     } else if (input$seq_strand1 == "Reverse stranded") {
       DFUTRraw=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="invert")
@@ -1034,13 +1351,22 @@ server <- function(input, output,session) {
     #sampleTable1 = data.frame(samplename = c(names(flsall)),
     #                          condition = c(rep("KD",x),rep("NT",x))) #OTIMIZAR, se são 2 amostras, 1 pro KD e 1 pro NT
     
-    
-    NvsT_APA=APAdiff(sampleTable1,DFUTRraw, 
-                     conKET=unique(df_pacientes3()$Sample.Type)[2],
-                     trtKEY=unique(df_pacientes3()$Sample.Type)[1],
-                     PAS='3UTR',
-                     CUTreads=5,
-                     p_adjust_methods="fdr")
+    if (input$multi_test == "Unpaired t-test") {
+      NvsT_APA=APAdiff(sampleTable1,DFUTRraw, 
+                       conKET=unique(df_pacientes3()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes3()$Sample.Type)[1],
+                       PAS='3UTR', CUTreads=5, p_adjust_methods="fdr", MultiTest = "unpaired t-test")
+    } else if (input$multi_test == "Paired t-test") {
+      NvsT_APA=APAdiff(sampleTable1,DFUTRraw, 
+                       conKET=unique(df_pacientes3()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes3()$Sample.Type)[1],
+                       PAS='3UTR', CUTreads=5, p_adjust_methods="fdr", MultiTest = "paired t-test")
+    } else if (input$multi_test == "ANOVA") {
+      NvsT_APA=APAdiff(sampleTable1,DFUTRraw, 
+                       conKET=unique(df_pacientes3()$Sample.Type)[2],
+                       trtKEY=unique(df_pacientes3()$Sample.Type)[1],
+                       PAS='3UTR', CUTreads=5, p_adjust_methods="fdr", MultiTest = "ANOVA")
+    }
     
     NvsT_APA <- as.data.frame(NvsT_APA)
     
@@ -1170,29 +1496,43 @@ server <- function(input, output,session) {
       write.csv(NvsT_APA_NC(), file, row.names = FALSE)
     }
   )
+  
   output$download_plot1 <- downloadHandler(
     filename = function() {
-      paste("plot1", ".png", sep = "")
+      paste("plot1", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, a(), width = 6000, height = 4000,units = c("px"),dpi = 300)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = a(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = a(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
+  
   output$download_plot2 <- downloadHandler(
     filename = function() {
-      paste("plot2", ".png", sep = "")
+      paste("plot2", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, b(), width = 6000, height = 4000,units = c("px"),dpi = 300)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = b(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = b(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
+  
   output$download_plot3 <- downloadHandler(
     filename = function() {
-      paste("plot3", ".png", sep = "")
+      paste("plot3", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, d(), width = 6000, height = 4000,units = c("px") ,dpi = 300)
-      
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = d(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = d(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
@@ -1203,13 +1543,22 @@ server <- function(input, output,session) {
     
     rm(list = ls(all.names = TRUE), envir = .GlobalEnv)
     
-    file <- input$txt_file_dge
-    if (is.null(file)) {
+    datapath <- input$path_dge
+    
+    #file <- input$txt_file_dge
+    if (datapath == "") {
       shinyalert("Error", "Please input all required files before running the analysis.", type = "error")
       return(NULL)
     }
     
-    df_pacientes_dge <- read.table(file$datapath, sep = "\t", header = TRUE)
+    if (nrow(rv$data) == 0) {
+      shinyalert("Error", "Please make sure that the sample sheet is correct before running the analysis.", type = "error")
+      return(NULL)
+    }
+    
+    df_pacientes_dge <- rv$data
+    
+    #df_pacientes_dge <- read.table(file$datapath, sep = "\t", header = TRUE)
     df_pacientes_dge <- dplyr::select(df_pacientes_dge, File.Name,Sample.Type)
     
     #df_pacientes_dge <- read.table(file$datapath, sep = "\t", header = TRUE)
@@ -1473,28 +1822,40 @@ server <- function(input, output,session) {
   
   output$download_plot7 <- downloadHandler(
     filename = function() {
-      paste("plot_pca", ".png", sep = "")
+      paste("plot_pca", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = pca_plot(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = pca_plot(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = pca_plot(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
   output$download_plot8 <- downloadHandler(
     filename = function() {
-      paste("plot_volcano", ".png", sep = "")
+      paste("plot_volcano", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = Volcano_dge(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = Volcano_dge(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = Volcano_dge(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
   output$download_plot9 <- downloadHandler(
     filename = function() {
-      paste("plot_heatmap", ".png", sep = "")
+      paste("plot_heatmap", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = htmap(), width = 8000, height = 6000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = htmap(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = htmap(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
@@ -1628,19 +1989,27 @@ server <- function(input, output,session) {
   
   output$download_plot_go <- downloadHandler(
     filename = function() {
-      paste("plot_go_BP", ".png", sep = "")
+      paste("plot_go_BP", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = GO_plot_BP(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = GO_plot_BP(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = GO_plot_BP(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
   output$download_plot2_go <- downloadHandler(
     filename = function() {
-      paste("plot_go_MF", ".png", sep = "")
+      paste("plot_go_MF", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = GO_plot_MF(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = GO_plot_MF(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = GO_plot_MF(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
@@ -1800,10 +2169,14 @@ server <- function(input, output,session) {
   
   output$download_plot_venn <- downloadHandler(
     filename = function() {
-      paste("plot_venn", ".png", sep = "")
+      paste("plot_venn", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = input_files()$plot, width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = input_files()$plot, width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = input_files()$plot, width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
   
@@ -1872,12 +2245,25 @@ server <- function(input, output,session) {
   
   output$download_plot_corr <- downloadHandler(
     filename = function() {
-      paste("plot_corr_3'UTR-APA_DGE", ".png", sep = "")
+      paste("plot_corr_3'UTR-APA_DGE", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = plot_corr_apa(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = plot_corr_apa(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = plot_corr_apa(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
+  
+  #output$download_plot_corr <- downloadHandler(
+  #  filename = function() {
+  #    paste("plot_corr_3'UTR-APA_DGE", ".png", sep = "")
+  #  },
+  #  content = function(file) {
+  #    ggsave(file, plot = plot_corr_apa(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+  #  }
+  #
   
   
   ##### IPA CORR #####
@@ -1937,10 +2323,14 @@ server <- function(input, output,session) {
   
   output$download_plot_corr2 <- downloadHandler(
     filename = function() {
-      paste("plot_corr_IPA_DGE", ".png", sep = "")
+      paste("plot_corr_IPA_DGE", switch(input$file_format, "PNG" = ".png", "PDF" = ".pdf"), sep = "")
     },
     content = function(file) {
-      ggsave(file, plot = plot_corr_ipa(), width = 5000, height = 5000, units = c("px"), bg = "white", dpi = 600)
+      if (input$file_format == "PNG") {
+        ggsave(file, plot = plot_corr_ipa(), width = 5000, height = 5000, units = "px", bg = "white", dpi = 600)
+      } else if (input$file_format == "PDF") {
+        ggsave(file, plot = plot_corr_ipa(), width = 7, height = 7, device = "pdf", bg = "white")
+      }
     }
   )
 }
