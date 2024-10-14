@@ -33,7 +33,7 @@ To install the required command line tools for the creation of the input files n
 The script to create the input files requires the raw BAM files to be placed in a folder called **RAW_BAM**. To start, clone the repository in the same directory of the **RAW_BAM** folder and enter the repository with the following command.
 
 ```shell
-git clone https://github.com/brss12/APAtizer.git && cd APAtizer
+git clone https://github.com/GeneRegulationi3S/APAtizer.git && cd APAtizer
 ```
 
 After this, you will find a file called [create_inputs.sh](create_inputs.sh). Run it using the following command.
@@ -44,7 +44,7 @@ chmod +x create_inputs.sh && ./create_inputs.sh
 
 This script will prompt the user to select the number (1-4) corresponding to the genome version used in the creation of the BAM files. This will be essencial for the creation of the input files necessary for APAtizer.
 
-![image](https://github.com/user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
+![image](https:///user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
 
 Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface. When selecting, for instance, the hg38 or hg19 genome version, the script will use hg38 or hg19 gtf and bed files to create the necessary inputs for the analysis with APAtizer. These gtf and bed files are already available in the [src/annotations](src/annotations) folder so, this way, the script is able to run the creation of the input files automatically for any of the four genome versions (hg19, hg38, mm9 and mm10).
 
@@ -123,7 +123,7 @@ For this case study, the BAM files were obtained directly from TCGA. These BAM f
 ### Creating the sample sheet
 In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below where 10 samples are shown, with 5 being from "Primary Tumor" and 5 from "Solid Tissue Normal".
 
-<img src="https://github.com/user-attachments/assets/071b9413-f2b9-41b9-b838-110fc5dd872a" alt="sample_sheet_case1">
+<img src="https:///user-attachments/assets/071b9413-f2b9-41b9-b838-110fc5dd872a" alt="sample_sheet_case1">
 
 
 ## DaPars2
