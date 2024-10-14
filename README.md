@@ -1,3 +1,5 @@
+This is the main repository for APAtizer.
+
 # License
 APAtizer is licensed under the MIT license.
 
