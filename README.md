@@ -78,43 +78,26 @@ The first case was done on standard RNA-Seq data from 10 samples (5 sample pairs
 
 The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. Our aim with this case study was to showcase that our tool can work with 3'mRNA-Seq data.
 
-The input creation script is intended to work with BAM files from the start. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, a section with a small explanation and some commands to guide the user through the alignemnt process to create BAM files is included below.
+The input creation script is intended to work with BAM files from the start. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, the FASTQ files were aligned by us to produce the BAM files.
 
-#### Alignment to a reference genome (If the user only has FASTQ files in his posssession)
-**Creation of the genome index**
+# Docker
+We also made available two docker images for APAtizer. The first one called brss12/pre_apatizer can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called brss12/apatizer is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
+
+To pull the docker images the user must run the following commands.
+
 ```shell
-GENOMEDIR=/path/to/indexed/genome
-
-STAR --runThreadN n_threads \
---runMode genomeGenerate \
---genomeDir $GENOMEDIR \
---genomeFastaFiles $GENOMEDIR/genome.fa \
---sjdbGTFfile genome.annotation.gtf \
---sjdbOverhang 99
-```
-**Aligning to the reference genome**
-**Paired-end**
-```shell
-GENOMEDIR=/path/to/indexed/genome
-
-STAR --genomeDir $GENOMEDIR \
---runThreadN n_threads \
---readFilesIn sample_1.fq sample_2.fq \
---outFileNamePrefix sample \
---outSAMtype BAM SortedByCoordinate \
-```
-**Single-end**
-```shell
-GENOMEDIR=/path/to/indexed/genome
-
-STAR --genomeDir $GENOMEDIR\
---runThreadN n_threads \
---readFilesIn sample.fq \
---outFileNamePrefix sample \
---outSAMtype BAM SortedByCoordinate \
+docker pull brss12/pre_apatizer     # For the first docker image for the aligning of fastq files and creation of the input files for APAtizer
+docker pull brss12/apatizer         # For the second docker image with the APAtizer tool
 ```
 
-With this, starting with the FASTQ files, the user can create BAM files and then run them through the [create_inputs.sh](create_inputs.sh) script to create the necessary inputs for the analysis with APAtizer.
+After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer.
+
+```shell
+
+```
+
+
+
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 option was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. Upon selecting the genome version, the corresponding gtf and bed files located in the source files are used to create the input files for APAtizer.
