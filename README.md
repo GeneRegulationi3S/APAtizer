@@ -44,7 +44,7 @@ chmod +x create_inputs.sh && ./create_inputs.sh
 
 This script will prompt the user to select the number (1-4) corresponding to the genome version used in the creation of the BAM files. This will be essencial for the creation of the input files necessary for APAtizer.
 
-![image](https:///user-attachments/assets/a0386d9d-9767-4bd5-be45-e16aaca687ad)
+![image](https://github.com/user-attachments/assets/806e96ab-717e-43b0-b4b9-121171f62d8e)
 
 Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface. When selecting, for instance, the hg38 or hg19 genome version, the script will use hg38 or hg19 gtf and bed files to create the necessary inputs for the analysis with APAtizer. These gtf and bed files are already available in the [src/annotations](src/annotations) folder so, this way, the script is able to run the creation of the input files automatically for any of the four genome versions (hg19, hg38, mm9 and mm10).
 
@@ -90,7 +90,7 @@ docker pull brss12/pre_apatizer     # For the first docker image for the alignin
 docker pull brss12/apatizer         # For the second docker image with the APAtizer tool
 ```
 
-After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer.
+After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer. If the user only has fastq files in his possession, then it is advised to start by aligning the fastq files to a reference genome to create BAM files as demonstrated below. Whereas if the user already has BAM files in his possession, then he can start by processing said BAM files and creating the remaining input files necessary for APAtizer as demonstrated below.
 
 ## Alignment of fastq files to create BAM files
 ### Creating genome index
@@ -114,7 +114,7 @@ sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -1 /data/rea
 docker run --rm -it -v /path/to/data/:/data brss12/pre_apatizer \
 sh -c "./create_inputs.sh"
 ```
-### Run APAtizer tool
+## Run the APAtizer tool
 ```shell
 docker run --rm -it -p 3838:3838 -v /path/to/data/:/data brss12/apatizer
 ```
