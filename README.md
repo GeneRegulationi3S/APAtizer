@@ -90,7 +90,7 @@ docker pull brss12/pre_apatizer     # For the first docker image for the alignin
 docker pull brss12/apatizer         # For the second docker image with the APAtizer tool
 ```
 
-After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer.
+After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer. If the user only has fastq files in his possession, then it is advised to start by aligning the fastq files to a reference genome to create BAM files as demonstrated below. Whereas if the user already has BAM files in his possession, then he can start by processing said BAM files and creating the remaining input files necessary for APAtizer as demonstrated below.
 
 ## Alignment of fastq files to create BAM files
 ### Creating genome index
@@ -114,7 +114,7 @@ sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -1 /data/rea
 docker run --rm -it -v /path/to/data/:/data brss12/pre_apatizer \
 sh -c "./create_inputs.sh"
 ```
-### Run APAtizer tool
+## Run the APAtizer tool
 ```shell
 docker run --rm -it -p 3838:3838 -v /path/to/data/:/data brss12/apatizer
 ```
