@@ -109,10 +109,16 @@ sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -U /data/rea
 docker run --rm -v /path/to/fastq/files:/data brss12/pre_apatizer \
 sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -1 /data/reads_1.fastq -2 /data/reads_2.fastq | samtools view -bS - > /data/RAW_BAM/reads.bam"
 ```
+### Process BAM files and create htseq and bedgraph files for APAtizer
+```shell
+docker run --rm -it -v /path/to/data/:/data brss12/pre_apatizer \
+sh -c "./create_inputs.sh"
+```
+### Run APAtizer tool
+```shell
+docker run --rm -it -p 3838:3838 -v /path/to/data/:/data brss12/apatizer
+```
 
-
-docker run --rm -it -v /media/bruno/Seagate_Basic/HISAT2_DOCKER/data:/data gr/pre_apatizer \
-				     sh -c "./create_inputs.sh"
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 option was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. Upon selecting the genome version, the corresponding gtf and bed files located in the source files are used to create the input files for APAtizer.
 
