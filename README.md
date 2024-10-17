@@ -24,9 +24,9 @@ To install the required command line tools for the creation of the input files n
 ```
 
 # Required input files for APAtizer
-1. Mapped reads .bam files (3'UTR-APA and IPA analysis with APAlyzer)
-2. DaPars bedgraph files (3'UTR-APA analysis with DaPars)
-3. HTSeq files (DGE analysis with DESeq2)
+1. Mapped reads .bam files (For 3'UTR-APA and IPA analysis with APAlyzer)
+2. DaPars bedgraph files (For 3'UTR-APA analysis with DaPars)
+3. HTSeq files (For DGE analysis with DESeq2)
 
 
 # Creating input files for APAtizer
