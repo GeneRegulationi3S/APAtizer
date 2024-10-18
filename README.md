@@ -86,8 +86,8 @@ We also made available two docker images for APAtizer. The first one called brss
 To pull the docker images the user must run the following commands.
 
 ```shell
-docker pull brss12/pre_apatizer     # For the first docker image for the aligning of fastq files and creation of the input files for APAtizer
-docker pull brss12/apatizer         # For the second docker image with the APAtizer tool
+docker pull gri3s/pre_apatizer     # For the first docker image for the aligning of fastq files and creation of the input files for APAtizer
+docker pull gri3s/apatizer         # For the second docker image with the APAtizer tool
 ```
 
 After pulling the docker images the user should adapt the following commands to align fastq files and create the inputs for APAtizer. If the user only has fastq files in his possession, then it is advised to start by aligning the fastq files to a reference genome to create BAM files as demonstrated below. Whereas if the user already has BAM files in his possession, then he can start by processing said BAM files and creating the remaining input files necessary for APAtizer as demonstrated below.
@@ -95,31 +95,29 @@ After pulling the docker images the user should adapt the following commands to 
 ## Alignment of fastq files to create BAM files
 ### Creating genome index
 ```shell
-docker run --rm -v /path/to/genome/fasta/file:/data brss12/pre_apatizer \
+docker run --rm -v /path/to/genome/fasta/file:/data gri3s/pre_apatizer \
 sh -c "mkdir -p /data/genome_idx && hisat2-build /data/genome.fa /data/genome_idx/genome"
 ```
 ### Align fastq reads to reference genome
 #### Single-end reads
 ```shell
-docker run --rm -v /path/to/fastq/files:/data brss12/pre_apatizer \
+docker run --rm -v /path/to/fastq/files:/data gri3s/pre_apatizer \
 sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -U /data/reads.fastq | samtools view -bS - > /data/RAW_BAM/reads.bam"
 ```
 #### Paired-end reads
 ```shell
-docker run --rm -v /path/to/fastq/files:/data brss12/pre_apatizer \
+docker run --rm -v /path/to/fastq/files:/data gri3s/pre_apatizer \
 sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -1 /data/reads_1.fastq -2 /data/reads_2.fastq | samtools view -bS - > /data/RAW_BAM/reads.bam"
 ```
 ### Process BAM files and create htseq and bedgraph files for APAtizer
 ```shell
-docker run --rm -it -v /path/to/data/:/data brss12/pre_apatizer \
+docker run --rm -it -v /path/to/data/:/data gri3s/pre_apatizer \
 sh -c "./create_inputs.sh"
 ```
 ## Run the APAtizer tool
 ```shell
-docker run --rm -it -p 3838:3838 -v /path/to/data/:/data brss12/apatizer
+docker run --rm -it -p 3838:3838 -v /path/to/data/:/data gri3s/apatizer
 ```
-
-Now, in the interface of the APAtizer tool the full paths for the files will be the paths in the docker image, ex: **/data/TRIMMED_READS/**, **/data/TRIMMED_htseq/** and **/data/DaPars_data/**.
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 option was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. Upon selecting the genome version, the corresponding gtf and bed files located in the source files are used to create the input files for APAtizer.
