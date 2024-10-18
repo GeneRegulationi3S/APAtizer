@@ -81,7 +81,7 @@ The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, 
 The input creation script is intended to work with BAM files from the start. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, the FASTQ files were aligned by us to produce the BAM files.
 
 # Docker
-We also made available two docker images for APAtizer. The first one called **gri3s/pre_apatizer** can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called **gri3s/apatizer** is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
+We also made available two docker images for APAtizer for the users who don't want to install all the required software in their system and don't want to clone the repository to download all the files. The first one called **gri3s/pre_apatizer** can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called **gri3s/apatizer** is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
 
 To pull the docker images the user must run the following commands.
 
