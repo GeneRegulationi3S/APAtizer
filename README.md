@@ -12,7 +12,7 @@ APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq da
 2. snakemake
 3. HTSeq
 4. python3
-5. gatk
+5. gatk (Install guide in https://gatk.broadinstitute.org/hc/en-us)
 
 # Installing dependencies
 To install the required command line tools for the creation of the input files necessary to use APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
