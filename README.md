@@ -133,7 +133,7 @@ For this case study, the BAM files were obtained directly from TCGA. These BAM f
 ### Creating the sample sheet
 In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below where 10 samples are shown, with 5 being from "Primary Tumor" and 5 from "Solid Tissue Normal".
 
-<img src="https:///user-attachments/assets/071b9413-f2b9-41b9-b838-110fc5dd872a" alt="sample_sheet_case1">
+<img src="https://github.com/user-attachments/assets/496d067f-32cb-4cbd-a77a-7045a5c89c92" alt="sample_sheet_case1">
 
 
 ## DaPars2
