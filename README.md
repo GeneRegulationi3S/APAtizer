@@ -12,7 +12,7 @@ APAtizer is a tool designed to analyse alternative polyadenylation of RNA-Seq da
 2. snakemake
 3. HTSeq
 4. python3
-5. gatk
+5. gatk (Install guide in https://gatk.broadinstitute.org/hc/en-us)
 
 # Installing dependencies
 To install the required command line tools for the creation of the input files necessary to use APAtizer, the user must run the [install_dependencies_linux.sh](install_dependencies_linux.sh) script for linux or run the [install_dependencies_macos.sh](install_dependencies_macos.sh) script for macOS.
@@ -81,7 +81,7 @@ The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, 
 The input creation script is intended to work with BAM files from the start. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, the FASTQ files were aligned by us to produce the BAM files.
 
 # Docker
-We also made available two docker images for APAtizer. The first one called brss12/pre_apatizer can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called brss12/apatizer is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
+We also made available two docker images for APAtizer. The first one called **gri3s/pre_apatizer** can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called **gri3s/apatizer** is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
 
 To pull the docker images the user must run the following commands.
 
@@ -98,6 +98,8 @@ After pulling the docker images the user should adapt the following commands to 
 docker run --rm -v /path/to/genome/fasta/file:/data gri3s/pre_apatizer \
 sh -c "mkdir -p /data/genome_idx && hisat2-build /data/genome.fa /data/genome_idx/genome"
 ```
+Substitute **/path/to/genome/fasta/file** with the path to the directory where the fasta file for the reference genome is located.
+
 ### Align fastq reads to reference genome
 #### Single-end reads
 ```shell
@@ -109,15 +111,20 @@ sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -U /data/rea
 docker run --rm -v /path/to/fastq/files:/data gri3s/pre_apatizer \
 sh -c "mkdir -p /data/RAW_BAM/ && hisat2 -x /data/genome_idx/genome -1 /data/reads_1.fastq -2 /data/reads_2.fastq | samtools view -bS - > /data/RAW_BAM/reads.bam"
 ```
+Substitute **/path/to/fastq/files** with the path to the directory where the fastq files to align are located. In the end a folder called **RAW_BAM** will be created with the resulting raw BAM files.
+
 ### Process BAM files and create htseq and bedgraph files for APAtizer
 ```shell
-docker run --rm -it -v /path/to/data/:/data gri3s/pre_apatizer \
+docker run --rm -it -v /path/to/data:/data gri3s/pre_apatizer \
 sh -c "./create_inputs.sh"
 ```
+Substitute **/path/to/data** with the path to the directory where the **RAW_BAM** folder is located. After running, this command outputs three folders called **DaPars_data** with the DaPars bedgraph files, **TRIMMED_READS** with the de-duplicated and indexed BAM files and **TRIMMED_htseq** with the htseq files.
+
 ## Run the APAtizer tool
 ```shell
-docker run --rm -it -p 3838:3838 -v /path/to/data/:/data gri3s/apatizer
+docker run --rm -it -p 3838:3838 -v /path/to/data:/data gri3s/apatizer
 ```
+Substitute **/path/to/data** with the path to the directory where the **DaPars_data**, **TRIMMED_READS** and **TRIMMED_htseq** are located.
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
 For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer with the [create_inputs.sh](create_inputs.sh) as was explained above. Since we have human data, the hg38 option was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. Upon selecting the genome version, the corresponding gtf and bed files located in the source files are used to create the input files for APAtizer.
@@ -126,7 +133,7 @@ For this case study, the BAM files were obtained directly from TCGA. These BAM f
 ### Creating the sample sheet
 In this section, the user may start by creating the sample sheet by clicking on the **Add row** button to add the necessary number of rows to construct the sample sheet. This sample sheet consists of two columns called **File.Name** and **Sample.Type**. The first column indicated the name of the BAM files and the second column indicated the name of the corresponding condition. An example of a sample sheet for this case study is shown below where 10 samples are shown, with 5 being from "Primary Tumor" and 5 from "Solid Tissue Normal".
 
-<img src="https:///user-attachments/assets/071b9413-f2b9-41b9-b838-110fc5dd872a" alt="sample_sheet_case1">
+<img src="https://github.com/user-attachments/assets/496d067f-32cb-4cbd-a77a-7045a5c89c92" alt="sample_sheet_case1">
 
 
 ## DaPars2
