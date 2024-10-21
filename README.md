@@ -344,16 +344,17 @@ If the user is also starting with FASTQ files as we did in this case study, he c
 
 ##### Create genome index
 ```shell
-hisat2-build hg38.fa hg38
+hisat2-build genome.fa genome
 ```
 ##### Align FASTQ files to the reference genome (Single-end)
 ```shell
-mkdir -p RAW_BAM/ && hisat2 -x hg38 -U reads.fastq | samtools view -bS - > RAW_BAM/reads.bam
+mkdir -p RAW_BAM/ && hisat2 -x genome -U reads.fastq | samtools view -bS - > RAW_BAM/reads.bam
 ```
 
 ##### Align FASTQ files to the reference genome (Paired-end)
 ```shell
-mkdir -p RAW_BAM/ && hisat2 -x hg38 -1 reads_1.fastq -2 reads_2.fastq | samtools view -bS - > RAW_BAM/reads.bam
+mkdir -p RAW_BAM/ && hisat2 -x genome -1 reads_1.fastq -2 reads_2.fastq | samtools view -bS - > RAW_BAM/reads.bam
+```
 
 After this, the user should follow the explanation in the beggining of this README to process the BAM files and create the remaining input files for APAtizer such as htseq files and DaPars bedgraph files.
 
