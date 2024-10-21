@@ -48,8 +48,6 @@ This script will prompt the user to select the number (1-4) corresponding to the
 
 Upon selecting the number, the snakemake workflow scripts for the genome version chosen by the user will automatically run and create the input files necessary for the analysis in APAtizer. This script automatically sorts and removes the duplicates from the raw BAM files required for the APA analysis using the APAlyzer algorithm, and, using the BAM files, creates the DaPars bedgraph files required for 3'UTR-APA analysis employing the DaPars algorithm and it also creates the HTSeq files required for the DGE analysis using the DESeq2 package. All of these downstream analysis take place in the APAtizer's user interface. When selecting, for instance, the hg38 or hg19 genome version, the script will use hg38 or hg19 gtf and bed files to create the necessary inputs for the analysis with APAtizer. These gtf and bed files are already available in the [src/annotations](src/annotations) folder so, this way, the script is able to run the creation of the input files automatically for any of the four genome versions (hg19, hg38, mm9 and mm10).
 
-Also, it is important to mention that depending on the size and ammount of BAM files, we recommend performing the aforementioned steps in a High Performance Computing (HPC) environment.
-
 After finishing running, the following folder and files are created:
 
 ```plaintext
@@ -72,13 +70,7 @@ To run the tool, the user can run the R script [APAtizer.R](APAtizer.R) using th
 Rscript APAtizer.R
 ```
 
-Now, to showcase the capabilities of APAtizer, we performed two case studies using our tool. 
-
-The first case was done on standard RNA-Seq data from 10 samples (5 sample pairs) from COAD (colon adenocarcinoma) from TCGA. The raw BAM files were obtained on the TCGA repository and were put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. With this case study, our aim was to showcase that our tool is able to analyse standard RNA-Seq data.
-
-The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. Our aim with this case study was to showcase that our tool can work with 3'mRNA-Seq data.
-
-The input creation script is intended to work with BAM files from the start. In the first case study the BAM files were extracted directly from the TCGA database, but in the second case study, only the FASTQ files were available to download. Due to this, the FASTQ files were aligned by us to produce the BAM files.
+To showcase the capabilities of APAtizer we show below two case studies. Case study 1 uses standard RNA-Seq data from TCGA and case study 2 uses 3'mRNA-Seq data from GEO.
 
 # Docker
 We also made available two docker images for APAtizer for the users who don't want to install all the required software in their system and don't want to clone the repository to download all the files. The first one called **gri3s/pre_apatizer** can receive fastq files as input, align them to a referece genome using the hisat2 tool to create BAM files and then, with those raw BAM files, the docker image can also process said BAM files, create htseq files and the DaPars bedgraph files for use in the APAtizer tool. The second docker image called **gri3s/apatizer** is the tool itself with the user interface and receives the processed BAM files, htseq files and DaPars bedgraph files to perform the analysis.
@@ -127,7 +119,7 @@ docker run --rm -it -p 3838:3838 -v /path/to/data:/data gri3s/apatizer
 Substitute **/path/to/data** with the path to the directory where the **DaPars_data**, **TRIMMED_READS** and **TRIMMED_htseq** are located.
 
 # APAtizer walkthrough case study 1 (Illumina standard RNA-Seq samples from TCGA COAD)
-For this case study, the BAM files were obtained directly from TCGA. These BAM files were used to create the inputs for the analysis with APAtizer as was explained above. Since we have human data, the hg38 option was chosen in the script, because the hg38 was the genome version used in the creation of the BAM files. Upon selecting the genome version, the corresponding gtf and bed files located in the source files are used to create the input files for APAtizer.
+This first case was done on standard RNA-Seq data from 10 samples (5 sample pairs) from COAD (colon adenocarcinoma) from TCGA. The raw BAM files were obtained on the TCGA repository and were put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. With this case study, our aim was to showcase that our tool is able to analyse standard RNA-Seq data.
 
 ## Sample Sheet
 ### Creating the sample sheet
@@ -346,7 +338,25 @@ In this input section, the user can choose an extra parameter called "Number of 
 
 
 # APAtizer walkthrough case study 2 (Illumina 3'mRNA-Seq samples from M1 Macrophages)
-To perform the creation of the input files for APAtizer using 3'mRNA-Seq data, the procedure is exactly the same. The user must run the [create_inputs.sh](create_inputs.sh) script the same way as described in the first section of this README. Below are some screenshots to demonstrate that APAtizer can not only perform analysis with standard RNA-Seq data but also with 3'mRNA-Seq data.
+The second case was done on 3'mRNA-Seq data from 4 samples from M1 macrophages, published in https://doi.org/10.3389/fimmu.2023.1182525, and uploaded in GEO (GSE163726). The FASTQ files were obtained and were previously aligned to the hg38 reference genome to obtain raw BAM files that were then put in our snakemake workflow with [create_inputs.sh](create_inputs.sh) to create the input files necessary for APAtizer. Our aim with this case study was to showcase that our tool can work with 3'mRNA-Seq data.
+
+If the user is also starting with FASTQ files as we did in this case study, he can align those FASTQ files to create BAM files using our docker image gri3s/pre_apatizer as explained in the **Docker** section of this README or he can align the files himself with hisat2 by adapting the following commands.
+
+##### Create genome index
+```shell
+hisat2-build genome.fa genome
+```
+##### Align FASTQ files to the reference genome (Single-end)
+```shell
+mkdir -p RAW_BAM/ && hisat2 -x genome -U reads.fastq | samtools view -bS - > RAW_BAM/reads.bam
+```
+
+##### Align FASTQ files to the reference genome (Paired-end)
+```shell
+mkdir -p RAW_BAM/ && hisat2 -x genome -1 reads_1.fastq -2 reads_2.fastq | samtools view -bS - > RAW_BAM/reads.bam
+```
+
+After this, the user should follow the explanation in the beggining of this README to process the BAM files and create the remaining input files for APAtizer such as htseq files and DaPars bedgraph files.
 
 ## Sample Sheet
 ### Creating the sample sheet
