@@ -1,3 +1,7 @@
+# Citation
+Please cite the following article if you use APAtizer in your research:
+* Bruno Sousa, Maria Bessa, Filipa L de Mendonça, Pedro G Ferreira, Alexandra Moreira, Isabel Pereira-Castro, APAtizer: a tool for alternative polyadenylation analysis of RNA-Seq data, Bioinformatics, Volume 40, Issue 11, November 2024, btae689, https://doi.org/10.1093/bioinformatics/btae689
+
 # License
 APAtizer is licensed under the MIT license.
 
