@@ -6,6 +6,8 @@ echo "1. mm9"
 echo "2. mm10"
 echo "3. hg19"
 echo "4. hg38"
+echo "5. dm6"
+echo "6. danRer11"
 read -p "Enter the number corresponding to your choice: " choice
 
 # Map the user's choice to the genome version
@@ -30,8 +32,17 @@ case $choice in
         snakemake -s src/scripts/process_hg38_1.smk --cores 4 --wait-for-files
         snakemake -s src/scripts/process_hg38_2.smk --cores 1 --wait-for-files
         ;;
+    5)
+        echo "Running Snakemake to create inputs for BAM files aligned to dm6..."
+        snakemake -s src/scripts/process_dm6_1.smk --cores 4 --wait-for-files
+        snakemake -s src/scripts/process_dm6_2.smk --cores 1 --wait-for-files
+        ;;
+    6)
+        echo "Running Snakemake to create inputs for BAM files aligned to danRer11..."
+        snakemake -s src/scripts/process_danRer11_1.smk --cores 4 --wait-for-files
+        snakemake -s src/scripts/process_danRer11_2.smk --cores 1 --wait-for-files
+        ;;
     *)
-        echo "Invalid choice. Please run the script again and choose a valid option."
-        exit 1
+	echo "Invalid choice. Please run the script again and choose a valid option." exit 1
         ;;
 esac
