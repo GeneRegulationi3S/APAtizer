@@ -8,7 +8,7 @@ Aligned_Wig_files=
 #$(ls WIG/*.wig | tr '\n' ',' | sed 's/,$//')
 #echo -e $(ls WIG/*.wig | tr '\n' ',')
 
-Output_directory=/data/DaPars_data/
+Output_directory=../DaPars_data/
 
 Output_result_file=DaPars_data
 
@@ -22,4 +22,4 @@ Num_Threads=8
 
 # Provide Sequencing_depth file for normalization
 
-sequencing_depth_file=/data/DaPars2/mapping_wig_location_with_depth.txt
+sequencing_depth_file=../DaPars2/mapping_wig_location_with_depth.txt
