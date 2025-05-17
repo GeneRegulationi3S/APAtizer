@@ -42,6 +42,11 @@ case $choice in
         snakemake -s src/scripts/process_danRer11_1.smk --cores 4 --wait-for-files
         snakemake -s src/scripts/process_danRer11_2.smk --cores 1 --wait-for-files
         ;;
+    7)
+    	echo "Running Snakemake to create inputs for BAM files aligned to ce11..."
+     	snakemake -s src/scripts/process_ce11_1.smk --cores 4 --wait-for-files
+      	snakemake -s src/scripts/process_ce11_2.smk --cores 1 --wait-for-files
+        ;;
     *)
 	echo "Invalid choice. Please run the script again and choose a valid option." exit 1
         ;;
