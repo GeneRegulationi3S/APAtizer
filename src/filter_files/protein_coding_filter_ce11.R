@@ -21,7 +21,7 @@ dir.create("FILTERED")
 # create a list of all txt files in the directory
 txt_files <- list.files(pattern = "\\.txt",full.names = TRUE)
 data <- lapply(txt_files, function(x)read.table(x, header = FALSE, sep = "\t", dec = "."))
-counts <- read_delim("/APAtizer/src/filter_files/filter_file_ce11.txt", delim = "\t", 
+counts <- read_delim("../APAtizer/src/filter_files/filter_file_ce11.txt", delim = "\t", 
                      escape_double = FALSE, col_names = FALSE, 
                      trim_ws = TRUE)
 # set path for filtered files
